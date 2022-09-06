@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+
+
+  <h4>Already Minted NFT:</h4>
+
+  <a>
+    &nbsp;&nbsp;&nbsp;
+    <img id="home_page_featured_image" src="{% static 'images/image_one.png' %}" class="rounded" width="400" height="400">
+  </a>
+  
+  <br/><br/>
+  <button>Buy</button>
+
+  <br/><br/>
+
+  <h5>Transactions:</h5>
+
+  <ul>
+    <li>TODO: show transaction of bought here</li>
+  </ul>
+  
+
+
+{% endblock %}
+
+
+
+
+
+

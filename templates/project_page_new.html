@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+
+
+  <div class="main-body">
+
+    <div class="animate__animated animate__fadeIn  container">
+      
+      <div class="row"> 
+
+        <div class="col">
+ 
+          <div class="row"> 
+
+            <div class="col-4">
+              <!-- <img src="{% static 'images/image_one.png' %}" class="rounded" width="330" height="330"> -->
+              <img src="{{ nft_image.nft_image.url }}" class="rounded" width="330" height="330">
+            </div>
+            
+
+            <div class="col-8" id="project-text-main">
+
+              <div class="project-header">
+
+                <h2 class="project-title">
+                  <!-- CreatorCoin -->
+                  {{ user_project.title }}
+                </h2>  
+
+                <span>
+                  <i class="bi bi-link"></i> <a href="{{ user_project.project_website }}">Project Website</a>
+                </span>
+
+                <span>
+                  <i class="bi bi-github"></i> <a href="{{ user_project.github_webite }}">Github</a>
+                </span>
+
+                <!-- TODO: if user added link, else, display something funny or nothing indicate no link was added -->
+                <span>
+                  <i class="bi bi-discord"></i> <a href="{{ user_project.discord_website }}">Discord</a>
+                </span>
+                
+                <div style="margin-left: auto;">
+                  <button type="button" id="project-fund-button" class="btn btn-outline-dark rounded-pill">Purchase</button>
+                  <a href="{% url 'edit_project' project_id=user_project.id %}" class="btn btn-outline-info rounded-pill" role="button">
+                    Edit Page
+                  </a>
+        
+
+                  <!-- <button type="button" id="project-edit-button" >Edit Page</button> -->
+                  <!-- <button type="button" id="project-fund-button" class="btn btn-outline-info rounded-pill">Purchase</button> -->
+                </div>
+                
+
+              </div>
+
+
+              <div class="project-subheading-information">
+                
+                <span class="project-user-link">
+                  creator: 
+                  <a href="#">
+                    rahul
+                  </a>
+                </span>
+
+  
+                <div id="project-progress-bar" class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark" role="progressbar" style="width: 30%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">30%</div>
+                </div>
+
+                
+              </div>
+
+              <div class="project-desc">  
+
+                <p>
+                  <!-- Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
+                  Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
+                  get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
+                  you thought of while you were writing it. Indeed, that's why I write them. 
+                  Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
+                  got going, so those scientists and physicists could get back to business. -->
+                  {{ user_project.description }}
+                </p>
+
+              </div>
+
+              
+            </div>
+
+    
+          </div>
+
+        </div>
+
+      </div>
+
+      <br/>
+
+      {% include 'project_page_navbar.html' %}
+
+
+    </div>
+
+  </div>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,304 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+
+  <!-- <h3>Create New Project</h3> -->
+
+  <div class="main-body">
+
+    <div class="animate__animated animate__fadeIn  container">
+      
+      <div class="row" >
+
+        <div class="col-12" style="text-align: center;">
+          
+          <h3 id="explore-header">
+            <!-- <i class="bi bi-pencil-fill" style="font-size: 20px;"></i> Create -->
+            Create <i class="bi bi-chevron-down" style="font-size: 20px;"></i>
+          </h3>
+          
+          <p id="explore-paragraph">            
+            <i>
+              You will first publish your project page. Selling an NFT for your project is the next step.
+            </i>
+          </p>
+
+        </div>
+
+        <!-- TODO: center form, add save button and go from there -->
+        <!-- <button>
+          Save
+        </button> -->
+
+      </div>
+
+      <div class="dropdown-divider"></div>
+
+
+      <div class="row" > 
+
+        <div class="col-2">
+
+          <!-- <p>
+            <strong>
+              Add Image
+            </strong>
+          </p>
+          <input id="nft_image_upload" type="file" name="nft_image" accept="image/*" style="display:none" multiple />
+          <label for='nft_image_upload' id="main_nft_image_upload">
+            <img id="nft_image_placeholder" src="{% static 'images/placeholder-image.png' %}" class="rounded img-thumbnail" alt="..." width="300" height="300" >
+          </label>
+  
+          <p>
+            TODO: add image generator
+          </p> -->
+  
+
+        </div>
+
+
+        <div class="col-10">
+
+          <form id="project_form" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+
+            <div class="form-group required row mb-3" >
+
+              <label for="nft_image_upload" class="col-sm-2 col-form-label control-label">
+                <strong>
+                  Image:
+                </strong>
+              </label>
+
+              <div class="col-sm-7">
+                {% if nft_image != None %}
+                  <input id="nft_image_upload" type="file" name="nft_image" accept="image/*" style="display:none" />
+                {% else %}
+                  <input id="nft_image_upload" type="file" name="nft_image" accept="image/*" style="display:none" required="required"/>
+                {% endif %}
+
+                <label for='nft_image_upload' id="main_nft_image_upload">
+
+                  {% if nft_image != None %}
+                    <img id="nft_image_placeholder" src="{{ nft_image.nft_image.url }}" class="rounded img-thumbnail" alt="..." width="300" height="300" >
+                  {% else %}
+                    <img id="nft_image_placeholder" src="{% static 'images/placeholder-image.png' %}" class="rounded img-thumbnail" alt="..." width="300" height="300" >
+                  {% endif %}
+                  
+                </label>
+
+                </br>
+                <small style="color: grey;">File types supported: JPG, PNG, WebP, GIF, SVG. Max size: 100 MB</small>
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group required row mb-3">
+
+              <label for="project_title" class="col-sm-2 col-form-label control-label">
+                <strong>
+                  Project Name:
+                </strong>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="project_title" name="project_title" placeholder="what's it going to be?" value="{{ user_project.title }}" required>
+              </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+              <label for="project_website" class="col-sm-2 col-form-label">
+                <i class="bi bi-link"></i>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="url" class="form-control" id="project_website" name="project_website" placeholder="project website.. if available" value="{{ user_project.project_website }}">
+              </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+              <label for="project_github_website" class="col-sm-2 col-form-label">
+                <i class="bi bi-github"></i>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="url" class="form-control" id="project_github_website" name="project_github_website" placeholder="github, bitbucket, gitlab, radicle... you get it" value="{{ user_project.github_webite }}">
+              </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+              <label for="project_discord_website" class="col-sm-2 col-form-label">
+                <i class="bi bi-discord"></i>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="url" class="form-control" id="project_discord_website" name="project_discord_website" placeholder="got to love a fancier IRC..." value="{{ user_project.discord_website }}">
+              </div>
+
+            </div>
+
+            <div class="form-group required row mb-3">
+
+              <label for="project_description" class="col-sm-2 col-form-label control-label">
+                <strong>
+                  Project Description:
+                </strong>
+              </label>
+
+              <div class="col-sm-8">
+                <textarea class="form-control" placeholder="basic markdown supported?" id="project_description" name="project_description" rows="6" required>{{ user_project.description }}</textarea>
+              </div>
+              
+            </div>
+
+
+
+            <!-- <div class="row mb-3">
+
+              <label for="creator_name" class="col-sm-2 col-form-label">
+                <strong>
+                  Creator Name:
+                </strong>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="creator_name" name="creator_name" placeholder="would recommend a name or alias" >
+              </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+              <label for="creator_website" class="col-sm-2 col-form-label">
+                <strong>
+                  Creator Website:
+                </strong>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="url" class="form-control" id="creator_website" name="creator_website" placeholder="your website? github profile?" >
+              </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+              <label for="creator_contact_info" class="col-sm-2 col-form-label">
+                <strong>
+                  Creator Contact:
+                </strong>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="creator_contact_info" name="creator_contact_info" placeholder="email?">
+              </div>
+
+            </div> -->
+
+            <!-- <br/> -->
+
+            <!-- <div class="col" style="text-align: center; margin-right: 8em;"> -->
+              <!-- <button class="btn btn-default">Centered button</button> -->
+              
+              <!-- <button type="button" class="btn btn-outline-info btn-lg ">Submit</button> -->
+              <!-- <button type="button" class="btn btn-info btn-lg" style="color: white;" type="submit">Submit</button> -->
+            <!-- </div> -->
+          
+            <br/>
+            <!-- <br/> -->
+
+            <button class="ui button" type="submit">Submit</button>
+
+          </form>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </div>    
+
+
+
+
+  <script>
+
+    
+    document.querySelector('#nft_image_upload').addEventListener('change', function() {
+
+      console.log('files:', this.files, this.files.length)
+
+      if (this.files && this.files.length == 1){
+
+        const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
+        
+        var file = this.files[0]
+        var fileType = file['type']
+        if (!validImageTypes.includes(fileType)) {  // invalid file type code goes here.
+          alert('Invalid File Type! File types supported: JPG, PNG, GIF, SVG')
+        } else { // valid file type
+          document.getElementById('nft_image_placeholder').src = ''
+
+          document.getElementById('nft_image_placeholder').src = URL.createObjectURL(file)
+
+        }
+
+      }
+
+        // if (this.files && this.files.length <= 5 ){
+        //   document.getElementById('proifle_image_error_message').style.display = 'none'
+
+        //   const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+          
+        //   var valid_image_list = []
+        //   for (i=0; i<this.files.length; i++){
+        //     var file = this.files[i]
+        //     var fileType = file["type"]
+        //     if (!validImageTypes.includes(fileType)) {  // invalid file type code goes here.
+        //       console.log('error...')
+        //     } else {
+        //       console.log('not-error...')
+        //       valid_image_list.push(file)
+        //     }
+        //   }
+
+      
+    })
+
+
+
+  </script>
+
+  
+  
+
+  
+  
+
+
+
+
+{% endblock %}
+
+
+
+
+

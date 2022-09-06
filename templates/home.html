@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+
+
+  <div class="animate__animated animate__fadeIn container" id="home-container">
+
+    <div class="row">
+
+      <div class="col-7">
+
+        <p class="home-header">
+          <!-- A place for hackers to mint NFT's for their side projects, research, or explorations. -->
+          A place for hackers to mint NFT's for their side projects, or themselves...
+        </p>
+
+        <!-- TODO: every word in this and the about-page needs to be good. -->
+        <p class="home-description"> 
+          CreatorCoin serves as a medium to help hackers fund their personal 
+          side projects or individual research. 
+          It is intended to help 'fund' the 'research/exploratory'-phases 
+          of projects while at the same time, benefiting the backers through NFT ownership. 
+          <a class="home-manifesto" href="">
+            Learn More
+          </a>
+          
+        </p>
+        
+
+        <!-- <br/> -->
+
+        <div class="home-buttons">
+
+          <a href="{% url 'explore_project' %}" class="btn btn-outline-secondary btn-lg" role="button">
+            Explore Projects
+          </a>
+
+          <a href="{% url 'create_project' %}" class="btn btn-outline-info btn-lg" role="button">
+            Create
+          </a>
+          
+          <!-- <a href="" class="btn btn-outline-info btn-lg" role="button">
+            Create
+          </a> -->
+
+          <!-- <button type="button" class="btn btn-outline-info" onclick="onConnect()"> -->
+          <!-- <button type="button" class="btn btn-outline-info">
+            Create
+          </button> -->
+
+
+          <!-- <button type="button" class="btn btn-outline-secondary">
+            Explore Projects
+          </button> -->
+
+          <!-- <button type="button" class="btn btn-outline-dark">
+            Mint your Project
+          </button> -->
+
+          <!-- <button type="button" class="btn btn-outline-info">
+            Create
+          </button> -->
+
+          <!-- <a class="home-manifesto" href="">
+            Read the "manifesto" 
+          </a> -->
+ 
+        </div>
+
+        
+        <div style="padding-top: 1em; font-weight: 900;">
+          <i>
+            Only 
+            <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
+            Supported.
+          </i>
+
+        </div>
+        
+
+      </div>
+
+      <div class="col-5" id="home-right-column">
+        
+        <h4 style="font-weight: bolder; ">
+          Featured:
+        </h4>
+        
+        <a href="{% url 'project_page' project_id=3 %}">
+          <img id="home_page_featured_image" src="{% static 'images/image_one.png' %}" class="rounded" width="400" height="400">
+        </a>
+         
+        <div style="padding-top: 10px;">
+          <h5 style="font-weight: 400;">Price: $50 | Backers: 31 | Time Remaining: 19 days</h5>
+          <!-- <h5></h5> -->
+        </div>
+ 
+        <p>
+          <strong>
+            <!-- Price: $50 -->
+            <!-- TODO: Price: $50 / Left: 51 / Sold: 49  -->
+          </strong>
+        </p>
+         
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+{% endblock %}  
+
+
+
+
+
+
+
