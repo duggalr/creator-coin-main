@@ -22,8 +22,8 @@
         <p class="home-description"> 
           CreatorCoin serves as a medium to help hackers fund their personal 
           side projects or individual research. 
-          It is intended to help 'fund' the 'research/exploratory'-phases 
-          of projects while at the same time, benefiting the backers through NFT ownership. 
+          It is intended to help support the 'research & exploratory' phases 
+          of projects, while at the same time, benefiting the backers through NFT ownership. 
           <a class="home-manifesto" href="">
             Learn More
           </a>
@@ -39,9 +39,21 @@
             Explore Projects
           </a>
 
-          <a href="{% url 'create_project' %}" class="btn btn-outline-info btn-lg" role="button">
-            Create
-          </a>
+            {% if user.is_authenticated %}
+
+              <a href="{% url 'create_project' %}" class="btn btn-outline-info btn-lg" role="button">
+                Create
+              </a>
+
+            {% else %}
+
+              <a class="btn btn-outline-info btn-lg" role="button" href="#" onclick="onConnect(event)">
+                Create
+              </a>
+
+            {% endif %}
+
+          
           
           <!-- <a href="" class="btn btn-outline-info btn-lg" role="button">
             Create

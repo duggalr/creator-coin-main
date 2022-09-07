@@ -44,14 +44,14 @@ class UserNonce(models.Model):
 
 
 class CreatorProfile(models.Model):
-  user = models.ForeignKey(Web3User, on_delete=models.CASCADE)
+  user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
   creator_name = models.CharField(max_length=2000, blank=True, null=True)
   creator_website = models.URLField(blank=True, null=True)
   creator_contact_info = models.CharField(max_length=2000, blank=True, null=True)
 
 
-# TODO: add creator foreign-key (user FK is not necessary here)
 class UserProject(models.Model):
+  creator_profile = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
   title = models.CharField(max_length=2000)
   description = models.TextField()
   project_website = models.URLField(blank=True, null=True)
@@ -61,11 +61,11 @@ class UserProject(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
 
-# TODO: add creator foreign-key (user FK is not necessary here)
 class ProjectNftImage(models.Model):
   project_obj = models.ForeignKey(UserProject, on_delete=models.CASCADE)
   nft_image = models.ImageField(upload_to='nft_images/', verbose_name='Image')
 
 
+ 
 
 

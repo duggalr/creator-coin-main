@@ -18,12 +18,12 @@
           
           <h3 id="explore-header">
             <!-- <i class="bi bi-pencil-fill" style="font-size: 20px;"></i> Create -->
-            Create <i class="bi bi-chevron-down" style="font-size: 20px;"></i>
+            Create Your Project <i class="bi bi-chevron-down" style="font-size: 20px;"></i>
           </h3>
           
           <p id="explore-paragraph">            
             <i>
-              You will first publish your project page. Selling an NFT for your project is the next step.
+              You will first publish your project page. Minting an NFT will be the next step.
             </i>
           </p>
 
@@ -66,7 +66,7 @@
           <form id="project_form" method="post" enctype="multipart/form-data">{% csrf_token %}
 
 
-            <div class="form-group required row mb-3" >
+            <!-- <div class="form-group required row mb-3" >
 
               <label for="nft_image_upload" class="col-sm-2 col-form-label control-label">
                 <strong>
@@ -96,7 +96,7 @@
 
               </div>
 
-            </div>
+            </div> -->
 
 
             <div class="form-group required row mb-3">
@@ -147,7 +147,7 @@
               </label>
 
               <div class="col-sm-7">
-                <input type="url" class="form-control" id="project_discord_website" name="project_discord_website" placeholder="got to love a fancier IRC..." value="{{ user_project.discord_website }}">
+                <input type="url" class="form-control" id="project_discord_website" name="project_discord_website" placeholder="gotta love a fancier IRC..." value="{{ user_project.discord_website }}">
               </div>
 
             </div>
@@ -221,6 +221,9 @@
           
             <br/>
             <!-- <br/> -->
+
+            
+            <input type="hidden" id="user_obj" name="user_obj" value="{{ user_object }}">
 
             <button class="ui button" type="submit">Submit</button>
 
