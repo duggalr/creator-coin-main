@@ -6,13 +6,76 @@
 
   {% include 'navbar.html' %}
 
-  <h3>Profile</h3>
 
-  <a href="{% url 'logout' %}">
-    logout
-  </a>
+  <div class="main-body">
 
+    <div class="animate__animated animate__fadeIn  container">
+      
+      <div class="row"> 
+
+        <div class="col-8" id="project-text-main">
+
+          <h2 class="project-title">
+            John Johnson
+          </h2>  
+
+          <!-- TODO: get the spacing between the links right; add tooltip on verified checkmark -->
+
+          <span>
+            <i class="bi bi-link"></i> <a href="{{ user_project.project_website }}">Project Website</a>
+          </span>
+
+          <span>
+            <i class="bi bi-github"></i> <a href="{{ user_project.github_webite }}">Github</a>
+            <i class="bi bi-patch-check"></i>
+          </span>
+
+          <!-- TODO: if user added link, else, icon and make it unclickable; -->
+          <span>
+            <i class="bi bi-discord"></i> <a href="{{ user_project.discord_website }}">Discord</a>
+          </span>
+
+
+
+          <!-- TODO: 
+            - in create-profile form, set max word limit on description 
+            - absolutely require an image for the token
+            - **need to have solid placeholder for no coin launched yet and default coin-image-generator**
+          -->
+          <div class="project-desc">  
+
+            <p>
+              Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
+              Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
+              get them exactly right. 
+            </p>
   
+          </div>
+          
+        </div>
+
+        <div class="col-4">
+          <!-- <img src="{% static 'images/coin_two.png' %}" class="rounded" width="330" height="330"> -->
+          <img src="{% static 'images/placeholder-image.png' %}" class="rounded" width="330" height="330">
+        </div>
+
+
+   
+
+      </div>
+
+
+      <br/>
+      {% include 'project_page_navbar.html' %}
+
+
+    </div>
+
+  </div>
+
+
+
+
 
 {% endblock %}
 

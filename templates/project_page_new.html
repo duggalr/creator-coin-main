@@ -18,7 +18,7 @@
           <div class="row"> 
 
             <div class="col-4">
-              <!-- <img src="{% static 'images/image_one.png' %}" class="rounded" width="330" height="330"> -->
+              <img src="{% static 'images/image_one.png' %}" class="rounded" width="330" height="330">
               <!-- <img src="{{ nft_image.nft_image.url }}" class="rounded" width="330" height="330"> -->
             </div>
             
@@ -28,8 +28,8 @@
               <div class="project-header">
 
                 <h2 class="project-title">
-                  <!-- CreatorCoin -->
-                  {{ user_project.title }}
+                  CreatorCoin
+                  <!-- {{ user_project.title }} -->
                 </h2>  
 
                 <span>
@@ -47,7 +47,7 @@
                 
                 <div style="margin-left: auto;">
                   <button type="button" id="project-fund-button" class="btn btn-outline-dark rounded-pill">Purchase</button>
-                  <a href="{% url 'edit_project' project_id=user_project.id %}" class="btn btn-outline-info rounded-pill" role="button">
+                  <a href='#' class="btn btn-outline-info rounded-pill" role="button">
                     Edit Page
                   </a>
         

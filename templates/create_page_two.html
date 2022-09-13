@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+
+  <div class="main-body">
+    
+    <div class="animate__animated animate__fadeIn  container">
+
+      <div class="row" >
+
+        <div class="col-12" style="text-align: center;">
+          
+          <h3 id="explore-header">
+            <!-- <i class="bi bi-pencil-fill" style="font-size: 20px;"></i> Create -->
+            Create Your Profile <i class="bi bi-chevron-down" style="font-size: 20px;"></i>
+          </h3>
+          
+          <p id="explore-paragraph">            
+            <i>
+              You will first publish your profile page. Minting your ERC-20 Token will be the next step!
+            </i>
+          </p>
+
+        </div>
+
+        <!-- TODO: center form, add save button and go from there -->
+        <!-- <button>
+          Save
+        </button> -->
+
+      </div>
+
+      <div class="dropdown-divider"></div>
+
+
+
+      <div class="row" > 
+
+        <div class="col-2"></div>
+
+
+        <div class="col-10">
+
+          <form id="project_form" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+
+            <div class="form-group required row mb-3">
+
+              <label for="creator_name" class="col-sm-2 col-form-label">
+                <strong>
+                  Name:
+                </strong>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="creator_name" name="creator_name" placeholder="shouldn't be too difficult...">
+              </div>
+
+            </div>
+
+
+            <div class="form-group required row mb-3">
+
+              <label for="creator_email" class="col-sm-2 col-form-label">
+                <strong>
+                  Email:
+                </strong>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="creator_email" name="creator_email" placeholder="would highly recommend this for the backers (we will never spam you.)">
+              </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+              <label for="creator_website" class="col-sm-2 col-form-label">
+                <!-- <i class="bi bi-link"></i> -->
+                Personal Website:
+              </label>
+
+              <div class="col-sm-7">
+                <input type="url" class="form-control" id="creator_website" name="creator_website" placeholder="time to show off your website" value="{{ user_project.project_website }}">
+              </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+              <label for="creator_github_website" class="col-sm-2 col-form-label">
+                <i class="bi bi-github"></i>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="url" class="form-control" id="creator_github_website" name="creator_github_website" placeholder="github..." value="{{ user_project.github_webite }}">
+              </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+              <label for="creator_discord_website" class="col-sm-2 col-form-label">
+                <i class="bi bi-discord"></i>
+              </label>
+
+              <div class="col-sm-7">
+                <input type="url" class="form-control" id="creator_discord_website" name="creator_discord_website" placeholder="gotta love a fancier IRC..." value="{{ user_project.discord_website }}">
+              </div>
+
+            </div>
+
+            <div class="form-group required row mb-3">
+
+              <label for="creator_description" class="col-sm-2 col-form-label">
+                <strong>
+                  Description:
+                </strong>
+              </label>
+
+              <div class="col-sm-8">
+                <textarea class="form-control" placeholder="anything you want the world to know" id="creator_description" name="creator_description" rows="6">{{ user_project.description }}</textarea>
+              </div>
+              
+            </div>
+          
+            <br/>
+            
+            <input type="hidden" id="user_obj" name="user_obj" value="{{ user_object }}">
+
+            <button class="ui button" type="submit">Submit</button>
+
+          </form>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+{% endblock %}
+
+
+
+<!-- 
+  TODO:  
+    # make profile-page first 
+      # once profile is created, if user goes back to home, the create-token from navbar/button should redirect to token-form
+
+    # add the github-validation for url and go from there    
+    - complete form-submission-details
+      - **user clicks profile-icon instead of submit, what happens? 
+        - user clicks logout or other link, what happens?
+      - redirect to Profile page 
+        - go from there...
+    
+-->
+
+ 
+
+
+
+  

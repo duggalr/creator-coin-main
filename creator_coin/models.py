@@ -46,24 +46,30 @@ class UserNonce(models.Model):
 class CreatorProfile(models.Model):
   user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
   creator_name = models.CharField(max_length=2000, blank=True, null=True)
-  creator_website = models.URLField(blank=True, null=True)
-  creator_contact_info = models.CharField(max_length=2000, blank=True, null=True)
+  creator_email = models.CharField(max_length=255, blank=True, null=True)
+  creator_personal_website = models.URLField(blank=True, null=True)
+  creator_github_website = models.URLField(blank=True, null=True)
+  creator_discord_website = models.URLField(blank=True, null=True)
+  creator_description = models.TextField(blank=True, null=True)
+  # creator_contact_info = models.CharField(max_length=2000, blank=True, null=True)
 
 
-class UserProject(models.Model):
-  creator_profile = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
-  title = models.CharField(max_length=2000)
-  description = models.TextField()
-  project_website = models.URLField(blank=True, null=True)
-  github_webite = models.URLField(blank=True, null=True)
-  discord_website = models.URLField(blank=True, null=True)
-  created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
 
 
-class ProjectNftImage(models.Model):
-  project_obj = models.ForeignKey(UserProject, on_delete=models.CASCADE)
-  nft_image = models.ImageField(upload_to='nft_images/', verbose_name='Image')
+# class UserProject(models.Model):
+#   creator_profile = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
+#   title = models.CharField(max_length=2000)
+#   description = models.TextField()
+#   project_website = models.URLField(blank=True, null=True)
+#   github_webite = models.URLField(blank=True, null=True)
+#   discord_website = models.URLField(blank=True, null=True)
+#   created_at = models.DateTimeField(auto_now_add=True)
+#   updated_at = models.DateTimeField(auto_now=True)
+
+
+# class ProjectNftImage(models.Model):
+#   project_obj = models.ForeignKey(UserProject, on_delete=models.CASCADE)
+#   nft_image = models.ImageField(upload_to='nft_images/', verbose_name='Image')
 
 
  

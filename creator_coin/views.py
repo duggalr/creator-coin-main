@@ -6,10 +6,11 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from rest_framework.authtoken.models import Token
 
-from .models import UserNonce, Web3User, CreatorProfile, UserProject, ProjectNftImage
+from .models import UserNonce, Web3User, CreatorProfile
 from .serializers import Web3UserSerializer
 
 import web3
+
 from web3.auto import w3
 
 from . import utils
@@ -23,26 +24,28 @@ from . import utils
 
 
 def home(request):
-  return render(request, 'home.html')
+  return render(request, 'home_one.html')
 
 
 # TODO: add slug for project-page-name
-def project_page(request, project_id): 
-  # user_project_list = UserProject.objects.filter(id=project_id)
-  # if len(user_project_list) > 0:
-  #   user_project = user_project_list[0]
-  user_project_obj = get_object_or_404(UserProject, id=project_id)
-  # nft_image = ProjectNftImage.objects.get(project_obj=user_project_obj)
+def project_page(request, project_id):
+  print('project-id:', project_id)
+  return render(request, 'project_page_new.html')
+  # # user_project_list = UserProject.objects.filter(id=project_id)
+  # # if len(user_project_list) > 0:
+  # #   user_project = user_project_list[0]
+  # user_project_obj = get_object_or_404(UserProject, id=project_id)
+  # # nft_image = ProjectNftImage.objects.get(project_obj=user_project_obj)
 
-  # profile_objects = CreatorProfile.objects.filter(user_obj=user_project_obj)
-  # if len(profile_objects) == 1:
-  #   user_profile_obj = profile_objects[0]
+  # # profile_objects = CreatorProfile.objects.filter(user_obj=user_project_obj)
+  # # if len(profile_objects) == 1:
+  # #   user_profile_obj = profile_objects[0]
 
-  print(user_project_obj.creator_profile.user_obj.user_pk_address, request.user)
-  if user_project_obj.user_obj.user_pk_address == request.user:  # TODO: add option for User to Mint-NFT 
-    print('True')
+  # print(user_project_obj.creator_profile.user_obj.user_pk_address, request.user)
+  # if user_project_obj.user_obj.user_pk_address == request.user:  # TODO: add option for User to Mint-NFT 
+  #   print('True')
 
-  return render(request, 'project_page_new.html', {'user_project': user_project_obj})
+  # return render(request, 'project_page_new.html', {'user_project': user_project_obj})
 
 
 
@@ -74,6 +77,9 @@ def explore_project(request):
     # from here, have option for user to mint-NFT for project  (<-- make profile last)
       # on profile, user should see all the project's he has created along with NFT's 
 
+
+
+
 @login_required(login_url='/')
 def create_project(request):
   user_obj = request.user
@@ -86,22 +92,39 @@ def create_project(request):
     profile_objects = CreatorProfile.objects.filter(user_obj=user_object)
     if len(profile_objects) == 1:
       user_profile_obj = profile_objects[0]
+      creator_name = request.POST['creator_name']
+      creator_email = request.POST['creator_email']
+      creator_personal_website = request.POST['creator_website']
+      creator_github_website = request.POST['creator_github_website']
+      creator_discord_website = request.POST['creator_discord_website']
+      creator_description = request.POST['creator_description']
 
-      project_title = request.POST['project_title']
-      project_website = request.POST['project_website']
-      project_github_website = request.POST['project_github_website']
-      project_discord_website = request.POST['project_discord_website']
-      project_description = request.POST['project_description']
+      user_profile_obj.creator_name = creator_name
+      user_profile_obj.creator_email = creator_email
+      user_profile_obj.creator_personal_website = creator_personal_website
+      # TODO: github validation to ensure only github-website 
+      user_profile_obj.creator_github_website = creator_github_website
+      user_profile_obj.creator_discord_website = creator_discord_website
+      user_profile_obj.creator_description = creator_description
 
-      user_project_obj = UserProject.objects.create(
-        creator_profile=user_profile_obj,
-        title=project_title,
-        description=project_description,
-        project_website=project_website,
-        github_webite=project_github_website,
-        discord_website=project_discord_website
-      )
-      user_project_obj.save()
+      user_profile_obj.save()
+      return redirect('user_profile')
+
+      # project_title = request.POST['project_title']
+      # project_website = request.POST['project_website']
+      # project_github_website = request.POST['project_github_website']
+      # project_discord_website = request.POST['project_discord_website']
+      # project_description = request.POST['project_description']
+
+      # user_project_obj = UserProject.objects.create(
+      #   creator_profile=user_profile_obj,
+      #   title=project_title,
+      #   description=project_description,
+      #   project_website=project_website,
+      #   github_webite=project_github_website,
+      #   discord_website=project_discord_website
+      # )
+      # user_project_obj.save()
 
       # ## TODO: link to creator/user here & *remove all previous images for project if update*
       # nft_image_list = request.FILES.getlist('nft_image')
@@ -111,14 +134,13 @@ def create_project(request):
       # )
       # nft_image_obj.save()
 
-      # TODO: redirect on the project-page (with slug/id) user created; right now, just generic
-      return redirect('project_page', project_id=user_project_obj.id)
+      # return redirect('project_page', project_id=user_project_obj.id)
 
     else: # TODO: fill this
       pass
 
 
-  return render(request, 'create_project.html', {'user_object': user_obj})
+  return render(request, 'create_page_two.html', {'user_object': user_obj})
 
 
 
@@ -140,8 +162,6 @@ def edit_project(request, project_id):
       user_project_obj.save()
       
       # ProjectNftImage.objects.
-
-
 
   return render(request, 'create_project.html', {'user_project': user_project_obj, 'nft_image': nft_image})
 
@@ -260,6 +280,7 @@ class LoginView(APIView):
 
     else:
       pass
+
 
 
 

@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+
+  
+  <div class="animate__animated animate__fadeIn container" id="home-container">
+    
+    <div class="row">
+
+      <div class="col-7">
+
+        <!-- TODO: every word in this and the about-page needs to be good. Ensure (erc-20)-text on the same line -->
+        <p class="home-header">
+          A place for <span class="word-changer">Engineers</span> to mint an ERC-20 token of themselves...
+        </p>
+  
+        <!-- TODO: every word in this and the about-page needs to be good. -->
+        <p class="home-description"> 
+          CreatorCoin serves as a medium to help creator's fund their personal 
+          side projects or individual research. 
+          It is intended to help support the 'research & exploratory' phases 
+          of projects, while at the same time, benefiting the early backers through token ownership. 
+          <a class="home-manifesto" href="">
+            Learn More
+          </a>
+          
+        </p>
+
+
+        <!-- TODO: adjust the button colors; they don't really match the entire 'feel' of site / layout  -->
+        <div class="home-buttons">
+
+          <a href="{% url 'explore_project' %}" class="btn btn-outline-secondary btn-lg" role="button">
+            Explore Projects
+          </a>
+
+          {% if user.is_authenticated %}
+
+            <a href="{% url 'create_project' %}" class="btn btn-outline-info btn-lg" role="button">
+              Create your token
+            </a>
+
+          {% else %}
+
+            <a class="btn btn-outline-info btn-lg" role="button" href="#" onclick="onConnect(event)">
+              Create your token
+            </a>
+
+          {% endif %}
+
+        </div>
+
+        <div style="padding-top: 1em; font-weight: 900;">
+          <i>
+            Only 
+            <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
+            Supported.
+          </i>
+
+        </div>
+  
+        
+      </div>
+
+
+
+      <div class="col-5" id="home-right-column">
+        
+        <h4 style="font-weight: bolder; ">
+          Featured Token:
+        </h4>
+        
+        <a href="{% url 'project_page' project_id=0 %}">
+          <img id="home_page_featured_image" src="{% static 'images/coin_one.png' %}" class="rounded" width="400" height="400">
+        </a>
+         
+        <div style="padding-top: 10px;">
+          <h5 style="font-weight: 400;">Price: $50 | Total Supply: 5000 | Time Left: 19 days</h5>
+        </div>
+
+      </div>
+
+
+
+    </div>
+  
+
+    
+  </div>
+
+
+
+
+  
+  <script>
+
+    // var changeList = {
+    //   "one": "two",
+    //   "two": "three",
+    //   "three": "four",
+    //   "four": "five",
+    //   "five": "six",
+    //   "six": "seven",
+    //   "seven": "eight",
+    //   "eight": "nine",
+    //   // ...
+    // }
+
+    
+    var currentCount = 0;
+
+    var changeWordList = [
+      "Engineers", "Researchers", "Hackers", "Builders"
+    ]
+
+    function _changeText() {
+      let el = document.getElementsByClassName('word-changer')[0];
+      // console.log(el)
+
+      let totalListCount = changeWordList.length;
+      console.log(totalListCount, currentCount)
+
+      currentCount += 1
+
+      if (currentCount <= totalListCount-1){
+        let word = changeWordList[currentCount]
+        el.innerHTML = word
+        
+      } else {
+        currentCount = 0
+        let word = changeWordList[currentCount]
+        el.innerHTML = word
+
+      }    
+
+      // //iterate over all .word-changer elements
+      // for (let i = 0; i < els.length; i++) {
+      //   let el = els[i];
+      //   // read out elements data-counter and data-max attributes
+      //   let counter = parseInt(el.dataset.counter);
+      //   let max =  parseInt(el.dataset.max);
+        
+      //   if(counter < max ) {
+      //     // Update counter and replace word based on the "hashmap"
+      //       counter++;
+      //     el.innerHTML = changeList[el.textContent]; // This is where the words get swapped
+      //     el.dataset.counter = counter;
+      //   }
+
+      // }
+
+    }
+
+
+    setInterval(_changeText, 3000);
+
+  </script>
+
+
+{% endblock %}  
+
+
+
+
