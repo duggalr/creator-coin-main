@@ -54,6 +54,11 @@ class CreatorProfile(models.Model):
   # creator_contact_info = models.CharField(max_length=2000, blank=True, null=True)
 
 
+class UserToken(models.Model):
+  user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
+  token_name = models.CharField(max_length=2000, blank=True, null=True)
+  token_symbol = models.CharField(max_length=100, blank=True, null=True)
+  token_image = models.ImageField(upload_to='token_images/', verbose_name='Image')
 
 
 # class UserProject(models.Model):

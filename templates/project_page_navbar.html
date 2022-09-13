@@ -2,22 +2,22 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
 
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="true">
-      <i class="bi bi-activity"></i> Transaction History
-    </button>
-  </li>
-  
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="project-log-tab" data-bs-toggle="tab" data-bs-target="#project-log" type="button" role="tab" aria-controls="project-log" aria-selected="false">
+    <button class="nav-link active" id="project-log-tab" data-bs-toggle="tab" data-bs-target="#project-log" type="button" role="tab" aria-controls="project-log" aria-selected="false">
       <i class="bi bi-card-text"></i> Project Log
     </button>
   </li>
 
   <li class="nav-item" role="presentation">
+    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="true">
+      <i class="bi bi-activity"></i> Transaction History
+    </button>
+  </li>
+
+  <!-- <li class="nav-item" role="presentation">
     <button class="nav-link" id="developer-contact-tab" data-bs-toggle="tab" data-bs-target="#developer-contact" type="button" role="tab" aria-controls="project-log" aria-selected="false">
       <i class="bi bi-person"></i> Creator Info
     </button>
-  </li>
+  </li> -->
 
   <li class="nav-item" role="presentation">
     <button class="nav-link disabled" id="open-tasks-tab" data-bs-toggle="tab" data-bs-target="#open-tasks" type="button" role="tab" aria-controls="open-tasks" aria-selected="false">
@@ -36,7 +36,41 @@
 
 <div class="tab-content" id="myTabContent">
 
-  <div class="tab-pane fade show active" id="history" role="tabpanel" aria-labelledby="home-tab">
+  <div class="tab-pane fade show active" id="project-log" role="tabpanel" aria-labelledby="project-log-tab">
+  
+    <ul class="list-group list-group-flush">
+
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Update One</div>          
+          This is the launch of Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
+          Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
+          get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
+          you thought of while you were writing it. Indeed, that's why I write them. 
+          Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
+          got going, so those scientists and physicists could get back to business.
+        </div>
+      </li>
+
+
+      <!-- <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Update Two</div>
+          This is the launch of Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
+          Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
+          get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
+          you thought of while you were writing it. Indeed, that's why I write them. 
+          Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
+          got going, so those scientists and physicists could get back to business.
+        </div>
+      </li> -->
+
+    </ul>
+
+  </div>
+
+
+  <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="home-tab">
 
     <div class="row align-items-start">
 
@@ -67,47 +101,13 @@
   </div>
 
 
-  <div class="tab-pane fade" id="project-log" role="tabpanel" aria-labelledby="project-log-tab">
-  
-    <ul class="list-group list-group-flush">
-
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Update One</div>          
-          This is the launch of Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
-          Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
-          get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
-          you thought of while you were writing it. Indeed, that's why I write them. 
-          Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
-          got going, so those scientists and physicists could get back to business.
-        </div>
-      </li>
-
-
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Update Two</div>
-          This is the launch of Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
-          Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
-          get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
-          you thought of while you were writing it. Indeed, that's why I write them. 
-          Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
-          got going, so those scientists and physicists could get back to business.
-        </div>
-      </li>
-
-    </ul>
-
-  </div>
-  
-
-  <div class="tab-pane fade" id="developer-contact" role="tabpanel" aria-labelledby="developer-contact-tab">
+  <!-- <div class="tab-pane fade" id="developer-contact" role="tabpanel" aria-labelledby="developer-contact-tab">
     <p>
       Feel free to shoot me an email asking any questions on the project! 
       Email: duggalr42@gmail.com
     </p>
 
-  </div>
+  </div> -->
 
 
   <div class="tab-pane fade" id="contact" role="open-tasks" aria-labelledby="open-tasks-tab">
@@ -116,4 +116,8 @@
   
 
 </div>
+
+
+
+
 

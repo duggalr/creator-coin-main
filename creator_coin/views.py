@@ -10,7 +10,6 @@ from .models import UserNonce, Web3User, CreatorProfile
 from .serializers import Web3UserSerializer
 
 import web3
-
 from web3.auto import w3
 
 from . import utils
@@ -27,7 +26,17 @@ def home(request):
   return render(request, 'home_one.html')
 
 
-# TODO: add slug for project-page-name
+# TODO: ensure correct authentication, etc.
+def user_token_page(request, profile_id):
+  return render(request, 'user_token_page.html')
+
+
+
+
+
+
+
+# TODO: delete
 def project_page(request, project_id):
   print('project-id:', project_id)
   return render(request, 'project_page_new.html')
