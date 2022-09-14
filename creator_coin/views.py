@@ -31,8 +31,23 @@ def home(request):
 
 # TODO: ensure correct authentication, etc.
 def user_token_page(request, profile_id):
-  creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
-  return render(request, 'user_token_page.html', {'creator_profile': creator_profile_obj})
+  # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
+  creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+
+  same_user = False
+  if request.user.is_anonymous is False:
+    current_user_pk_address = request.user.user_pk_address
+    if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
+      same_user = True
+
+  # saved_user_objects = Web3User.objects.filter(current_user)
+  # print(saved_user_objects)
+
+  return render(request, 'user_token_page.html', {
+    'creator_profile': creator_profile_obj,
+    'same_user': same_user,
+    'profile_id': profile_id
+  })
 
 
 
@@ -152,25 +167,45 @@ def create_profile(request):
 
 
 # TODO: add auth to verify user has access to 
-def edit_project(request, project_id):
-  # user_project_obj = UserProject.objects.get_object_or_404(id=project_id)  
-  user_project_obj = get_object_or_404(UserProject, id=project_id)
-  nft_image = ProjectNftImage.objects.get(project_obj=user_project_obj)
+def edit_user_profile(request, profile_id):
+  creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
 
   if request.method == "POST":
     print(request.POST)
-    nft_image_file = request.FILES.getlist('nft_image')
-    if len(nft_image_file) > 0:  # update nft-image for project
-      user_project_obj.title = request.POST['project_title']
-      user_project_obj.description = request.POST['project_description']
-      user_project_obj.project_website = request.POST['project_website']
-      user_project_obj.github_webite = request.POST['project_github_website']
-      user_project_obj.discord_website = request.POST['project_discord_website']
-      user_project_obj.save()
-      
-      # ProjectNftImage.objects.
+    creator_profile_obj.creator_name = request.POST['']
 
-  return render(request, 'create_project.html', {'user_project': user_project_obj, 'nft_image': nft_image})
+
+    # nft_image_file = request.FILES.getlist('nft_image')
+    # if len(nft_image_file) > 0:  # update nft-image for project
+    #   user_project_obj.title = request.POST['project_title']
+    #   user_project_obj.description = request.POST['project_description']
+    #   user_project_obj.project_website = request.POST['project_website']
+    #   user_project_obj.github_webite = request.POST['project_github_website']
+    #   user_project_obj.discord_website = request.POST['project_discord_website']
+    #   user_project_obj.save()
+      
+  return render(request, 'create_project.html', {'creator_profile': creator_profile_obj})
+
+
+
+  # # user_project_obj = UserProject.objects.get_object_or_404(id=project_id)
+  # user_project_obj = get_object_or_404(UserProject, id=project_id)
+  # nft_image = ProjectNftImage.objects.get(project_obj=user_project_obj)
+
+  # if request.method == "POST":
+  #   print(request.POST)
+  #   nft_image_file = request.FILES.getlist('nft_image')
+  #   if len(nft_image_file) > 0:  # update nft-image for project
+  #     user_project_obj.title = request.POST['project_title']
+  #     user_project_obj.description = request.POST['project_description']
+  #     user_project_obj.project_website = request.POST['project_website']
+  #     user_project_obj.github_webite = request.POST['project_github_website']
+  #     user_project_obj.discord_website = request.POST['project_discord_website']
+  #     user_project_obj.save()
+      
+  #     # ProjectNftImage.objects.
+
+  # return render(request, 'create_project.html', {'user_project': user_project_obj, 'nft_image': nft_image})
 
 
 
