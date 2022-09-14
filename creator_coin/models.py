@@ -30,6 +30,9 @@ class Web3User(AbstractBaseUser):
   user_pk_address = models.CharField(max_length=100, unique=True)
   is_superuser = models.BooleanField(default=False)
   is_active = models.BooleanField(default=True)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
   password = None
 
   objects = UserManager()
@@ -44,7 +47,8 @@ class UserNonce(models.Model):
 
 
 class CreatorProfile(models.Model):
-  user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
+  # user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
+  user_obj = models.OneToOneField(Web3User, on_delete=models.CASCADE)
   creator_name = models.CharField(max_length=2000, blank=True, null=True)
   creator_email = models.CharField(max_length=255, blank=True, null=True)
   creator_personal_website = models.URLField(blank=True, null=True)
@@ -52,6 +56,7 @@ class CreatorProfile(models.Model):
   creator_discord_website = models.URLField(blank=True, null=True)
   creator_description = models.TextField(blank=True, null=True)
   # creator_contact_info = models.CharField(max_length=2000, blank=True, null=True)
+  updated_at = models.DateTimeField(auto_now=True)
 
 
 class UserToken(models.Model):
@@ -59,6 +64,8 @@ class UserToken(models.Model):
   token_name = models.CharField(max_length=2000, blank=True, null=True)
   token_symbol = models.CharField(max_length=100, blank=True, null=True)
   token_image = models.ImageField(upload_to='token_images/', verbose_name='Image')
+  created_at = models.DateTimeField(auto_now_add=True)
+  # updated_at = models.DateTimeField(auto_now=True) # TODO: can there be any update's here?
 
 
 # class UserProject(models.Model):

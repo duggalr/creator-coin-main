@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 from rest_framework.views import APIView 
 from rest_framework.response import Response
 from rest_framework import status
@@ -28,10 +31,8 @@ def home(request):
 
 # TODO: ensure correct authentication, etc.
 def user_token_page(request, profile_id):
-  return render(request, 'user_token_page.html')
-
-
-
+  creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
+  return render(request, 'user_token_page.html', {'creator_profile': creator_profile_obj})
 
 
 
@@ -59,24 +60,25 @@ def project_page(request, project_id):
 
 
 def explore_project(request):
-  all_projects = UserProject.objects.all()
-  # nft_images = ProjectNftImage.objects.all()
+  # all_projects = UserProject.objects.all()
+  # # nft_images = ProjectNftImage.objects.all()
 
-  rv = []
-  for obj in all_projects:
-    nft_image_obj = ProjectNftImage.objects.filter(project_obj=obj)
-    rv.append({
-      'nft_image_object': nft_image_obj
-    })
-    # rv.append({
-    #   'nft_project_image:' nft_image_obj,
-    #   'project_object': obj
-    # })
+  # rv = []
+  # for obj in all_projects:
+  #   nft_image_obj = ProjectNftImage.objects.filter(project_obj=obj)
+  #   rv.append({
+  #     'nft_image_object': nft_image_obj
+  #   })
+  #   # rv.append({
+  #   #   'nft_project_image:' nft_image_obj,
+  #   #   'project_object': obj
+  #   # })
 
   # TODO: 
     # add image and display project's; go from there
     # what happens when a user disconnects an account from CreatorCoin?
-  return render(request, 'explore_project.html', {'all_projects': all_projects})
+  # return render(request, 'explore_project.html', {'all_projects': all_projects})
+  return render(request, 'explore_project.html')
 
 
 
@@ -85,12 +87,8 @@ def explore_project(request):
   # add the user-obj and redirect to project-page 
     # from here, have option for user to mint-NFT for project  (<-- make profile last)
       # on profile, user should see all the project's he has created along with NFT's 
-
-
-
-
 @login_required(login_url='/')
-def create_project(request):
+def create_profile(request):
   user_obj = request.user
 
   if request.method == 'POST':
@@ -177,8 +175,8 @@ def edit_project(request, project_id):
 
 
 
-def nft_page_example(request):
-  return render(request, 'nft_page_example.html')
+# def nft_page_example(request):
+#   return render(request, 'nft_page_example.html')
 
 
 
@@ -201,8 +199,7 @@ def logout_view(request):
   return redirect('home')
 
 
-# TODO:
-  # create profile-page and go from there
+
 
 
 
@@ -282,15 +279,23 @@ class LoginView(APIView):
             if recovered_public_key == user_obj.user_pk_address:
               UserNonce.objects.filter(user=user_obj).delete()
               login(request, user_obj)
-              return Response({'success': True, 'message': 'user successfully logged in.'})
+              
+              creator_profile_obj = CreatorProfile.objects.get(user_obj=user_obj)
+              print('creator-profile:', creator_profile_obj)
+
+              return Response({
+                'success': True, 
+                'message': 'user successfully logged in.', 
+                'url': 'profile',
+                'profile_id': creator_profile_obj.id
+              })
 
           # TODO: 
             # add all error-messages for all cases** (ensure it works well on user-FE-side)
 
     else:
       pass
-
-
+ 
 
 
 
