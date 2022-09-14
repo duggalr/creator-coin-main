@@ -166,7 +166,8 @@ def create_profile(request):
 
 
 
-# TODO: add auth to verify user has access to 
+# TODO: 
+  # ensure only the user who created the profile has access to edit page
 def edit_user_profile(request, profile_id):
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
 
