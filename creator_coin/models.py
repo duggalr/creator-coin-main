@@ -32,6 +32,8 @@ class Web3User(AbstractBaseUser):
   is_active = models.BooleanField(default=True)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
+  
+  github_verified = models.BooleanField(default=False)
 
   password = None
 
@@ -66,6 +68,13 @@ class UserToken(models.Model):
   token_image = models.ImageField(upload_to='token_images/', verbose_name='Image')
   created_at = models.DateTimeField(auto_now_add=True)
   # updated_at = models.DateTimeField(auto_now=True) # TODO: can there be any update's here?
+
+
+class GithubProfile(models.Model):
+  user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
+  github_username = models.CharField(max_length=2000)
+  github_profile_url = models.URLField() 
+  github_avatar_url = models.URLField()
 
 
 # class UserProject(models.Model):

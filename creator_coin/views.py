@@ -9,8 +9,10 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from rest_framework.authtoken.models import Token
 
-from .models import UserNonce, Web3User, CreatorProfile
-from .serializers import Web3UserSerializer
+from .models import UserNonce, Web3User, CreatorProfile, GithubProfile
+# from .serializers import Web3UserSerializer
+
+from requests_oauthlib import OAuth2Session
 
 import web3
 from web3.auto import w3
@@ -43,10 +45,16 @@ def user_token_page(request, profile_id):
   # saved_user_objects = Web3User.objects.filter(current_user)
   # print(saved_user_objects)
 
+  github_profile = None
+  if creator_profile_obj.user_obj.github_verified is True:
+    # user_obj = Web3User.objects.get( user_pk_address=request.user )
+    github_profile = GithubProfile.objects.get(user_obj=creator_profile_obj.user_obj)
+
   return render(request, 'user_token_page.html', {
     'creator_profile': creator_profile_obj,
     'same_user': same_user,
-    'profile_id': profile_id
+    'profile_id': profile_id,
+    'github_profile': github_profile
   })
 
 
@@ -173,8 +181,15 @@ def edit_user_profile(request, profile_id):
 
   if request.method == "POST":
     print(request.POST)
-    creator_profile_obj.creator_name = request.POST['']
 
+    creator_profile_obj.creator_name = request.POST['person_name']
+    creator_profile_obj.creator_email = request.POST['personal_email']
+    creator_profile_obj.creator_personal_website = request.POST['project_website']
+    creator_profile_obj.creator_discord_website = request.POST['project_discord_website']
+    creator_profile_obj.creator_description = request.POST['project_description']
+    creator_profile_obj.save()
+
+    return redirect('user_token_page', profile_id=profile_id)
 
     # nft_image_file = request.FILES.getlist('nft_image')
     # if len(nft_image_file) > 0:  # update nft-image for project
@@ -335,6 +350,70 @@ class LoginView(APIView):
 
 
 
- 
+
+# TODO: ensure user-auth correct
+def github_login(request):
+  client_id = "Iv1.d676815c4afcc3a3"
+  # client_secret = "eec80b727823f4f667bedcd3b19a77ed7cd8d15d"
+  authorization_base_url = 'https://github.com/login/oauth/authorize'
+  # token_url = 'https://github.com/login/oauth/access_token'
+
+  github = OAuth2Session(client_id)
+  authorization_url, state = github.authorization_url(authorization_base_url)
+  # print(authorization_url, state)
+  request.session['oauth_state'] = state
+
+  return redirect(authorization_url)
+
+
+
+# TODO: ensure user-auth correct
+def github_callback(request):
+  client_id = "Iv1.d676815c4afcc3a3"
+  client_secret = "eec80b727823f4f667bedcd3b19a77ed7cd8d15d"
+  # authorization_base_url = 'https://github.com/login/oauth/authorize'
+  token_url = 'https://github.com/login/oauth/access_token'
+
+  github_request_url = request.build_absolute_uri()
+  github_request_url = github_request_url.replace('http', 'https')
+  github = OAuth2Session(client_id, state=request.session['oauth_state'])
+  token = github.fetch_token(
+    token_url, 
+    client_secret=client_secret, 
+    authorization_response=github_request_url
+  )
+  
+  user_data = github.get('https://api.github.com/user').json()
+  print(f'user-data: {user_data} / token: {token}')
+
+  # TODO: can someone request this url without a valid/active user obj?
+  web3_user = Web3User.objects.get(user_pk_address=request.user)
+  web3_user.github_verified = True
+  web3_user.save()
+
+  if len(GithubProfile.objects.filter(user_obj=web3_user)) > 0:
+    GithubProfile.objects.filter(user_obj=web3_user).delete()
+  
+  gp = GithubProfile.objects.create(
+    user_obj=web3_user,
+    github_username=user_data['login'],
+    github_profile_url=user_data['html_url'],
+    github_avatar_url=user_data['avatar_url']
+  )
+  gp.save()
+
+  return redirect('user_token_page', profile_id=web3_user.id)
+
+
+
+# TODO: protect-view with login/auth
+def launch_token_form(request):
+  return render(request, 'launch_token_form.html')
+
+  
+
+
+
+
 
  

@@ -11,6 +11,8 @@ urlpatterns = [
   path('profile/<int:profile_id>', views.user_token_page, name='user_token_page'),
   
   path('explore', views.explore_project, name='explore_project'),
+
+  path('launch_token', views.launch_token_form, name='launch_token_form'),
  
   path('create-profile', views.create_profile, name='create_profile'),
   path('edit-user-profile/<int:profile_id>', views.edit_user_profile, name='edit_user_profile'),
@@ -22,9 +24,17 @@ urlpatterns = [
 
   path('generate_nonce', views.UserNonceView.as_view(), name='user_nounce_view'),
   path('login', views.LoginView.as_view(), name='user_login_view'),
-  
+
+
+  path('github_login', views.github_login, name='github_login'),
+  path('github_callback', views.github_callback, name='github_callback'),
+
 ]
 
 
+
+# TODO: 
+  # bake the texture and get this to work 
+    # need to get exported model ready/complete so can start backend
 
 

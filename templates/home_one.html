@@ -11,10 +11,10 @@
     
     <div class="row">
 
-      <div class="col-7">
+      <div class="col-7" id="home-left-column">
 
         <!-- TODO: every word in this and the about-page needs to be good. Ensure (erc-20)-text on the same line -->
-        <p class="home-header">
+        <p class="home-header" >
           A place for <span class="word-changer">Engineers</span> to mint an ERC-20 token of themselves...
         </p>
   
@@ -70,17 +70,29 @@
 
       <div class="col-5" id="home-right-column">
         
-        <h4 style="font-weight: bolder; ">
+
+        <!-- TODO: adjust the UI to new (along with text); go from there to add all all functionality/UI** -->
+        <model-viewer 
+        src="{% static '3d_model/new_three.glb' %}"  
+        ar ar-modes="webxr scene-viewer quick-look" 
+        camera-controls
+        shadow-intensity="1"
+        auto-rotate
+        rotation-per-second="550%"
+        style="width: 400px; height: 400px;" 
+        ></model-viewer>
+
+        <!-- <h4 style="font-weight: bolder; ">
           Featured Token:
-        </h4>
+        </h4> -->
         
-        <a href="{% url 'user_token_page' profile_id=1 %}">
+        <!-- <a href="{% url 'user_token_page' profile_id=1 %}">
           <img id="home_page_featured_image" src="{% static 'images/coin_one.png' %}" class="rounded" width="400" height="400">
-        </a>
+        </a> -->
          
-        <div style="padding-top: 10px;">
+        <!-- <div style="padding-top: 10px;">
           <h5 style="font-weight: 400;">Price: $50 | Total Supply: 5000 | Time Left: 19 days</h5>
-        </div>
+        </div> -->
 
       </div>
 
@@ -163,6 +175,21 @@
 
 {% endblock %}  
 
+
+ 
+
+<!-- TODO: Prioritize and completing all backend functionality URGENTLY** -->
+  <!-- 
+    What is preventing us for going live:
+    -
+    
+  -->
+  <!-- change texture-bake to 4K (run in background in evening) -->
+
+
+   
+
+ 
 
 
 

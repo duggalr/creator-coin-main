@@ -6,7 +6,7 @@
 
   {% include 'navbar.html' %}
 
-
+ 
   <div class="main-body">
 
     <div class="animate__animated animate__fadeIn  container">
@@ -22,14 +22,20 @@
 
           <div class="project-header">
 
-            {% if same_user is True %}
+            {% if creator_profile.creator_name is not None %}
               <h2 class="project-title">
-                Add a name/username?
+                {{ creator_profile.creator_name }}
               </h2>
             {% else %}
-              <h2 class="project-title">
-                No Name
-              </h2>
+              {% if same_user is True %}
+                <h2 class="project-title">
+                  Add a name/username?
+                </h2>
+              {% else %}
+                <h2 class="project-title">
+                  No Name
+                </h2>
+              {% endif %}
             {% endif %}
             
             
@@ -50,41 +56,94 @@
                 <!-- <button type="button" id="project-fund-button" class="btn btn-outline-secondary btn-lg rounded-pill">
                   Edit Profile
                 </button> -->
-                
-                <button type="button" class="btn btn-outline-info rounded-pill">Launch Token</button>
+                <button type="button" class="btn btn-outline-info rounded-pill">Launch Your Token</button>
+
               {% else %}
+
                 <span class="badge rounded-pill text-bg-info" style="font-size: 14px;">
                   No active token sale at the moment
                 </span>
               
               {% endif %}
-
               
-              <!-- &nbsp;
-              <a href='#'>Edit Profile</a>
-              <a href="#">Launch Token</a> -->
+
+              {% if github_profile is None %}
+                <a href="{% url 'github_login' %}" class="btn btn-secondary">
+                  <i class="fa fa-github fa-fw"></i>
+                  <span>Add your Github</span>
+                </a>
+              {% endif %}
 
 
-              <!-- <a href='#' class="btn btn-outline-info rounded-pill" role="button">
-                Edit Page
-              </a> -->
-              
             </div>
-
 
           </div>
 
 
+
           <div class="project-subheading-information">
             
-            {% if same_user is True %}
 
-              <!-- <span >
-                <i class="bi bi-github"></i> 
-                <a href="">
-                  add your github
+            {% if github_profile is not None %}
+                
+              <span>
+                <i class="bi bi-github"></i> <a href="{{ github_profile.github_profile_url }}">Github</a>
+                <!-- <i class="bi bi-check-circle" rel="tooltip" title="" id="blah"></i> -->
+                <i class="bi bi-check-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i>
+              </span>
+
+            {% endif %}
+
+
+            {% if creator_profile.creator_personal_website|length > 0 and creator_profile.creator_personal_website is not None %}
+
+              <span style="padding-left: 12px;">
+                <i class="bi bi-link"></i> <a href="{{ creator_profile.creator_personal_website }}">
+                  Personal Website
                 </a>
-              </span> -->
+              </span>
+
+            {% else %}
+
+              {% if same_user is True %}
+                
+                <span style="padding-left: 12px;">
+                  <i class="bi bi-link"></i> <a href="">
+                    add a personal website
+                  </a>
+                </span>
+
+              {% endif %}
+
+            {% endif %}
+
+
+            {% if creator_profile.creator_discord_website|length > 0 and creator_profile.creator_discord_website is not None %}
+
+              <span style="padding-left: 12px;">
+                <i class="bi bi-discord"></i> 
+                <a href="{{ creator_profile.creator_personal_website }}">
+                  Discord
+                </a>
+              </span> 
+
+            {% else %}
+
+              {% if same_user is True %}
+ 
+                <span style="padding-left: 12px;">
+                  <i class="bi bi-discord"></i> 
+                  <a href="">
+                    add a discord for your community
+                  </a>
+                </span> 
+
+              {% endif %}
+
+            {% endif %}
+
+
+            <!-- {% if same_user is True %}
 
               <span >
                 <i class="bi bi-link"></i> <a href="">
@@ -126,7 +185,7 @@
 
               {% endif %}
 
-            {% endif %}
+            {% endif %} -->
             
 
             <!-- <div id="project-progress-bar" class="progress">
@@ -138,18 +197,22 @@
           <div class="project-desc">  
 
             <p>
+
+              {% if creator_profile.creator_description is not None %}
+                {{ creator_profile.creator_description }}
               
-              {% if same_user is True %}
-                <b>Add a brief description about what project(s) you are currently working on.</b>
-                <br/>
-                You can always provide details in the project log.
               {% else %}
 
-                <b>The creator did not seem to create a description.</b>
+                {% if same_user is True %}
+                  <b>Add a brief description about what project(s) you are currently working on.</b>
+                  <br/>
+                  You can always provide details in the project log.
+                {% else %}
+                  <b>The creator did not seem to create a description.</b>
+                {% endif %}
 
               {% endif %}
-
-
+           
               <!-- Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
               Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
               get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
@@ -179,5 +242,6 @@
 
 
 {% endblock %}
+
 
 
