@@ -9,13 +9,14 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from rest_framework.authtoken.models import Token
 
-from .models import UserNonce, Web3User, CreatorProfile, GithubProfile
+from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft
 # from .serializers import Web3UserSerializer
 
 from requests_oauthlib import OAuth2Session
 
 import web3
 from web3.auto import w3
+import magic
 
 from . import utils
 
@@ -28,7 +29,16 @@ from . import utils
 
 
 def home(request):
+  return render(request, 'home_two.html')
+
+
+def home_two(request):
+  return render(request, 'home_three.html')
+
+
+def home_original(request):
   return render(request, 'home_one.html')
+
 
 
 # TODO: ensure correct authentication, etc.
@@ -56,6 +66,12 @@ def user_token_page(request, profile_id):
     'profile_id': profile_id,
     'github_profile': github_profile
   })
+
+
+
+
+def mint_new_nft_token():
+  pass
 
 
 
@@ -407,10 +423,47 @@ def github_callback(request):
 
 
 # TODO: protect-view with login/auth
-def launch_token_form(request):
+def launch_token_form(request): # TODO: ensure proper file-validation is done on server-side
+  
+  max_file_size = 100
+  accepted_content_types = [
+    'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
+    'image/svg+xml', 'image/webp', 'model/gltf-binary'
+  ]
+
+  if request.method == 'POST':
+    print(request.POST, request.FILES)
+    uploaded_file = request.FILES['nft_image_upload']
+    upload_file_mb_size = uploaded_file.size / 1024 / 1024
+
+    content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
+
+    if content_type in accepted_content_types and upload_file_mb_size <= max_file_size:
+      nft_name = request.POST['token_name']
+      nft_price = request.POST['token_price_field']
+      nft_total_supply = request.POST['nft_total_supply']
+
+
+      # user_nft_obj = UserNft.objects.create(
+      #   nft_name=nft_name,
+      #   nft_price=nft_price,
+      #   nft_total_supply=nft_total_supply,
+      #   nft_media_file=uploaded_file
+      # )
+      # user_nft_obj.save()
+      
+      # print(nft_name, nft_price, nft_total_supply)
+      
   return render(request, 'launch_token_form.html')
 
   
+
+def deploy_new_nft(request):
+  if request.method == "POST":
+    pass
+
+
+
 
 
 

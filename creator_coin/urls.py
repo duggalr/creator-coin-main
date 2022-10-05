@@ -6,6 +6,9 @@ from . import views
 
 urlpatterns = [
   path('', views.home, name='home'),
+  path('home_two', views.home_two, name='home_two'),
+  path('home_original', views.home_original, name='home_original'),
+
   path('project-page/<int:project_id>', views.project_page, name='project_page'),  # TODO: delete this and other stuff, related to 'project'
 
   path('profile/<int:profile_id>', views.user_token_page, name='user_token_page'),
@@ -28,6 +31,12 @@ urlpatterns = [
 
   path('github_login', views.github_login, name='github_login'),
   path('github_callback', views.github_callback, name='github_callback'),
+
+
+  path('deploy_new_nft', views.deploy_new_nft, name='deploy_new_nft'),
+  
+  path('mint_new_nft_token', views.mint_new_nft_token, name='mint_new_nft_token'),
+  
 
 ]
 

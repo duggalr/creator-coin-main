@@ -18,14 +18,15 @@
           
           <h3 id="explore-header">
             <!-- <i class="bi bi-pencil-fill" style="font-size: 20px;"></i> Create -->
-            Create your NFT <i class="bi bi-chevron-down" style="font-size: 20px;"></i>
+            &#127881; Create your NFT &#127881; 
+            <!-- <i class="bi bi-chevron-down" style="font-size: 20px;"></i> -->
           </h3>
           
-          <p id="explore-paragraph">            
+          <!-- <p id="explore-paragraph">
             <i>
               &#127881; Complete the form to launch your NFT! &#127881;
             </i>
-          </p>
+          </p> -->
 
         </div>
         
@@ -36,21 +37,37 @@
       <hr class="bg-danger border-1 border-top border-dark">
 
 
-      <div class="row" > 
+      <form id="project_form" method="post" enctype="multipart/form-data">{% csrf_token %}
 
-        <!-- <div class="col-4">
+        <div class="row" style="margin-left: 40px; padding-top: 10px;"> 
 
-          <input type="file" name="nft_image_upload" accept="image/*" style="display:none">
-          <label for='nft_image_upload' id="main_nft_image_upload">
-            <img id="nft_image_placeholder" src="{% static 'images/question-mark.png' %}" class="rounded float-start" width="280" height="330" style="border: 0.8px dashed black;">
-          </label>
+          <div class="col-4">
 
-        </div> -->
+            <h5>
+              <strong>
+                NFT Image Upload
+              </strong>
+              <span style="color: red;">*</span>
+            </h5>
+            
+            <div id="image_container"></div>
+
+            <input id="nft_image_upload" type="file" name="nft_image_upload" style="display:none" required />
+
+            <!-- <button id="upload_different_file_button" style="display: none;" onclick="document.getElementById('nft_image_upload').click()">Choose different file</button> -->
+
+            <label for='nft_image_upload' id="main_nft_image_upload">
+              <img id="nft_image_placeholder" src="{% static 'images/placeholder_image.webp' %}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5;" >
+            </label>
+            
+            <span style="color: grey;">Supported File Types: JPG, PNG, GIF, WEBP, SVG, GLB, GLTF. Max size: 100 MB</span>
+            <br/><br/>
+            <span style="color: red; display: none;" id="image_upload_error_message">invalid data... image or obj only</span>
+
+          </div>
 
 
-        <div class="col-8">
-
-          <form id="project_form" method="post" enctype="multipart/form-data">{% csrf_token %}
+          <div class="col-8" style="padding-left: 40px; padding-top: 10px;">
 
             <div class="form-group row mb-3">
 
@@ -58,34 +75,14 @@
                 <strong>
                   Name:
                 </strong>
+                <span style="color: red;">*</span>
               </label>
 
-              <div class="col-sm-7">
-                <input type="text" class="form-control" id="token_name" name="token_name" placeholder="your name + coin at the end?" value="{{ creator_profile.creator_name }}">
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="token_name" name="token_name" placeholder="your name + coin at the end?" value="{{ creator_profile.creator_name }}" required>
               </div>
 
             </div>
-
-
-            <!-- <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-              
-            </div> -->
-
-            <!-- <div class="form-group row mb-3">
-
-              <label for="token_name" class="col-sm-2 col-form-label">
-                <strong>
-                  Token Symbol:
-                </strong>
-              </label>
-
-              <div class="col-sm-4">
-                <input type="text" class="form-control" id="token_name" name="token_name" placeholder="3 special characters (max)" maxlength="3">
-              </div>
-
-            </div> -->
-
 
             <div class="form-group row mb-3">
 
@@ -93,9 +90,9 @@
                 <strong>
                   Fixed Price:
                 </strong>
+                <span style="color: red;">*</span>
               </label>
 
-              <!-- TODO: how many max letters for token? -->
               <div class="col-sm-4">
                 
                 <div class="input-group mb-3">
@@ -106,43 +103,31 @@
                     <strong>ETH</strong>
                   </span>
   
-                  <input id="token_price_field" type="text" class="form-control" placeholder="Amount (ie. 1.2)" aria-label="Amount" aria-describedby="basic-addon1" >
+                  <input id="token_price_field" name="token_price_field" type="text" class="form-control" placeholder="Amount (ie. 1.2)" aria-label="Amount" aria-describedby="basic-addon1" required>
                   
                 </div>
 
-                <div class="form-text" id="token_price_div" style="color: red;"></div>
+                <div class="form-text" id="token_price_div" style="color: gray;"></div>
 
               </div>
 
             </div>
 
-            
-            <!-- TODO: add price and jquery messaging like open-sea and go from there -->
-            <!-- <div class="form-group row mb-3"> -->
 
-              <!-- <label class="sr-only" for="exampleInputAmount">Amount (in Swiss Francs)</label>
-              <div class="col-sm-4">
-                <input type="number" min="0.00" max="10000.00" step="0.01"/>
-              </div> -->
-
-            <!-- </div> -->
-
-
- 
             <div class="form-group row mb-3">
 
               <label for="customRange2" class="col-sm-2 col-form-label">
                 <strong>
-                  Number of NFT's available for first sale:
-                </strong>                
+                  Number of NFT's available:
+                </strong>
+                <span style="color: red;">*</span>
               </label>
               
               <div class="col-sm-7">
-                <!-- <input type="range" value="24" min="1" max="100" oninput="this.nextElementSibling.value = this.value"> -->
-                <input type="range" class="form-range" value="100" min="1" max="5000" id="customRange2" oninput="this.nextElementSibling.value = this.value">
+                <input name="nft_total_supply" type="range" class="form-range" value="200" min="1" max="5000" id="nft_total_supply" oninput="this.nextElementSibling.value = this.value" required>
                 <output>
                   <strong>
-                    100
+                    200
                   </strong>
                 </output>
                 <div class="form-text">(Current Limit is 5000. More can be created later on.)</div>
@@ -155,22 +140,68 @@
 
             <input type="hidden" id="user_obj" name="user_obj" value="{{ user_object }}">
 
-            <!-- <button class="ui button" type="submit">Submit</button> -->
-            <button style="text-align: center;" type="submit" class="btn btn-outline-info">Submit</button>
+
+            <div class="form-group row mb-3">
+
+              <!-- <label for="customRange2" class="col-sm-2 col-form-label">
+                <strong>
+                  Number of NFT's available:
+                </strong>
+              </label> -->
+              
+              <div class="col-sm-7">
+                <button type="submit" class="btn btn-outline-info">Submit</button>
+              </div>
+              
+            </div>
 
 
-          </form>
+          </div>
+
 
         </div>
 
 
-      </div>
+
+
+        <!-- <div class="row">
+
+          <div class="col-8">
+            <button type="submit" class="btn btn-outline-info">Submit</button>
+          </div>
+  
+
+        </div> -->
+
+
+        <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-right: 52%;">
+          <button type="submit" class="btn btn-outline-info">Submit</button>
+        </div> -->
+
+
+        <!-- <div class="mx-auto" style="width: 200px;">
+          <button type="submit" class="btn btn-outline-info">Submit</button>
+        </div> -->
+        
+
+      </form>
 
 
     </div>
 
   </div>    
 
+
+
+
+<!-- 
+TODO: 
+  - validate file 
+    - server side validation & return error
+    - client-side; extension-validation is enough
+    - redirect to profile-page with NFT there
+
+-->
 
 
 
@@ -199,16 +230,105 @@
         console.log('usd-price:', usd_price, parseFloat(field_val))
 
         // $('#token_price_div').text( 'Approximately $' + Math.round(usd_price) + ' USD / Token' );
-        $('#token_price_div').text( 'Approximately $' + usd_price + ' USD / NFT' );
+        $('#token_price_div').text( '~$' + usd_price + ' USD / NFT' );
 
       } else {
 
         $('#token_price_div').text('please enter a valid price.');
 
       }
-      
 
     });
+
+
+
+
+
+  document.querySelector('#nft_image_upload').addEventListener('change', function(e) {
+    console.log('files:', this.files, this.files.length)
+    
+    $('#container_image_element').remove()
+    document.getElementById('image_upload_error_message').style.display = 'none';
+
+    var max_file_size = 100; 
+
+    if (this.files && this.files.length == 1){
+
+      // const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/webp'];
+      
+      const validExtTypes = ['png', 'jpg', 'gif', 'webp', 'obj', 'glb', 'gltf', 'svg'];
+
+      var userFile = this.files[0];
+      // var fileType = userFile["type"];
+      // console.log('file-type:', fileType);
+
+      var userFileSize = userFile.size / 1024 / 1024;
+      
+      // console.log('file-size:', userFile, userFile.size / 1024 / 1024 )
+
+      if (userFileSize <= max_file_size){
+
+        var fileName = userFile["name"];
+        var fileExt = fileName.split('.').pop()
+
+        if (!validExtTypes.includes(fileExt)){
+          document.getElementById('image_upload_error_message').style.display = '';
+        }
+
+        else {
+
+          // TODO: add model-viewer or image and go from there
+          const three_dim_object_file_types = ['glb', 'gltf', 'svg']
+
+          console.log('file-ext:', fileExt, 'file-name:', fileName);
+          if (three_dim_object_file_types.includes(fileExt)){
+
+            var parent_div = document.getElementById('image_container')
+            // var model_viewer = document.createElement('model-viewer');        
+            // model_viewer.src = URL.createObjectURL(userFile); // set src to blob url
+            var model_viewer_html = "<model-viewer id='container_image_element' src='" + URL.createObjectURL(userFile) + "' ar ar-modes='webxr scene-viewer quick-look' camera-controls shadow-intensity='1' auto-rotate rotation-per-second='550%' style='width: 300; height: 300px;'></model-viewer>"        
+            parent_div.innerHTML = model_viewer_html
+            // parent_div.appendChild(model_viewer)
+            // parent_div.appendChild(child_div)
+            // parent_div.appendChild(image_elem)
+
+            document.getElementById('main_nft_image_upload').style.display = 'none'
+            document.getElementById('nft_image_upload').style.display = ''
+            // document.getElementById('upload_different_file_button').style.display = ''
+
+          } else {
+
+            var image_elem = document.createElement('img')
+            image_elem.id = 'container_image_element'
+            image_elem.src = URL.createObjectURL(userFile); // set src to blob url
+            image_elem.style = 'border-radius: 5%; box-shadow: 5px 5px #F5F5F5; width: 100%'
+            var main_div = document.getElementById('image_container')
+            main_div.appendChild(image_elem)
+
+            document.getElementById('main_nft_image_upload').style.display = 'none'
+            document.getElementById('nft_image_upload').style.display = ''
+            // document.getElementById('upload_different_file_button').style.display = ''
+
+          }
+
+        }
+
+
+      } else {
+
+        document.getElementById('image_upload_error_message').style.display = '';
+
+      }
+
+
+
+
+    }
+    
+  });
+
+
+
 
   </script>
 
@@ -219,10 +339,36 @@
 
 
 
-0.000804000 ETH * 1
 
 
 
-  
+// parent_div.appendChild(child_div)
+// parent_div.appendChild(image_elem)
+
+//   if (!validImageTypes.includes(fileType)) {  // invalid file type code goes here.
+//     // alert('please enter a valid image file...')
+//     document.getElementById('image_upload_error_message').style.display = '';
+//   }
+
+//   var image_elem = document.createElement('img')
+//   image_elem.id = 'container_image_element'
+//   image_elem.src = URL.createObjectURL(userFile); // set src to blob url
+//   image_elem.style = 'border-radius: 5%; box-shadow: 5px 5px #F5F5F5; width: 100%'
+//   // parent_div.appendChild(child_div)
+//   // parent_div.appendChild(image_elem)
+
+//   var main_div = document.getElementById('image_container')
+//   main_div.appendChild(image_elem)
+
+//   document.getElementById('main_nft_image_upload').style.display = 'none'
+//   document.getElementById('nft_image_upload').style.display = ''
+
+// } else{
+//   e.preventDefault();
+//   document.getElementById('nft_image_upload').style.display = '';
+//   document.getElementById('image_upload_error_message').style.display = '';
+
+
+
 
 

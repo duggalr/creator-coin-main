@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+
+
+
+  <main>
+
+    <section class="divider py-5 ">
+
+      <div class="container-fluid">
+
+        <div class="row justify-content-center align-items-center">
+          
+          <div class="col-md-7 text-right pr-5">
+            <p class="home-header" >
+              A place for <span class="word-changer">Engineers</span> to mint a ERC-721 token of themselves...
+            </p>
+
+            <p class="home-description"> 
+              CreatorCoin serves as a medium to help individual's fund their personal 
+              side projects or research. 
+              <ul class="home-description">
+                <li>A Creator can launch a NFT for themselves, to help fund their ongoing project(s).</li>
+                <li>Supporters can buy the NFT, and benefit through NFT ownership.</li>
+                <li><a class="home-manifesto" href="">Watch video to see how it works.</a></li>
+    
+              </ul>  
+            </p>
+    
+          </div>
+
+          <div class="col-md-4">
+
+            <model-viewer 
+            src="{% static '3d_model/new_three.glb' %}"  
+            ar ar-modes="webxr scene-viewer quick-look" 
+            camera-controls
+            shadow-intensity="1"
+            auto-rotate
+            rotation-per-second="550%"
+            style="width: 400px; height: 400px;" 
+            ></model-viewer>
+                
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    
+
+    <div class="container-fluid" style="padding-top: 1em;">
+    
+      <section id="about">
+
+        <div class="row">
+          
+          <div class="col-7">
+
+            <h2>
+              Demo:
+            </h2>
+
+            <div class="embed-responsive embed-responsive-21by9" >
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/UBEnxe-oZ20" width="600" height="350" allowfullscreen></iframe>
+            </div>
+  
+          </div>
+  
+          <div class="col-md-4">
+
+            <!-- <h2>
+              Here's how it works:
+            </h2> -->
+
+            <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="true">
+                  <i class="bi bi-activity"></i> Creators
+                </button>
+              </li>
+            
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="project-log-tab" data-bs-toggle="tab" data-bs-target="#project-log" type="button" role="tab" aria-controls="project-log" aria-selected="false">
+                  <i class="bi bi-card-text"></i> Supporters
+                </button>
+              </li>
+            
+            </ul> -->
+
+            <div class="list-group" id="list-tab" role="tablist">
+              <div class="clearfix split-items">
+                <a href="#" class="list-group-item left-side">Left Side</a>
+                <a href="#" class="list-group-item right-side ">Right Side</a>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-12" style="padding-top: 10px;">
+                <i class="bi bi-1-circle"></i>
+                The first thing that came to mind was that most startups have the same problems. No two have exactly the same problems, but it's surprising how much the problems remain the same, regardless of what they're making.
+              </div>
+              
+              <div class="col-12" style="padding-top: 10px;">
+                <i class="bi bi-2-circle"></i>
+                That's one advantage of funding large numbers of early stage companies rather than smaller numbers of later-stage ones. You get a lot of data. Not just because you're looking at more companies, but also because more goes wrong.
+              </div>              
+
+              <br/><br/>
+              
+              <div class="col-12" style="padding-top: 10px;">
+                <i class="bi bi-3-circle"></i>
+                Whether or not YC manages one day to be listed alongside those famous clusters, it won't be for lack of trying. We were very aware of this historical phenomenon and deliberately designed YC to be one. 
+              </div>
+
+            </div>
+
+                
+          </div>
+  
+        </div>
+
+
+      </section>
+    
+    </div>
+
+    
+  </main>
+
+
+  <br/>
+
+  <footer>
+
+    <footer class="bg-black text-white text-center text-lg-left">
+    
+      <!-- Copyright -->
+      <div
+        class="text-center p-3"
+        style="background-color: rgba(0, 0, 0, 0.2);"
+      >
+        © 2020 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/"
+          >MDBootstrap.com</a
+        >
+      </div>
+      <!-- Copyright -->
+
+    </footer>
+    
+  </footer>
+
+
+
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+
+
+  <main>
+
+    <section class="divider py-5 ">
+
+      <div class="container-fluid">
+
+        <div class="row justify-content-center align-items-center">
+          
+          <div class="col-md-7 text-right pr-5">
+            <p class="home-header" >
+              A place for <span class="word-changer">Engineers</span> to mint a ERC-721 token of themselves...
+            </p>
+
+            <p class="home-description"> 
+              CreatorCoin serves as a medium to help individual's fund their personal 
+              side projects or research. 
+              <!-- <s>The platform works as follows:</s> -->
+              <ul class="home-description">
+                <li>A Creator can launch a NFT for themselves, to help fund their ongoing project(s).</li>
+                <li>Supporters can buy the NFT, and benefit through NFT ownership.</li>
+                <li><a class="home-manifesto" href="">Watch video to see how it works.</a></li>
+    
+              </ul>
+    
+              <!-- A creator can launch a NFT for themselves, to help fund their ongoing project(s).
+              Supporters of the creator can buy the NFT, and benefit through NFT ownership. -->
+              <!-- Early backers benefit, through NFT ownership.
+              Creator's launch a token, of themselves, to help fund their ongoing project(s).
+              Early backers benefit, through token ownership.
+              <s>
+                It is intended to help support the 'research & exploratory' phases 
+                of projects, while at the same time, benefiting the early backers through token ownership. 
+              </s> -->
+              <!-- <a class="home-manifesto" href="">
+                View Video
+              </a> -->
+              
+            </p>
+    
+
+          </div>
+
+          <div class="col-md-4">
+
+            <model-viewer 
+            src="{% static '3d_model/new_three.glb' %}"  
+            ar ar-modes="webxr scene-viewer quick-look" 
+            camera-controls
+            shadow-intensity="1"
+            auto-rotate
+            rotation-per-second="550%"
+            style="width: 400px; height: 400px;" 
+            ></model-viewer>
+                
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    
+    <!-- <section class="divider py-5 ">
+
+      <div class="row justify-content-center align-items-center">
+
+        <div class="col-md-8"  align="center">
+
+          <i class="bi bi-arrow-down-short" style="font-size: 3em;"></i>
+
+        </div>        
+
+      </div>      
+ 
+    </section> -->
+
+    <!-- <section class="divider py-5 "></section> -->
+  <!-- <br/><br/><br/><br/><br/> -->
+    
+ 
+  <!-- TODO: proceed with this only -->
+    <div class="container-fluid" style="padding-top: 1em;">
+
+      <section id="about" class="text-center">
+
+        <h2 class="my-5">
+          Here's how it works:
+        </h2>
+               
+        <div class="row justify-content-center align-items-center">
+
+          <div class="col-md-12 text-right" style="color: black;">
+
+            <div class="embed-responsive embed-responsive-21by9" >
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/UBEnxe-oZ20" width="700" height="420" allowfullscreen></iframe>
+            </div>
+          
+            <!-- <h2>100% meat</h2>
+            <p>
+              Meat always comes to us from the same supplier. For years it has
+              not disappointed us with quality. It is usually fresh, sometimes
+              frozen. At least 3 times a week.
+            </p>  -->
+
+          </div>
+
+        </div>
+
+        <!-- <div class="row justify-content-center align-items-center">
+          <div class="col-md-4 text-right" style="color: black;">
+            <h2>100% spices</h2>
+            <p>
+              The quality of the beef served at Whiskey in the Jar is so high
+              that it is a shame to spoil its flavor with too many spices. We
+              are minimalist with respect to the issue. Just before putting on
+              the barbecue, the meat is lightly sprinkled with Himalayan salt
+              and black hammered pepper.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <img src="img/2.jpg" alt="meat" class="img-fluid" />
+          </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-4 text-right" style="color: black;">
+            <h2>100% taste</h2>
+            <p>
+              Good taste is what we are up to. We cook with passion,
+              courageously combine ingredients, creating original recipes of
+              dishes. We take wings when guests like our kitchen
+            </p>
+          </div>
+          <div class="col-md-4">
+            <img src="img/3.jpg" alt="meat" class="img-fluid" />
+          </div>
+        </div> -->
+
+      </section>
+
+
+    </div>
+
+    <!-- <section id="book">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white">
+          <a class="btn btn-outline-light btn-lg m-2" href="#!" role="button">Book a table</a>
+        </div>
+      </div>
+
+    </section> -->
+ 
+<!-- TODO: add text and go from there -->
+
+    <section id="team" class="text-center">
+
+      <div class="container-fluid">
+
+        <!-- <h2 class="my-5">Our team</h2> -->
+
+        <br/>
+
+        <div class="row justify-content-center">
+          
+          <div class="col-md-4">
+
+            <h3>
+              <i class="bi bi-1-circle"></i>
+            </h3>
+            <p>
+              I cook traditional recipes that are sacred in my family,
+              to share my love for food.
+            </p>
+            
+            <!-- <div class="card mb-3" style="max-width: 540px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="img/t1.jpg" alt="..." class="img-fluid" />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">Fig</h5>
+                    <p class="card-text">
+                      I cook traditional recipes that are sacred in my family,
+                      to share my love for food.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+          </div>
+
+
+          <div class="col-md-4">
+
+            <!-- <div class="card mb-3" style="max-width: 540px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="img/t2.jpg" alt="..." class="img-fluid" />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">Sumit</h5>
+                    <p class="card-text">
+                      I believe cooking is like creating art. You have to
+                      carefully craft each dish with love and time.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <h3>
+              <i class="bi bi-2-circle"></i>
+            </h3>
+            <p>
+              I believe cooking is like creating art. You have to
+              carefully craft each dish with love and time.
+            </p>
+
+          </div>
+
+
+          <div class="col-md-4">
+
+            <!-- <div class="card mb-3" style="max-width: 540px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="img/t3.jpg" alt="..." class="img-fluid" />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">Ahmed</h5>
+                    <p class="card-text">
+                      I strongly believe eating out should be a part of
+                      everyone's routine.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <h3>
+              <i class="bi bi-3-circle"></i>
+            </h3>
+            <p>
+              I strongly believe eating out should be a part of
+              everyone's routine.
+            </p>
+            
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  
+  <br/>
+
+  <footer>
+
+    <footer class="bg-black text-white text-center text-lg-left">
+    
+      <!-- Copyright -->
+      <div
+        class="text-center p-3"
+        style="background-color: rgba(0, 0, 0, 0.2);"
+      >
+        © 2020 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/"
+          >MDBootstrap.com</a
+        >
+      </div>
+      <!-- Copyright -->
+
+    </footer>
+    
+  </footer>
+
+
+
+{% endblock %}

@@ -57,3 +57,4 @@ scripts/
 db.sqlite3
 migrations/
 creator_coin_new/settings.py
+creator_coin/main_contracts

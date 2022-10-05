@@ -74,6 +74,11 @@
                 </a>
               {% endif %}
 
+              
+              <button onclick="deployToken()">Deploy Token</button>
+              <button onclick="getBalance()">Buy</button>
+              <button onclick="mintToken()">Mint Token</button>
+
 
             </div>
 
@@ -83,7 +88,6 @@
 
           <div class="project-subheading-information">
             
-
             {% if github_profile is not None %}
                 
               <span>
@@ -241,7 +245,33 @@
   </div>
 
 
+
+
+  <script>
+
+
+    // // TODO: 
+    //   // currently, it assumes user is logged-in <-- ensure this is true before continuning...
+    //   // also assumes user hasn't switched account <-- what happens if user switches account?
+    // const purchaseNFT = async () => {
+ 
+    //   // get current user's account balance 
+    //   var user_address = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1';
+    //   console.log('web3:', web3)
+    //   // const balance = await web3.eth.getBalance(user_address);
+    //   // console.log('balance:', balance);
+
+    // }
+
+    var contract_fp = "{% static 'json_files/CreatorNFTABI.json' %}";
+
+
+  </script>
+
+
 {% endblock %}
+
+
 
 
 
