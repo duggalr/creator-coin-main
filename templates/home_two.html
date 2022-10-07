@@ -7,7 +7,7 @@
   {% include 'navbar.html' %}
 
 
-  <main>
+  <main class="main-body">
 
     <section class="divider py-5 ">
 
@@ -15,21 +15,40 @@
 
         <div class="row justify-content-center align-items-center">
           
-          <div class="col-md-7 text-right pr-5">
+          <!-- <div class="col-md-7 text-right pr-5"> -->
+          <div class="col-7" style="margin-top: -4em;">
+
             <p class="home-header" >
               A place for <span class="word-changer">Engineers</span> to mint a ERC-721 token of themselves...
             </p>
 
             <p class="home-description"> 
               CreatorCoin serves as a medium to help individual's fund their personal 
-              side projects or research. 
-              <!-- <s>The platform works as follows:</s> -->
-              <ul class="home-description">
+              side projects or research, leveraging Ethereum. 
+              Creators can easily launch a NFT of themselves, on the platform.
+              Supporters can purchase the NFT, and benefit through NFT ownership.
+              <a href="">See the Demo!</a>
+
+              <div class="col-sm-9 col-sm-offset-9">
+
+                <div class="input-group input-group-lg" style="padding-top: 10px;">
+                  <input type="text" class="form-control" placeholder="email" aria-label="Recipient's username with two button addons" >
+                  <button class="btn btn-dark" type="button" style="color: white;">Join the beta!</button>
+                </div>
+
+              </div>
+              
+
+              <!-- <br/>
+              <a href="{% url 'explore_project' %}" class="btn btn-outline-secondary btn-lg" role="button">
+                View CreatorCoin's NFT 
+              </a> -->
+
+              <!-- <ul class="home-description">
                 <li>A Creator can launch a NFT for themselves, to help fund their ongoing project(s).</li>
                 <li>Supporters can buy the NFT, and benefit through NFT ownership.</li>
                 <li><a class="home-manifesto" href="">Watch video to see how it works.</a></li>
-    
-              </ul>
+              </ul> -->
     
               <!-- A creator can launch a NFT for themselves, to help fund their ongoing project(s).
               Supporters of the creator can buy the NFT, and benefit through NFT ownership. -->
@@ -43,13 +62,13 @@
               <!-- <a class="home-manifesto" href="">
                 View Video
               </a> -->
-              
+
             </p>
-    
 
           </div>
 
-          <div class="col-md-4">
+
+          <div class="col-4">
 
             <model-viewer 
             src="{% static '3d_model/new_three.glb' %}"  
@@ -60,7 +79,13 @@
             rotation-per-second="550%"
             style="width: 400px; height: 400px;" 
             ></model-viewer>
-                
+          
+            <a href="{% url 'explore_project' %}" >
+              See CreatorCoin's NFT
+            </a>
+            NFT Supply: 1000
+            NFT Price: 0.1 ETH
+
           </div>
 
         </div>
@@ -68,6 +93,9 @@
       </div>
 
     </section>
+
+    <!-- TODO: will we have a signup? -->
+      <!-- let user view CC's NFT; and on that page, allow anyone to buy; that would be 'signup' button for beta -->
 
 
     
@@ -89,13 +117,14 @@
   <!-- <br/><br/><br/><br/><br/> -->
     
  
-  <!-- TODO: proceed with this only -->
-    <div class="container-fluid" style="padding-top: 1em;">
+    <div class="container-fluid" >
 
       <section id="about" class="text-center">
 
-        <h2 class="my-5">
-          Here's how it works:
+        <h2 class="my-4">
+          <strong>
+            Here's how it works:
+          </strong>
         </h2>
                
         <div class="row justify-content-center align-items-center">
@@ -103,7 +132,7 @@
           <div class="col-md-12 text-right" style="color: black;">
 
             <div class="embed-responsive embed-responsive-21by9" >
-              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/UBEnxe-oZ20" width="700" height="420" allowfullscreen></iframe>
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/UBEnxe-oZ20" width="800" height="460" allowfullscreen></iframe>
             </div>
           
             <!-- <h2>100% meat</h2>
@@ -160,9 +189,11 @@
 
     </section> -->
  
-<!-- TODO: add text and go from there -->
-
-    <section id="team" class="text-center">
+ 
+<!-- TODO: Add the icons rather than numbers and go from there; ensure padding top/down and left/right is perfect -->
+    <!-- **proceed a bit faster from here; UI looks okay, and would look ideal with gradients so good to move on -->
+ 
+    <section id="team" class="text-center" style="padding-top: 1em;">
 
       <div class="container-fluid">
 
@@ -172,14 +203,14 @@
 
         <div class="row justify-content-center">
           
-          <div class="col-md-4">
+          <div class="col-md-4" style="padding-left: 50px;">
 
             <h3>
-              <i class="bi bi-1-circle"></i>
+              <i class="bi bi-1-square" ></i>
             </h3>
-            <p>
-              I cook traditional recipes that are sacred in my family,
-              to share my love for food.
+            <p style="font-size: 17px;">
+              <!-- A creator can signup on the platform and create a user profile.  -->
+              A creator signup's on the platform and create's a user profile.
             </p>
             
             <!-- <div class="card mb-3" style="max-width: 540px;">
@@ -202,7 +233,7 @@
           </div>
 
 
-          <div class="col-md-4">
+          <div class="col-md-4" style="padding-left: 50px;">
 
             <!-- <div class="card mb-3" style="max-width: 540px;">
               <div class="row g-0">
@@ -222,17 +253,17 @@
             </div> -->
 
             <h3>
-              <i class="bi bi-2-circle"></i>
+              <i class="bi bi-2-square"></i>
             </h3>
-            <p>
-              I believe cooking is like creating art. You have to
-              carefully craft each dish with love and time.
+            <p style="font-size: 17px;">
+              After <a href="https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps">verifying</a></a> their Github, 
+              the creator can launch their NFT. Everyday, several new NFT's will be shown on the homepage.            
             </p>
 
           </div>
 
 
-          <div class="col-md-4">
+          <div class="col-md-4" style="padding-left: 50px;">
 
             <!-- <div class="card mb-3" style="max-width: 540px;">
               <div class="row g-0">
@@ -252,11 +283,12 @@
             </div> -->
 
             <h3>
-              <i class="bi bi-3-circle"></i>
+              <!-- <i class="bi bi-3-circle"></i> -->
+              &#127881;
             </h3>
-            <p>
-              I strongly believe eating out should be a part of
-              everyone's routine.
+            <p style="font-size: 17px;">
+              Supporters can explore the NFT's on the platform 
+              and buy ones they like.
             </p>
             
           </div>
@@ -279,13 +311,14 @@
     
       <!-- Copyright -->
       <div
-        class="text-center p-3"
+        class="text-center p-0"
         style="background-color: rgba(0, 0, 0, 0.2);"
       >
-        © 2020 Copyright:
-        <a class="text-white" href="https://mdbootstrap.com/"
-          >MDBootstrap.com</a
-        >
+        © 2022
+        <!-- <a class="text-white" href="https://mdbootstrap.com/"
+          >Rahul Production</a
+        > -->
+        
       </div>
       <!-- Copyright -->
 
