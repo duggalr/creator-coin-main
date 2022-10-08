@@ -106,6 +106,9 @@ class GithubProfile(models.Model):
 #   nft_image = models.ImageField(upload_to='nft_images/', verbose_name='Image')
 
 
- 
+class UserBetaEmails(models.Model):
+  user_email = models.EmailField()
+
+
 
 

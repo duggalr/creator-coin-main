@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.urls import reverse
 
 from rest_framework.views import APIView 
@@ -9,7 +9,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from rest_framework.authtoken.models import Token
 
-from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft
+from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft, UserBetaEmails
 # from .serializers import Web3UserSerializer
 
 from requests_oauthlib import OAuth2Session
@@ -28,8 +28,35 @@ from . import utils
 
 
 
+
+
 def home(request):
+  if request.method == "POST":
+    user_email = request.POST['user_email']
+    # print('user-email:', user_email)
+
+    success = False
+    email_objects = UserBetaEmails.objects.filter(user_email=user_email)
+    if len(email_objects) == 0:
+      b = UserBetaEmails.objects.create(
+        user_email=user_email
+      )
+      b.save()
+      # return redirect('home')
+      success = True
+    # else: # TODO: return success message or email already registered message
+    #   pass 
+
+
+    return JsonResponse({'success': success})
+    # if 'user_email' in request.POST:
+    #   user_email = request.POST['user_email']
+    #   print('user-email:', user_email)
+
+      
+
   return render(request, 'home_two.html')
+
 
 
 def home_two(request):

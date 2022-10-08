@@ -5,14 +5,15 @@
 {% block content %}
 
   {% include 'navbar.html' %}
-  
+
+
   <main class="animate__animated animate__fadeIn main-body">
 
     <section class="divider py-5 ">
 
       <div class="container-fluid">
-
-        <div class="row justify-content-center align-items-center">
+        
+        <div class="row justify-content-center align-items-center">          
           
           <div class="col-7" style="margin-top: -4em;">
 
@@ -29,13 +30,36 @@
 
               <div class="col-sm-9 col-sm-offset-9">
 
-                <div class="input-group input-group-lg" style="padding-top: 10px;">
-                  <input type="text" class="form-control" placeholder="email" aria-label="Recipient's username with two button addons" >
-                  <button class="btn btn-dark" type="button" style="color: white;">Join the beta!</button>
+                <form method="post" id="join_beta_form">{% csrf_token %}
+                  <div class="input-group input-group-lg" style="padding-top: 10px;">
+                    <input id="user_email_value" type="text" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="Recipient's username with two button addons" aria-describedby="emailHelp" required>
+                    <button type="submit" id="join_beta_button" class="btn btn-dark" style="color: white;">Join as a Creator!</button>
+                  </div>
+
+                  <!-- <div class="mb-3 input-group">
+                    <input type="email" class="form-control" name="user_email" id="user_email" aria-describedby="emailHelp" placeholder="your trustworthy email...">
+                    <button class="btn btn-dark" type="submit" style="color: white;" name="join_beta_form">Join as a Creator!</button>
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  </div> -->
+                </form>
+
+                <div style="padding-top: 1em; font-weight: 900; font-size: 14px; color: #808080;">
+                  <!-- <i>
+                    Only 
+                    <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
+                    Supported.
+                  </i> -->
+                  <!-- <i>After entering your email, we will reach out. Currently in Beta!</i> -->
+                  After entering your email, we will reach out. Currently in Beta!
                 </div>
 
+
+                <!-- <p>
+                  you have successfully signed up! 
+                </p> -->
+  
+
               </div>
-              
 
               <!-- <br/>
               <a href="{% url 'explore_project' %}" class="btn btn-outline-secondary btn-lg" role="button">
@@ -78,12 +102,6 @@
             style="width: 400px; height: 400px;" 
             ></model-viewer>
           
-            <!-- <a href="{% url 'explore_project' %}" >
-              See CreatorCoin's NFT
-            </a>
-            NFT Supply: 1000
-            NFT Price: 0.1 ETH -->
-
             <div class="progress">
               <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                 25%
@@ -100,11 +118,6 @@
       </div>
 
     </section>
-
-    <!-- TODO: will we have a signup? -->
-      <!-- let user view CC's NFT; and on that page, allow anyone to buy; that would be 'signup' button for beta -->
-
-
     
     <!-- <section class="divider py-5 ">
 
@@ -121,8 +134,7 @@
     </section> -->
 
     <!-- <section class="divider py-5 "></section> -->
-  <!-- <br/><br/><br/><br/><br/> -->
-    
+    <!-- <br/><br/><br/><br/><br/> -->
  
     <div class="container-fluid" >
 
@@ -142,60 +154,15 @@
               <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/UBEnxe-oZ20" width="800" height="460" allowfullscreen></iframe>
             </div>
           
-            <!-- <h2>100% meat</h2>
-            <p>
-              Meat always comes to us from the same supplier. For years it has
-              not disappointed us with quality. It is usually fresh, sometimes
-              frozen. At least 3 times a week.
-            </p>  -->
-
           </div>
 
         </div>
-
-        <!-- <div class="row justify-content-center align-items-center">
-          <div class="col-md-4 text-right" style="color: black;">
-            <h2>100% spices</h2>
-            <p>
-              The quality of the beef served at Whiskey in the Jar is so high
-              that it is a shame to spoil its flavor with too many spices. We
-              are minimalist with respect to the issue. Just before putting on
-              the barbecue, the meat is lightly sprinkled with Himalayan salt
-              and black hammered pepper.
-            </p>
-          </div>
-          <div class="col-md-4">
-            <img src="img/2.jpg" alt="meat" class="img-fluid" />
-          </div>
-        </div>
-        <div class="row justify-content-center align-items-center">
-          <div class="col-md-4 text-right" style="color: black;">
-            <h2>100% taste</h2>
-            <p>
-              Good taste is what we are up to. We cook with passion,
-              courageously combine ingredients, creating original recipes of
-              dishes. We take wings when guests like our kitchen
-            </p>
-          </div>
-          <div class="col-md-4">
-            <img src="img/3.jpg" alt="meat" class="img-fluid" />
-          </div>
-        </div> -->
 
       </section>
 
 
     </div>
 
-    <!-- <section id="book">
-      <div class="d-flex justify-content-center align-items-center h-100">
-        <div class="text-white">
-          <a class="btn btn-outline-light btn-lg m-2" href="#!" role="button">Book a table</a>
-        </div>
-      </div>
-
-    </section> -->
- 
  
 <!-- TODO: Add the icons rather than numbers and go from there; ensure padding top/down and left/right is perfect -->
     <!-- **proceed a bit faster from here; UI looks okay, and would look ideal with gradients so good to move on -->
@@ -203,8 +170,6 @@
     <section id="team" class="text-center" style="padding-top: 1em;">
 
       <div class="container-fluid">
-
-        <!-- <h2 class="my-5">Our team</h2> -->
 
         <br/>
 
@@ -220,50 +185,16 @@
               A creator signup's on the platform and create's a user profile.
             </p>
             
-            <!-- <div class="card mb-3" style="max-width: 540px;">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="img/t1.jpg" alt="..." class="img-fluid" />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">Fig</h5>
-                    <p class="card-text">
-                      I cook traditional recipes that are sacred in my family,
-                      to share my love for food.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
           </div>
 
 
           <div class="col-md-4" style="padding-left: 50px;">
 
-            <!-- <div class="card mb-3" style="max-width: 540px;">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="img/t2.jpg" alt="..." class="img-fluid" />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">Sumit</h5>
-                    <p class="card-text">
-                      I believe cooking is like creating art. You have to
-                      carefully craft each dish with love and time.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
             <h3>
               <i class="bi bi-2-square"></i>
             </h3>
             <p style="font-size: 17px;">
-              After <a href="https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps">verifying</a></a> their Github, 
+              After <a href="https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps">verifying</a> their Github, 
               the creator can launch their NFT. Everyday, several new NFT's will be shown on the homepage.            
             </p>
 
@@ -271,23 +202,6 @@
 
 
           <div class="col-md-4" style="padding-left: 50px;">
-
-            <!-- <div class="card mb-3" style="max-width: 540px;">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="img/t3.jpg" alt="..." class="img-fluid" />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">Ahmed</h5>
-                    <p class="card-text">
-                      I strongly believe eating out should be a part of
-                      everyone's routine.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div> -->
 
             <h3>
               <!-- <i class="bi bi-3-circle"></i> -->
@@ -332,6 +246,47 @@
     </footer>
     
   </footer>
+
+
+
+
+
+
+<script>
+
+  var tok = '{{ csrf_token }}'
+  console.log('tok:', tok);
+
+  // TODO: finish this and go from there
+  $('#join_beta_form').submit(function(e){
+
+    e.preventDefault();
+
+    var user_email = $('#user_email_value').val();
+    $.ajax({
+      type: 'POST',
+      url: "",
+      data: {
+        'user_email': user_email,
+        csrfmiddlewaretoken: tok
+      },
+      success: function (response) {
+        console.log('res:', response);
+        
+        if (response['success'] === true){
+
+
+
+        }
+        
+
+      }
+    })
+
+  })
+
+
+</script>
 
 
 
