@@ -8,6 +8,8 @@ urlpatterns = [
   path('', views.home, name='home'),
   path('home_two', views.home_two, name='home_two'),
   path('home_original', views.home_original, name='home_original'),
+  path('manifesto', views.about_page, name='about_page'),
+
 
   path('project-page/<int:project_id>', views.project_page, name='project_page'),  # TODO: delete this and other stuff, related to 'project'
 

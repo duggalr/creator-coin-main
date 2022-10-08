@@ -40,6 +40,10 @@ def home_original(request):
   return render(request, 'home_one.html')
 
 
+def about_page(request):
+  return render(request, 'manifesto.html')
+
+
 
 # TODO: ensure correct authentication, etc.
 def user_token_page(request, profile_id):
