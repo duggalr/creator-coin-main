@@ -7,6 +7,72 @@
   {% include 'navbar.html' %}
 
 
+  <!-- User did not install metamask -->
+  <div class="modal" tabindex="-1" id="loginErrorOne">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Does Metamask exist &#10067;</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Metamask is not installed! Please install the metamask extension and try again! Only Metamask wallet supported. Thank you.</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- User has metamask but wallet is locked; prompt user to login to wallet and try again -->
+  <div class="modal" tabindex="-1" id="loginErrorTwo">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Login to your beloved wallet! &#10084;</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            It seems like your Metamask wallet is locked. Please login to your Metamask wallet and try again.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  
+  <div class="modal" tabindex="-1" id="loginErrorOne">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Does Metamask exist?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Metamask is not installed! Please install the metamask extension and try again! Thank you.</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
   <main class="animate__animated animate__fadeIn main-body">
 
     <section class="divider py-5 ">
@@ -35,22 +101,26 @@
                     <input id="user_email_value" type="text" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="Recipient's username with two button addons" aria-describedby="emailHelp" required>
                     <button type="submit" id="join_beta_button" class="btn btn-dark" style="color: white;">Join as a Creator!</button>
                   </div>
-
-                  <!-- <div class="mb-3 input-group">
-                    <input type="email" class="form-control" name="user_email" id="user_email" aria-describedby="emailHelp" placeholder="your trustworthy email...">
-                    <button class="btn btn-dark" type="submit" style="color: white;" name="join_beta_form">Join as a Creator!</button>
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                  </div> -->
                 </form>
 
-                <div style="padding-top: 1em; font-weight: 900; font-size: 14px; color: #808080;">
+                <div id="success_message" style="color: limegreen; display: none;">
+                  Thank you. We have got your email.
+                </div>
+                
+                <!-- TODO: change the email primary contact -->
+                <div id="duplicate_message" style="color: limegreen; display: none;">
+                  Your email is already registered. 
+                  If you haven't received an email from us, send an email to duggalr42@gmail.com 
+                </div>
+
+                <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
                   <!-- <i>
                     Only 
                     <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
                     Supported.
                   </i> -->
                   <!-- <i>After entering your email, we will reach out. Currently in Beta!</i> -->
-                  After entering your email, we will reach out. Currently in Beta!
+                  After entering your email, we will reach out. We will NEVER spam you.
                 </div>
 
 
@@ -254,8 +324,11 @@
 
 <script>
 
+  
+
+
   var tok = '{{ csrf_token }}'
-  console.log('tok:', tok);
+  // console.log('tok:', tok);
 
   // TODO: finish this and go from there
   $('#join_beta_form').submit(function(e){
@@ -275,16 +348,27 @@
         
         if (response['success'] === true){
 
+          // success_message
+          
+          $('#join_beta_form').hide();
+          $('#success_message').show();
 
+        } else if (response['duplicate'] === true){
+
+          $('#join_beta_form').hide();
+          $('#duplicate_message').show();
 
         }
-        
 
       }
+
     })
 
   })
 
+
+
+  
 
 </script>
 

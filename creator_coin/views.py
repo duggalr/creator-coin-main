@@ -14,6 +14,7 @@ from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft,
 
 from requests_oauthlib import OAuth2Session
 
+from eth_account.messages import encode_defunct
 import web3
 from web3.auto import w3
 import magic
@@ -27,15 +28,11 @@ from . import utils
   # add good logging for debugging later on...
 
 
-
-
-
 def home(request):
   if request.method == "POST":
     user_email = request.POST['user_email']
     # print('user-email:', user_email)
 
-    success = False
     email_objects = UserBetaEmails.objects.filter(user_email=user_email)
     if len(email_objects) == 0:
       b = UserBetaEmails.objects.create(
@@ -43,16 +40,10 @@ def home(request):
       )
       b.save()
       # return redirect('home')
-      success = True
-    # else: # TODO: return success message or email already registered message
-    #   pass 
+      return JsonResponse({'success': True})
 
-
-    return JsonResponse({'success': success})
-    # if 'user_email' in request.POST:
-    #   user_email = request.POST['user_email']
-    #   print('user-email:', user_email)
-
+    else: # TODO: return success message or email already registered message
+      return JsonResponse({'duplicate': True})
       
 
   return render(request, 'home_two.html')
@@ -368,13 +359,21 @@ class LoginView(APIView):
         if UserNonce.objects.filter(user=user_obj).exists():
             saved_nonce_obj = UserNonce.objects.get(user=user_obj)
             saved_nonce = saved_nonce_obj.nonce
-            # hash_msg = web3.Web3.sha3(text=saved_nonce)
-            hash_msg = web3.Web3.sha3(text=saved_nonce)
-            # pk2 = w3.eth.account.recover_message(hash_msg, signature=user_nonce_signature)
-            recovered_public_key = w3.eth.account.recoverHash(hash_msg, signature=user_nonce_signature)
-            # print(f"recovered-has: {pk2} / user-sig: {user_nonce_signature} / user-pk-add: {user_pk_address}")
 
-            if recovered_public_key == user_obj.user_pk_address:
+            message = "\nBy signing this message, you will sign the randomly generated nonce. This will help complete your registration to the platform. \n\nNonce: " + saved_nonce + " \n\nWallet Address: " + user_pk_address
+            encode_msg = encode_defunct(text=message)
+
+            recovered_signed_address = (w3.eth.account.recover_message(encode_msg, signature=user_nonce_signature))
+
+            # print(f"original-addr: {user_pk_address} / signed-addr: {signed_address}")
+
+            # # hash_msg = web3.Web3.sha3(text=saved_nonce)
+            # hash_msg = web3.Web3.sha3(text=message)
+            # # pk2 = w3.eth.account.recover_message(hash_msg, signature=user_nonce_signature)
+            # recovered_public_key = w3.eth.account.recoverHash(hash_msg, signature=user_nonce_signature) 
+            # print(f"recovered-has: {recovered_public_key} / user-sig: {user_nonce_signature} / user-pk-add: {user_pk_address}")
+
+            if recovered_signed_address == user_obj.user_pk_address:
               UserNonce.objects.filter(user=user_obj).delete()
               login(request, user_obj)
               
@@ -390,7 +389,6 @@ class LoginView(APIView):
 
           # TODO: 
             # add all error-messages for all cases** (ensure it works well on user-FE-side)
-
     else:
       pass
  
