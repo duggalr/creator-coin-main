@@ -92,6 +92,7 @@
               side projects or research, leveraging Ethereum. 
               Creators can easily launch a NFT of themselves, on the platform.
               Supporters can purchase the NFT, and benefit through NFT ownership.
+              <b>Currently in private beta.</b>
               <a href="#about">See the Demo!</a>
 
               <div class="col-sm-9 col-sm-offset-9">
@@ -366,6 +367,53 @@
 
   })
 
+
+  var currentCount = 0;
+
+  var changeWordList = [
+    "Engineers", "Researchers", "Hackers", "Builders"
+  ]
+
+  function _changeText() {
+    let el = document.getElementsByClassName('word-changer')[0];
+    // console.log(el)
+
+    let totalListCount = changeWordList.length;
+    // console.log(totalListCount, currentCount)
+
+    currentCount += 1
+
+    if (currentCount <= totalListCount-1){
+      let word = changeWordList[currentCount]
+      el.innerHTML = word
+      
+    } else {
+      currentCount = 0
+      let word = changeWordList[currentCount]
+      el.innerHTML = word
+
+    }    
+
+    // //iterate over all .word-changer elements
+    // for (let i = 0; i < els.length; i++) {
+    //   let el = els[i];
+    //   // read out elements data-counter and data-max attributes
+    //   let counter = parseInt(el.dataset.counter);
+    //   let max =  parseInt(el.dataset.max);
+      
+    //   if(counter < max ) {
+    //     // Update counter and replace word based on the "hashmap"
+    //       counter++;
+    //     el.innerHTML = changeList[el.textContent]; // This is where the words get swapped
+    //     el.dataset.counter = counter;
+    //   }
+
+    // }
+
+  }
+
+
+  setInterval(_changeText, 2000);
 
 
   

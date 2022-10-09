@@ -63,7 +63,6 @@ def about_page(request):
 
 
 
-# TODO: ensure correct authentication, etc.
 def user_token_page(request, profile_id):
   # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
@@ -347,7 +346,7 @@ class LoginView(APIView):
   """
   def post(self, request):
     data = request.data
-    print('data:', data)
+    # print('data:', data)
 
     if 'nonce_signature' in data and 'pk_address' in data:
       user_pk_address = data["pk_address"]
@@ -363,7 +362,7 @@ class LoginView(APIView):
             message = "\nBy signing this message, you will sign the randomly generated nonce. This will help complete your registration to the platform. \n\nNonce: " + saved_nonce + " \n\nWallet Address: " + user_pk_address
             encode_msg = encode_defunct(text=message)
 
-            recovered_signed_address = (w3.eth.account.recover_message(encode_msg, signature=user_nonce_signature))
+            recovered_signed_address = ( w3.eth.account.recover_message(encode_msg, signature=user_nonce_signature) )
 
             # print(f"original-addr: {user_pk_address} / signed-addr: {signed_address}")
 
@@ -387,8 +386,6 @@ class LoginView(APIView):
                 'profile_id': creator_profile_obj.id
               })
 
-          # TODO: 
-            # add all error-messages for all cases** (ensure it works well on user-FE-side)
     else:
       pass
  
