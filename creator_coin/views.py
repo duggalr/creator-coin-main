@@ -81,7 +81,7 @@ def user_token_page(request, profile_id):
     # user_obj = Web3User.objects.get( user_pk_address=request.user )
     github_profile = GithubProfile.objects.get(user_obj=creator_profile_obj.user_obj)
 
-  return render(request, 'user_token_page.html', {
+  return render(request, 'user_token_page_two.html', {
     'creator_profile': creator_profile_obj,
     'same_user': same_user,
     'profile_id': profile_id,
