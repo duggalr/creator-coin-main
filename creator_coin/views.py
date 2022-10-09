@@ -67,6 +67,8 @@ def user_token_page(request, profile_id):
   # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
 
+  user_nft_objects = UserNft.objects.filter(creator_obj=creator_profile_obj)
+
   same_user = False
   if request.user.is_anonymous is False:
     current_user_pk_address = request.user.user_pk_address
@@ -85,7 +87,9 @@ def user_token_page(request, profile_id):
     'creator_profile': creator_profile_obj,
     'same_user': same_user,
     'profile_id': profile_id,
-    'github_profile': github_profile
+    'github_profile': github_profile,
+    'user_nft_obj': user_nft_objects
+
   })
 
 

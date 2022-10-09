@@ -70,17 +70,13 @@ class CreatorProfile(models.Model):
 #   # updated_at = models.DateTimeField(auto_now=True) # TODO: can there be any update's here?
 
 class UserNft(models.Model):
-  # user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE) # TODO: add
+  creator_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
   nft_name = models.CharField(max_length=2000, blank=True, null=True)
   nft_price = models.FloatField()
   nft_total_supply = models.IntegerField()
   nft_media_file = models.FileField()
   nft_created_date = models.DateTimeField(auto_now_add=True)
 
-
-  # TODO:
-    # save NFT (ensure validation is correct),then, compile/deploy eth-contract on main testnet
-      # purchase, interact, display transaction history and go from there
   
 class GithubProfile(models.Model):
   user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)

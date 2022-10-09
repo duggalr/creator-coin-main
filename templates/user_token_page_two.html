@@ -14,7 +14,58 @@
       <div class="row"> 
 
         <div class="col-4">
-          <img src="{% static 'images/coin_one.png' %}" class="rounded" width="330" height="330">
+          <!-- <img src="{% static 'images/coin_one.png' %}" class="rounded" width="330" height="330"> -->
+          
+          {% if user_nft_obj.length > 0 %}
+
+            <model-viewer 
+              src="{% static user_nft_obj[0].nft_media_file %}"  
+              ar ar-modes="webxr scene-viewer quick-look" 
+              camera-controls
+              shadow-intensity="1"
+              auto-rotate
+              rotation-per-second="550%"
+              style="width: 300px; height: 300px;" 
+              ></model-viewer>
+
+          {% else %}
+
+            <model-viewer 
+            src="{% static '3d_model/placeholder_new.glb' %}"  
+            ar ar-modes="webxr scene-viewer quick-look" 
+            camera-controls
+            shadow-intensity="1"
+            auto-rotate
+            rotation-per-second="550%"
+            style="width: 300px; height: 300px;" 
+            ></model-viewer>
+
+          {% endif %}
+    
+
+          {% if user_nft_obj.length > 0 %}
+
+            <!-- TODO: add progress-bar, etc. -->
+            
+            <!-- <span class="badge rounded-pill text-bg-secondary" style="font-size: 14px;">
+              Active N
+            </span> -->
+
+          {% else %}
+
+            {% if same_user is True %}
+              <span class="badge rounded-pill text-bg-secondary" style="font-size: 14px;">
+                No active NFT sale. Maybe you should launch one?
+              </span>
+            {% else %}
+              <span class="badge rounded-pill text-bg-secondary" style="font-size: 14px;">
+                No active NFT sale at the moment.
+              </span>
+            {% endif %}
+
+          {% endif %}
+
+
         </div>
         
 
@@ -46,16 +97,18 @@
               <a href='#'>Edit Page</a>
             </div> -->
 
+            <div style="margin-left: auto;">
+              <!-- TODO: add edit button -->
+            </div>
 
-            <div style="margin-left: auto;">  
+
+            <!-- <div style="margin-left: auto;">  
               
               {% if same_user is True %}
+
                 <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-secondary rounded-pill" role="button">
                   Edit Profile
                 </a>
-                <!-- <button type="button" id="project-fund-button" class="btn btn-outline-secondary btn-lg rounded-pill">
-                  Edit Profile
-                </button> -->
                 <button type="button" class="btn btn-outline-info rounded-pill">Launch Your Token</button>
 
               {% else %}
@@ -78,9 +131,9 @@
               <button onclick="deployToken()">Deploy Token</button>
               <button onclick="getBalance()">Buy</button>
               <button onclick="mintToken()">Mint Token</button>
+            
+            </div> -->
 
-
-            </div>
 
           </div>
 
