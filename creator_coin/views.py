@@ -479,11 +479,15 @@ def launch_token_form(request): # TODO: ensure proper file-validation is done on
       nft_name = request.POST['token_name']
       nft_price = request.POST['token_price_field']
       nft_total_supply = request.POST['nft_total_supply']
+
       try:
         nft_float_price = float(nft_price)
+
         if nft_float_price <= 0:
           form_validation_error = True
         else:
+
+          print('uploaded-file:', uploaded_file)
           user_nft_obj = UserNft.objects.create(
             nft_name=nft_name,
             nft_price=nft_price,
@@ -492,11 +496,16 @@ def launch_token_form(request): # TODO: ensure proper file-validation is done on
           )
           user_nft_obj.save()
 
+          user_object = request.POST['user_obj']
+          profile_id = CreatorProfile.objects.get(user_obj=user_object).id
+
+          return redirect('user_token_page', profile_id=profile_id)
+
       except:
         form_validation_error = True
       
     else:
-      form_validation_error = True  # TODO: display django error-message for form 
+      form_validation_error = True 
     
     if form_validation_error:
       return render(request, 'launch_token_form.html', {
@@ -506,7 +515,15 @@ def launch_token_form(request): # TODO: ensure proper file-validation is done on
         'nft_total_supply': request.POST['nft_total_supply']
       })
 
-  return render(request, 'launch_token_form.html')
+  # TODO:
+    # ensure only one user_pk: (delete all and recreate)
+      # ensure above wokrs 
+      # redirect to profile-page and go from there
+  current_user_pk_address = request.user.user_pk_address
+  user_object = Web3User.objects.get(user_pk_address=current_user_pk_address)
+  return render(request, 'launch_token_form.html', {
+    'user_object': user_object
+  })
 
   
 

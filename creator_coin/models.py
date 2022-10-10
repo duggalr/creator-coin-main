@@ -67,7 +67,7 @@ class CreatorProfile(models.Model):
 #   token_symbol = models.CharField(max_length=100, blank=True, null=True)
 #   token_image = models.ImageField(upload_to='token_images/', verbose_name='Image')
 #   created_at = models.DateTimeField(auto_now_add=True)
-#   # updated_at = models.DateTimeField(auto_now=True) # TODO: can there be any update's here?
+#   # updated_at = models.DateTimeField(auto_now=True)
 
 class UserNft(models.Model):
   creator_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
@@ -76,6 +76,7 @@ class UserNft(models.Model):
   nft_total_supply = models.IntegerField()
   nft_media_file = models.FileField()
   nft_created_date = models.DateTimeField(auto_now_add=True)
+  nft_updated_at = models.DateTimeField(auto_now=True)
 
   
 class GithubProfile(models.Model):
