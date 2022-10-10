@@ -459,7 +459,7 @@ def github_callback(request):
 
 
 @login_required(login_url='/')
-def launch_token_form(request): # TODO: ensure proper file-validation is done on server-side
+def create_token_form(request): # TODO: ensure proper file-validation is done on server-side
   
   max_file_size = 100
   accepted_content_types = [
@@ -533,6 +533,17 @@ def deploy_new_nft(request):
 
 
 
+@login_required(login_url='/')
+def verify_user_profile(request):
+  user_pk_address = request.user
+  user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+  creator_profile = get_object_or_404(CreatorProfile, user_obj=user_obj)
+  
+  user_github_profile = GithubProfile.objects.filter(user_obj=user_obj)
+  if len(user_github_profile) > 0 and creator_profile.creator_name is not None and creator_profile.creator_name != '':
+    return JsonResponse({'success': True})
+  
+  return JsonResponse({'success': False})
 
 
 

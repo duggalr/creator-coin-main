@@ -58,8 +58,8 @@
                 No active NFT sale. Maybe you should launch one?
               </span>
             {% else %}
-              <span class="badge rounded-pill text-bg-secondary" style="font-size: 14px;">
-                No active NFT sale at the moment.
+              <span class="badge rounded-pill text-bg-secondary" style="font-size: 15px;">
+                User does not have a NFT for sale at the moment.
               </span>
             {% endif %}
 
@@ -77,9 +77,12 @@
               <h2 class="project-title">
                 {{ creator_profile.creator_name }}
               </h2>
-              <span>
-                | {{ creator_profile.creator_email }}
-              </span>
+              
+              {% if creator_profile.creator_email is not None and creator_profile.creator_email != '' %}
+                <span>
+                  | {{ creator_profile.creator_email }}
+                </span>
+              {% endif %}
 
             {% else %}
               {% if same_user is True %}
@@ -113,15 +116,19 @@
                   Edit Profile
                 </a>
 
-                <a href="{% url 'launch_token_form' %}" class="btn btn-outline-info rounded-pill" role="button">
-                  Launch Your NFT
-                </a>
+                <!-- <a href="{% url 'create_token_form' %}" class="btn btn-outline-info rounded-pill" role="button">
+                  Create your NFT
+                </a> -->
+
+                <button id="user_create_nft" class="btn btn-outline-info rounded-pill">
+                  Create your NFT
+                </button>
 
               {% else %}
 
-                <span class="badge rounded-pill text-bg-info" style="font-size: 14px;">
+                <!-- <span class="badge rounded-pill text-bg-info" style="font-size: 14px;">
                   No active token sale at the moment
-                </span>
+                </span> -->
               
               {% endif %}
 
@@ -161,12 +168,23 @@
                 </a>
               </span> -->
 
-              <span>
-                <i class="bi bi-github"></i> 
-                <a href="{% url 'github_login' %}">
-                  add your github
-                </a>
-              </span>
+              {% if same_user is True %}
+
+                <span>
+                  <i class="bi bi-github"></i> 
+                  <a href="{% url 'github_login' %}">
+                    add your github
+                  </a>
+                </span>
+              
+              {% else %}
+
+                <span>
+                  <i class="bi bi-github"></i>
+                  User did not link his github.
+                </span>
+
+              {% endif %}
 
 
             {% endif %}
@@ -316,6 +334,74 @@
     </div>
 
   </div>
+
+
+
+  <!-- Nft Verification Modal: when user doesn't complete all their profile information -->
+  <div class="modal" tabindex="-1" id="nftVerificationModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"> &#129488; Couple steps remaining </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Before creating a NFT, you must <b>complete</b> the following 2 steps:
+            <ul>
+              <li>Add your name by going to <a href="{% url 'edit_user_profile' profile_id=profile_id %}">edit profile.</a> Also, add a nice description while your at it!</li>
+              <li>Add your github.</li> 
+            </ul>
+            &#127882; <b>I know your excited</b>, and based on historical data, the above steps should only take you ~30 seconds to complete. 
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+
+    const nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
+
+    $( "#user_create_nft" ).click(function() {
+      
+      // Verify profile details
+      $.ajax({
+        url: "{% url 'verify_user_profile' %}",
+        success: function (response) {
+          console.log('res:', response);
+          
+          if (response['success'] === false){
+
+            nftVerificationModal.show();
+
+          } else if (response['success'] === true){
+
+
+            // TODO: 
+              // ensure the URL redirect is in-place for blackslash (caused me confusion and not ideal)
+              // go from there...
+            window.location.href = 'http://127.0.0.1:7500/create-nft'
+
+          }
+
+        }
+
+      })
+
+      
+    });
+
+
+  </script>
+
 
 
 {% endblock %}  

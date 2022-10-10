@@ -7,7 +7,7 @@
   {% include 'navbar.html' %}
 
 
-  <!-- User did not install metamask -->
+  <!-- Modal Error for: User did not install metamask -->
   <div class="modal" tabindex="-1" id="loginErrorOne">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -179,7 +179,7 @@
               </div>
             </div>
             <p id="home_page_nft">
-              <a href="{% url 'user_token_page' profile_id=1 %}">Visit NFT Page</a> | Price: 0.1 <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: 978 left
+              <a href="{% url 'user_token_page' profile_id=2 %}">Visit NFT Page</a> | Price: 0.1 <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: 978 left
             </p>
 
           </div>
