@@ -458,7 +458,7 @@ def github_callback(request):
 
 
 
-# TODO: protect-view with login/auth
+@login_required(login_url='/')
 def launch_token_form(request): # TODO: ensure proper file-validation is done on server-side
   
   max_file_size = 100
@@ -474,22 +474,38 @@ def launch_token_form(request): # TODO: ensure proper file-validation is done on
 
     content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
 
+    form_validation_error = False
     if content_type in accepted_content_types and upload_file_mb_size <= max_file_size:
       nft_name = request.POST['token_name']
       nft_price = request.POST['token_price_field']
       nft_total_supply = request.POST['nft_total_supply']
+      try:
+        nft_float_price = float(nft_price)
+        if nft_float_price <= 0:
+          form_validation_error = True
+        else:
+          user_nft_obj = UserNft.objects.create(
+            nft_name=nft_name,
+            nft_price=nft_price,
+            nft_total_supply=nft_total_supply,
+            nft_media_file=uploaded_file
+          )
+          user_nft_obj.save()
 
+      except:
+        form_validation_error = True
+      
+    else:
+      form_validation_error = True  # TODO: display django error-message for form 
+    
+    if form_validation_error:
+      return render(request, 'launch_token_form.html', {
+        'form_validation_error': form_validation_error,
+        'nft_name': request.POST['token_name'],
+        'nft_price': request.POST['token_price_field'],
+        'nft_total_supply': request.POST['nft_total_supply']
+      })
 
-      # user_nft_obj = UserNft.objects.create(
-      #   nft_name=nft_name,
-      #   nft_price=nft_price,
-      #   nft_total_supply=nft_total_supply,
-      #   nft_media_file=uploaded_file
-      # )
-      # user_nft_obj.save()
-      
-      # print(nft_name, nft_price, nft_total_supply)
-      
   return render(request, 'launch_token_form.html')
 
   

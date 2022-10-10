@@ -109,10 +109,13 @@
               
               {% if same_user is True %}
 
-                <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-secondary rounded-pill" role="button">
+                <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-dark rounded-pill" role="button">
                   Edit Profile
                 </a>
-                <button type="button" class="btn btn-outline-info rounded-pill">Launch Your NFT</button>
+
+                <a href="{% url 'launch_token_form' %}" class="btn btn-outline-info rounded-pill" role="button">
+                  Launch Your NFT
+                </a>
 
               {% else %}
 
@@ -147,7 +150,7 @@
               <span>
                 <i class="bi bi-github"></i> <a href="{{ github_profile.github_profile_url }}">Github</a>
                 <!-- <i class="bi bi-check-circle" rel="tooltip" title="" id="blah"></i> -->
-                <i class="bi bi-check-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i>
+                <i style="color: skyblue;" class="bi bi-check-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i>
               </span>
 
             {% else %}

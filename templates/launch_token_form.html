@@ -18,15 +18,15 @@
           
           <h3 id="explore-header">
             <!-- <i class="bi bi-pencil-fill" style="font-size: 20px;"></i> Create -->
-            &#127881; Create your NFT &#127881; 
+            &#127881; Create your NFT
             <!-- <i class="bi bi-chevron-down" style="font-size: 20px;"></i> -->
           </h3>
           
-          <!-- <p id="explore-paragraph">
+          <p id="explore-paragraph">
             <i>
-              &#127881; Complete the form to launch your NFT! &#127881;
+              exciting, isn't it?
             </i>
-          </p> -->
+          </p>
 
         </div>
         
@@ -56,9 +56,11 @@
 
             <!-- <button id="upload_different_file_button" style="display: none;" onclick="document.getElementById('nft_image_upload').click()">Choose different file</button> -->
 
+
             <label for='nft_image_upload' id="main_nft_image_upload">
               <img id="nft_image_placeholder" src="{% static 'images/placeholder_image.webp' %}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5;" >
             </label>
+
             
             <span style="color: grey;">Supported File Types: JPG, PNG, GIF, WEBP, SVG, GLB, GLTF. Max size: 100 MB</span>
             <br/><br/>
@@ -79,7 +81,7 @@
               </label>
 
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="token_name" name="token_name" placeholder="your name + coin at the end?" value="{{ creator_profile.creator_name }}" required>
+                <input type="text" class="form-control" id="token_name" name="token_name" placeholder="nft name" value="{{ nft_name }}" required>
               </div>
 
             </div>
@@ -103,8 +105,9 @@
                     <strong>ETH</strong>
                   </span>
   
-                  <input id="token_price_field" name="token_price_field" type="text" class="form-control" placeholder="Amount (ie. 1.2)" aria-label="Amount" aria-describedby="basic-addon1" required>
-                  
+                  <input id="token_price_field" name="token_price_field" type="text" class="form-control" placeholder="Amount (ie. 1.2)" aria-label="Amount" aria-describedby="basic-addon1" value="{{ nft_price }}" required>
+                
+                  <!-- <div class="form-text" id="token_price_div" style="color: gray;"></div> -->
                 </div>
 
                 <div class="form-text" id="token_price_div" style="color: gray;"></div>
@@ -118,7 +121,7 @@
 
               <label for="customRange2" class="col-sm-2 col-form-label">
                 <strong>
-                  Number of NFT's available:
+                  Total NFT Supply:
                 </strong>
                 <span style="color: red;">*</span>
               </label>
@@ -130,7 +133,7 @@
                     200
                   </strong>
                 </output>
-                <div class="form-text">(Current Limit is 5000. More can be created later on.)</div>
+                <div class="form-text">(Initial Platform Limit of 5000. More can be minted later on.)</div>
               </div>
               
             </div>
@@ -150,18 +153,23 @@
               </label> -->
               
               <div class="col-sm-7">
-                <button type="submit" class="btn btn-outline-info">Submit</button>
+                <button type="submit" class="btn btn-outline-primary">Create your NFT</button>
               </div>
               
             </div>
 
 
+            {% if form_validation_error %}
+
+              <div style="color: red; font-size: 16px;">
+                Your form submission was not valid. Please correct and try again.
+              </div>
+
+            {% endif %}
+
           </div>
 
-
         </div>
-
-
 
 
         <!-- <div class="row">
@@ -191,17 +199,6 @@
 
   </div>    
 
-
-
-
-<!-- 
-TODO: 
-  - validate file 
-    - server side validation & return error
-    - client-side; extension-validation is enough
-    - redirect to profile-page with NFT there
-
--->
 
 
 
@@ -321,9 +318,17 @@ TODO:
       }
 
 
+    } else{
+      
+      // document.getElementById('nft_image_upload').style.display = ''
+      // $('#container_image_element').remove()
+      document.getElementById('main_nft_image_upload').style.display = ''
+      document.getElementById('nft_image_upload').style.display = 'none';
 
 
     }
+
+
     
   });
 
