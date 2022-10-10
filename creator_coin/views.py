@@ -19,12 +19,25 @@ import web3
 from web3.auto import w3
 import magic
 
+import os
+from dotenv import load_dotenv
+
+
+# Get the path to the directory this file is in
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+print('BASE-DIR:', os.path.join(BASE_DIR, '.env'))
+
+# load_dotenv(os.path.join(BASE_DIR, '.env'))
+load_dotenv("/Users/rahul/Documents/main/personal_learning_projects/creator_coin_new/creator_coin_new/.env")
+
 from . import utils
 
 
 
 
 # TODO: 
+  # fix hardcoded env path above
   # add good logging for debugging later on...
 
 
@@ -397,27 +410,21 @@ class LoginView(APIView):
 
 
 
-# TODO: ensure user-auth correct
+@login_required(login_url='/')
 def github_login(request):
-  client_id = "Iv1.d676815c4afcc3a3"
-  # client_secret = "eec80b727823f4f667bedcd3b19a77ed7cd8d15d"
+  client_id = os.getenv("github_client_id")
   authorization_base_url = 'https://github.com/login/oauth/authorize'
-  # token_url = 'https://github.com/login/oauth/access_token'
-
   github = OAuth2Session(client_id)
   authorization_url, state = github.authorization_url(authorization_base_url)
-  # print(authorization_url, state)
   request.session['oauth_state'] = state
-
   return redirect(authorization_url)
 
 
 
-# TODO: ensure user-auth correct
+@login_required(login_url='/')
 def github_callback(request):
-  client_id = "Iv1.d676815c4afcc3a3"
-  client_secret = "eec80b727823f4f667bedcd3b19a77ed7cd8d15d"
-  # authorization_base_url = 'https://github.com/login/oauth/authorize'
+  client_id = os.getenv("github_client_id")
+  client_secret = os.getenv("github_client_secret")
   token_url = 'https://github.com/login/oauth/access_token'
 
   github_request_url = request.build_absolute_uri()
@@ -430,9 +437,8 @@ def github_callback(request):
   )
   
   user_data = github.get('https://api.github.com/user').json()
-  print(f'user-data: {user_data} / token: {token}')
+  # print(f'user-data: {user_data} / token: {token}')
 
-  # TODO: can someone request this url without a valid/active user obj?
   web3_user = Web3User.objects.get(user_pk_address=request.user)
   web3_user.github_verified = True
   web3_user.save()

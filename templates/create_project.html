@@ -18,12 +18,13 @@
           
           <h3 id="explore-header">
             <!-- <i class="bi bi-pencil-fill" style="font-size: 20px;"></i> Create -->
-            Create Your Project <i class="bi bi-chevron-down" style="font-size: 20px;"></i>
+            <!-- Edit your Profile <i class="bi bi-chevron-down" style="font-size: 20px;"></i> -->
+            <i class="bi bi-pencil" style="font-size: 20px;"></i> Edit your Profile...
           </h3>
           
           <p id="explore-paragraph">            
             <i>
-              You will first publish your project page. Minting an NFT will be the next step.
+              Let the world know about the amazing projects you are working on!
             </i>
           </p>
 
@@ -97,10 +98,10 @@
 
               <div class="col-sm-7">
 
-                {% if creator_profile.creator_personal_website is not None %}
-                  <input type="text" class="form-control" id="personal_email" name="personal_email" placeholder="really for your backers, not for us..." value="{{ creator_profile.creator_email }}">
+                {% if creator_profile.creator_email is not None %}
+                  <input type="email" class="form-control" id="personal_email" name="personal_email" placeholder="really for your backers, not for us..." value="{{ creator_profile.creator_email }}">
                 {% else %}
-                  <input type="text" class="form-control" id="personal_email" name="personal_email" placeholder="really for your backers, not for us...">
+                  <input type="email" class="form-control" id="personal_email" name="personal_email" placeholder="really for your backers, not for us...">
                 {% endif %}
                 
               </div>
@@ -155,22 +156,24 @@
 
               <div class="col-sm-8">
                 {% if creator_profile.creator_description is not None %}
-                  <textarea class="form-control" placeholder="TODO: basic markdown supported?" id="project_description" name="project_description" rows="6">{{ creator_profile.creator_description }}</textarea>
+                  <textarea class="form-control" placeholder="No markdown...maybe you can help add it?" id="project_description" name="project_description" rows="6">{{ creator_profile.creator_description }}</textarea>
                 {% else %}
-                  <textarea class="form-control" placeholder="TODO: basic markdown supported?" id="project_description" name="project_description" rows="6"></textarea>
+                  <textarea class="form-control" placeholder="No markdown...maybe you can help add it?" id="project_description" name="project_description" rows="6"></textarea>
                 {% endif %}
                 
               </div>
               
             </div>
 
-
-            <br/>
-
             <input type="hidden" id="user_obj" name="user_obj" value="{{ user_object }}">
+            
+            <!-- <br/> -->
 
             <!-- <button class="ui button" type="submit">Submit</button> -->
-            <button style="text-align: center;" type="submit" class="btn btn-outline-info">Submit</button>
+            <div style="text-align: center; margin-right: 6em;">
+              <button type="submit" class="btn btn-outline-info">Submit</button>
+            </div>
+            
 
           </form>
 

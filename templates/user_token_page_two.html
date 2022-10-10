@@ -19,7 +19,7 @@
           {% if user_nft_obj.length > 0 %}
 
             <model-viewer 
-              src="{% static user_nft_obj[0].nft_media_file %}"  
+              src="{% static 'user_nft_obj[0]' %}"  
               ar ar-modes="webxr scene-viewer quick-look" 
               camera-controls
               shadow-intensity="1"
@@ -73,10 +73,14 @@
 
           <div class="project-header">
 
-            {% if creator_profile.creator_name is not None %}
+            {% if creator_profile.creator_name is not None and creator_profile.creator_name != '' %}
               <h2 class="project-title">
                 {{ creator_profile.creator_name }}
               </h2>
+              <span>
+                | {{ creator_profile.creator_email }}
+              </span>
+
             {% else %}
               {% if same_user is True %}
                 <h2 class="project-title">
@@ -97,19 +101,18 @@
               <a href='#'>Edit Page</a>
             </div> -->
 
-            <div style="margin-left: auto;">
-              <!-- TODO: add edit button -->
-            </div>
+            <!-- <div style="margin-left: auto;">
+            </div> -->
 
 
-            <!-- <div style="margin-left: auto;">  
+            <div style="margin-left: auto;">  
               
               {% if same_user is True %}
 
                 <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-secondary rounded-pill" role="button">
                   Edit Profile
                 </a>
-                <button type="button" class="btn btn-outline-info rounded-pill">Launch Your Token</button>
+                <button type="button" class="btn btn-outline-info rounded-pill">Launch Your NFT</button>
 
               {% else %}
 
@@ -118,21 +121,19 @@
                 </span>
               
               {% endif %}
-              
 
-              {% if github_profile is None %}
+              <!-- {% if github_profile is None %}
                 <a href="{% url 'github_login' %}" class="btn btn-secondary">
                   <i class="fa fa-github fa-fw"></i>
                   <span>Add your Github</span>
                 </a>
-              {% endif %}
-
+              {% endif %} -->
               
-              <button onclick="deployToken()">Deploy Token</button>
+              <!-- <button onclick="deployToken()">Deploy Token</button>
               <button onclick="getBalance()">Buy</button>
-              <button onclick="mintToken()">Mint Token</button>
+              <button onclick="mintToken()">Mint Token</button> -->
             
-            </div> -->
+            </div>
 
 
           </div>
@@ -148,6 +149,22 @@
                 <!-- <i class="bi bi-check-circle" rel="tooltip" title="" id="blah"></i> -->
                 <i class="bi bi-check-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i>
               </span>
+
+            {% else %}
+
+              <!-- <span style="padding-left: 12px;">
+                <i class="bi bi-link"></i> <a href="">
+                  add a personal website
+                </a>
+              </span> -->
+
+              <span>
+                <i class="bi bi-github"></i> 
+                <a href="{% url 'github_login' %}">
+                  add your github
+                </a>
+              </span>
+
 
             {% endif %}
 
@@ -179,7 +196,7 @@
 
               <span style="padding-left: 12px;">
                 <i class="bi bi-discord"></i> 
-                <a href="{{ creator_profile.creator_personal_website }}">
+                <a href="{{ creator_profile.creator_discord_website }}">
                   Discord
                 </a>
               </span> 
@@ -191,7 +208,7 @@
                 <span style="padding-left: 12px;">
                   <i class="bi bi-discord"></i> 
                   <a href="">
-                    add a discord for your community
+                    add a discord
                   </a>
                 </span> 
 
@@ -255,15 +272,15 @@
 
             <p>
 
-              {% if creator_profile.creator_description is not None %}
+              {% if creator_profile.creator_description is not None and creator_profile.creator_description != '' %}
                 {{ creator_profile.creator_description }}
-              
               {% else %}
 
                 {% if same_user is True %}
-                  <b>Add a brief description about what project(s) you are currently working on.</b>
+                  <b>Add a brief description for the project(s) you are currently working on.</b>
+                  You can always provide further details and updates in the project log.
                   <br/>
-                  You can always provide details in the project log.
+                  
                 {% else %}
                   <b>The creator did not seem to create a description.</b>
                 {% endif %}
