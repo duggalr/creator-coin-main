@@ -22,6 +22,10 @@
           <!-- src="media/{{ user_nft_obj.nft_media_file }}" -->
           <!-- src="{% static '3d_model/main_four_uF8SX1R.glb' %}"   -->
 
+            <h4 style="padding-top: 10px;">
+              {{ user_nft_obj.nft_name }}
+            </h4>  
+
             <model-viewer 
               src="{{ user_nft_obj.nft_media_file.url }}"
               ar ar-modes="webxr scene-viewer quick-look" 
@@ -34,11 +38,9 @@
 
             <!-- <br/> -->
  
-            <!-- TODO: proceed from here -->
             <!-- <button class="btn btn-outline-success rounded-pill" style="font-size: 17px;">
               Launch your NFT
             </button> -->
- 
 
             <div style="padding-top: 10px;">
 
@@ -277,7 +279,7 @@
                 <a href="{{ creator_profile.creator_discord_website }}">
                   Discord
                 </a>
-              </span> 
+              </span>  
 
             {% else %}
 

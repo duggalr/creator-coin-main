@@ -547,7 +547,7 @@ def update_token_form(request):
     # where will we add the NFT name and created/updated-date/launch-date? 
       # **do project-log, desc-markdown, share before NFT launch & etherscan
     # once launched, NFT-metadata can not be updated
-    # can the total-supply change?
+      # can the total-supply change?
     # **if user has already created NFT, at the moment, they cannot create and launch another one <-- prevent this**
       # think about other, similar cases to this
  
@@ -579,10 +579,14 @@ def update_token_form(request):
       form_validation_error = True
 
 
-    nft_image_upload = request.POST['nft_image_upload']
+    # print('POST-method:', request.POST, request.FILES)
     uploaded_file = None
     upload_file_mb_size = 0
-    if nft_image_upload != '' and form_validation_error is False:
+    if 'nft_image_upload' in request.FILES:
+    # nft_image_upload = request.POST['nft_image_upload']
+    # uploaded_file = None
+    # upload_file_mb_size = 0
+    # if nft_image_upload != '' and form_validation_error is False:
       uploaded_file = request.FILES['nft_image_upload']   
       
       content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
@@ -597,13 +601,15 @@ def update_token_form(request):
 
 
     if form_validation_error is False:
-      user_nft_object = get_object_or_404(UserNft, id=user_nft.id)
+      user_nft_object = get_object_or_404(UserNft, id=user_nft)
       user_nft_object.nft_name = nft_name
       user_nft_object.nft_price = nft_price
       user_nft_object.nft_total_supply = nft_total_supply
-      if nft_image_upload != '':
+      if uploaded_file is not None:
         user_nft_object.nft_media_file = uploaded_file
       user_nft_object.save()
+
+      return redirect('user_token_page', profile_id=user_object.id)
 
     else:
       return render(request, 'launch_token_form.html', {
@@ -614,8 +620,6 @@ def update_token_form(request):
       })
 
 
-      
-
     # # TODO: add the media image?
     # user_nft_object = get_object_or_404(UserNft, id=user_nft.id)
     # user_nft_object.nft_name = nft_name
@@ -624,17 +628,10 @@ def update_token_form(request):
     # user_nft_object.save()
 
 
-
-
-
-
   three_dim_file_types = [
     '.glb', '.gltf', '.obj', '.ply', '.fbx' '.svg'
   ]
-
   fn, file_extension = os.path.splitext(user_nft_obj.nft_media_file.url)
-
-
 
   user_three_dim_upload = False
   if file_extension in three_dim_file_types:

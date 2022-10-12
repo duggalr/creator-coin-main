@@ -167,7 +167,7 @@
                 <input name="nft_total_supply" type="range" class="form-range" value="{{ nft_total_supply }}" min="1" max="5000" id="nft_total_supply" oninput="this.nextElementSibling.value = this.value" required>
                 <output>
                   <strong>
-                    200
+                    {{ nft_total_supply }}
                   </strong>
                 </output>
                 <div class="form-text">(Initial Platform Limit of 5000. More can be minted later on.)</div>
@@ -190,7 +190,7 @@
               </label> -->
 
               <input type="hidden" id="user_obj" name="user_obj" value="{{ user_object }}">
-              <input type="hidden" id="user_nft_obj" name="user_nft_obj" value="{{ user_nft_obj }}">
+              <input type="hidden" id="user_nft_obj" name="user_nft_obj" value="{{ user_nft_obj.id }}">
               
               
               {% if user_editing is True %}
@@ -332,7 +332,7 @@
             var parent_div = document.getElementById('image_container')
             // var model_viewer = document.createElement('model-viewer');        
             // model_viewer.src = URL.createObjectURL(userFile); // set src to blob url
-            var model_viewer_html = "<model-viewer id='container_image_element' src='" + URL.createObjectURL(userFile) + "' ar ar-modes='webxr scene-viewer quick-look' camera-controls shadow-intensity='1' auto-rotate rotation-per-second='550%' style='width: 300; height: 300px;'></model-viewer>"        
+            var model_viewer_html = "<model-viewer id='container_image_element' src='" + URL.createObjectURL(userFile) + "' ar ar-modes='webxr scene-viewer quick-look' camera-controls camera-orbit='250deg 85deg 125%' shadow-intensity='1' auto-rotate rotation-per-second='550%' style='width: 300; height: 300px;'></model-viewer>"        
             parent_div.innerHTML = model_viewer_html
             // parent_div.appendChild(model_viewer)
             // parent_div.appendChild(child_div)
