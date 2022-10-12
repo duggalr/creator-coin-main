@@ -24,10 +24,10 @@ from dotenv import load_dotenv
 
 
 # Get the path to the directory this file is in
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# print('BASE-DIR:', os.path.join(BASE_DIR, '.env'))
 
-print('BASE-DIR:', os.path.join(BASE_DIR, '.env'))
-
+# TODO: remove the hardcoded fp
 # load_dotenv(os.path.join(BASE_DIR, '.env'))
 load_dotenv("/Users/rahul/Documents/main/personal_learning_projects/creator_coin_new/creator_coin_new/.env")
 
@@ -80,7 +80,11 @@ def user_token_page(request, profile_id):
   # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
 
+  user_nft_obj = None
   user_nft_objects = UserNft.objects.filter(creator_obj=creator_profile_obj)
+  print('user-nft-objs:', user_nft_objects)
+  if len(user_nft_objects) == 1:
+    user_nft_obj = user_nft_objects[0]
 
   same_user = False
   if request.user.is_anonymous is False:
@@ -101,8 +105,7 @@ def user_token_page(request, profile_id):
     'same_user': same_user,
     'profile_id': profile_id,
     'github_profile': github_profile,
-    'user_nft_obj': user_nft_objects
-
+    'user_nft_obj': user_nft_obj
   })
 
 
@@ -461,6 +464,10 @@ def github_callback(request):
 @login_required(login_url='/')
 def create_token_form(request): # TODO: ensure proper file-validation is done on server-side
   
+  current_user_pk_address = request.user.user_pk_address
+  user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  #  Web3User.objects.get(user_pk_address=current_user_pk_address)
+
   max_file_size = 100
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
@@ -469,6 +476,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
 
   if request.method == 'POST':
     print(request.POST, request.FILES)
+
     uploaded_file = request.FILES['nft_image_upload']
     upload_file_mb_size = uploaded_file.size / 1024 / 1024
 
@@ -482,28 +490,33 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
 
       try:
         nft_float_price = float(nft_price)
-
-        if nft_float_price <= 0:
+        if nft_float_price <= 0 :
           form_validation_error = True
-        else:
-
-          print('uploaded-file:', uploaded_file)
-          user_nft_obj = UserNft.objects.create(
-            nft_name=nft_name,
-            nft_price=nft_price,
-            nft_total_supply=nft_total_supply,
-            nft_media_file=uploaded_file
-          )
-          user_nft_obj.save()
-
-          user_object = request.POST['user_obj']
-          profile_id = CreatorProfile.objects.get(user_obj=user_object).id
-
-          return redirect('user_token_page', profile_id=profile_id)
-
       except:
         form_validation_error = True
       
+      if form_validation_error is False:
+        # print('uploaded-file:', uploaded_file)
+         
+        user_pk_address = request.POST['user_obj']
+        # print('user-obj:', user_pk_address)
+        
+        # TODO: can this user_pk_address return not found or invalid value?
+        user_object = Web3User.objects.get(user_pk_address=user_pk_address)
+        user_profile_obj = CreatorProfile.objects.get(user_obj=user_object)
+
+        # TODO: go from here...
+        user_nft_obj = UserNft.objects.create(
+          creator_obj=user_profile_obj,
+          nft_name=nft_name,
+          nft_price=nft_price,
+          nft_total_supply=nft_total_supply,
+          nft_media_file=uploaded_file
+        )
+        user_nft_obj.save()
+        
+        return redirect('user_token_page', profile_id=user_profile_obj.id)
+
     else:
       form_validation_error = True 
     
@@ -515,22 +528,133 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
         'nft_total_supply': request.POST['nft_total_supply']
       })
 
-  # TODO:
-    # ensure only one user_pk: (delete all and recreate)
-      # ensure above wokrs 
-      # redirect to profile-page and go from there
-  current_user_pk_address = request.user.user_pk_address
-  user_object = Web3User.objects.get(user_pk_address=current_user_pk_address)
+  
   return render(request, 'launch_token_form.html', {
     'user_object': user_object
   })
 
-  
+
+
+@login_required(login_url='/')
+def update_token_form(request):
+  current_user_pk_address = request.user.user_pk_address
+  # user_object = Web3User.objects.get(user_pk_address=current_user_pk_address)
+  user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  creator_profile = CreatorProfile.objects.get(user_obj=user_object)
+  user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
+
+  # TODO: 
+    # where will we add the NFT name and created/updated-date/launch-date? 
+      # **do project-log, desc-markdown, share before NFT launch & etherscan
+    # once launched, NFT-metadata can not be updated
+    # can the total-supply change?
+    # **if user has already created NFT, at the moment, they cannot create and launch another one <-- prevent this**
+      # think about other, similar cases to this
+ 
+  max_file_size = 100
+  accepted_content_types = [
+    'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
+    'image/svg+xml', 'image/webp', 'model/gltf-binary'
+  ]
+
+  if request.method == 'POST': # TODO: do we need to do any user-auth-verification here?
+    user_nft = request.POST['user_nft_obj']
+    nft_name = request.POST['token_name']
+    nft_price = request.POST['token_price_field']
+    nft_total_supply = request.POST['nft_total_supply']
+    
+    nft_name = request.POST['token_name']
+    nft_price = request.POST['token_price_field']
+    nft_total_supply = request.POST['nft_total_supply']
+
+    form_validation_error = False
+    try:
+      nft_float_price = float(nft_price)
+      if nft_float_price <= 0 :
+        form_validation_error = True
+    except:
+      form_validation_error = True
+    
+    if nft_name == '':
+      form_validation_error = True
+
+
+    nft_image_upload = request.POST['nft_image_upload']
+    uploaded_file = None
+    upload_file_mb_size = 0
+    if nft_image_upload != '' and form_validation_error is False:
+      uploaded_file = request.FILES['nft_image_upload']   
+      
+      content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
+      upload_file_mb_size = uploaded_file.size / 1024 / 1024
+
+      if content_type in accepted_content_types and upload_file_mb_size <= max_file_size:
+        # user_nft_object.nft_media_file = uploaded_file
+        pass
+      
+      else:
+        form_validation_error = True
+
+
+    if form_validation_error is False:
+      user_nft_object = get_object_or_404(UserNft, id=user_nft.id)
+      user_nft_object.nft_name = nft_name
+      user_nft_object.nft_price = nft_price
+      user_nft_object.nft_total_supply = nft_total_supply
+      if nft_image_upload != '':
+        user_nft_object.nft_media_file = uploaded_file
+      user_nft_object.save()
+
+    else:
+      return render(request, 'launch_token_form.html', {
+        'form_validation_error': form_validation_error,
+        'nft_name': request.POST['token_name'],
+        'nft_price': request.POST['token_price_field'],
+        'nft_total_supply': request.POST['nft_total_supply']
+      })
+
+
+      
+
+    # # TODO: add the media image?
+    # user_nft_object = get_object_or_404(UserNft, id=user_nft.id)
+    # user_nft_object.nft_name = nft_name
+    # user_nft_object.nft_price = nft_price
+    # user_nft_object.nft_total_supply = nft_total_supply
+    # user_nft_object.save()
+
+
+
+
+
+
+  three_dim_file_types = [
+    '.glb', '.gltf', '.obj', '.ply', '.fbx' '.svg'
+  ]
+
+  fn, file_extension = os.path.splitext(user_nft_obj.nft_media_file.url)
+
+
+
+  user_three_dim_upload = False
+  if file_extension in three_dim_file_types:
+    user_three_dim_upload = True
+
+  return render(request, 'launch_token_form.html', {
+    'user_nft_obj': user_nft_obj,
+    'nft_name': user_nft_obj.nft_name,
+    'nft_price': user_nft_obj.nft_price,
+    'nft_total_supply': user_nft_obj.nft_total_supply,
+    'nft_uploaded_image_url': user_nft_obj.nft_media_file.url,
+    'user_editing': True,
+    'user_upload_3d_model': user_three_dim_upload
+  })
+
+
 
 def deploy_new_nft(request):
   if request.method == "POST":
     pass
-
 
 
 @login_required(login_url='/')

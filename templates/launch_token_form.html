@@ -24,7 +24,7 @@
           
           <p id="explore-paragraph">
             <i>
-              exciting, isn't it?
+              here's a &#129346; to your success!
             </i>
           </p>
 
@@ -50,22 +50,59 @@
               <span style="color: red;">*</span>
             </h5>
             
-            <div id="image_container"></div>
 
-            <input id="nft_image_upload" type="file" name="nft_image_upload" style="display:none" required />
+            <div id="image_container">
 
-            <!-- <button id="upload_different_file_button" style="display: none;" onclick="document.getElementById('nft_image_upload').click()">Choose different file</button> -->
+              {% if nft_uploaded_image_url is not None %}
+
+                {% if user_upload_3d_model is True %}
+                
+                    <model-viewer 
+                    id="container_image_element"
+                    src="{{ nft_uploaded_image_url }}"
+                    camera-orbit="250deg 85deg 125%"
+                    camera-controls
+                    shadow-intensity="1"
+                    style="width: 340px; height: 340px;" 
+                    ></model-viewer>
+
+                {% else %}
+                  
+                  <img id="container_image_element" src="{{ nft_uploaded_image_url }}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5;" >
+                  
+                {% endif %}
+
+              {% endif %}
+
+            </div>
 
 
-            <label for='nft_image_upload' id="main_nft_image_upload">
-              <img id="nft_image_placeholder" src="{% static 'images/placeholder_image.webp' %}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5;" >
-            </label>
+            {% if nft_uploaded_image_url is None %}
+
+              <input id="nft_image_upload" type="file" name="nft_image_upload" style="display:none" required />
+
+            {% else %}
+              
+              <input id="nft_image_upload" type="file" name="nft_image_upload"  />
+
+            {% endif %}
 
             
+            <!-- <input id="nft_image_upload" type="file" name="nft_image_upload"  required /> -->
+            <!-- <button id="upload_different_file_button" style="display: none;" onclick="document.getElementById('nft_image_upload').click()">Choose different file</button> -->
+
+            {% if nft_uploaded_image_url is None %}
+
+              <label for='nft_image_upload' id="main_nft_image_upload">
+                <img id="nft_image_placeholder" src="{% static 'images/placeholder_image.webp' %}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5;" >
+              </label>
+
+            {% endif %}
+
             <span style="color: grey;">Supported File Types: JPG, PNG, GIF, WEBP, SVG, GLB, GLTF. Max size: 100 MB</span>
             <br/><br/>
             <span style="color: red; display: none;" id="image_upload_error_message">invalid data... image or obj only</span>
-
+    
           </div>
 
 
@@ -127,7 +164,7 @@
               </label>
               
               <div class="col-sm-7">
-                <input name="nft_total_supply" type="range" class="form-range" value="200" min="1" max="5000" id="nft_total_supply" oninput="this.nextElementSibling.value = this.value" required>
+                <input name="nft_total_supply" type="range" class="form-range" value="{{ nft_total_supply }}" min="1" max="5000" id="nft_total_supply" oninput="this.nextElementSibling.value = this.value" required>
                 <output>
                   <strong>
                     200
@@ -153,10 +190,20 @@
               </label> -->
 
               <input type="hidden" id="user_obj" name="user_obj" value="{{ user_object }}">
+              <input type="hidden" id="user_nft_obj" name="user_nft_obj" value="{{ user_nft_obj }}">
               
-              <div class="col-sm-7">
-                <button type="submit" class="btn btn-outline-primary">Create your NFT</button>
-              </div>
+              
+              {% if user_editing is True %}
+              
+                <div class="col-sm-7">
+                  <button type="submit" class="btn btn-outline-primary">Edit your NFT</button>
+                </div>
+              {% else %}
+                <div class="col-sm-7">
+                  <button type="submit" class="btn btn-outline-primary">Create your NFT</button>
+                </div>
+              {% endif %}
+              
               
             </div>
 

@@ -16,18 +16,62 @@
         <div class="col-4">
           <!-- <img src="{% static 'images/coin_one.png' %}" class="rounded" width="330" height="330"> -->
           
-          {% if user_nft_obj.length > 0 %}
+          {% if user_nft_obj is not None %}
+            
+          <!-- TODO: need to display user uploaded file -->
+          <!-- src="media/{{ user_nft_obj.nft_media_file }}" -->
+          <!-- src="{% static '3d_model/main_four_uF8SX1R.glb' %}"   -->
 
             <model-viewer 
-              src="{% static 'user_nft_obj[0]' %}"  
+              src="{{ user_nft_obj.nft_media_file.url }}"
               ar ar-modes="webxr scene-viewer quick-look" 
               camera-controls
               shadow-intensity="1"
               auto-rotate
               rotation-per-second="550%"
-              style="width: 300px; height: 300px;" 
+              style="width: 340px; height: 340px;" 
               ></model-viewer>
 
+            <!-- <br/> -->
+ 
+            <!-- TODO: proceed from here -->
+            <!-- <button class="btn btn-outline-success rounded-pill" style="font-size: 17px;">
+              Launch your NFT
+            </button> -->
+ 
+
+            <div style="padding-top: 10px;">
+
+              <button class="btn btn-primary rounded-pill">
+                Launch your NFT
+              </button>
+              &nbsp;
+              <a href="{% url 'update_token_form' %}">Edit Token Settings</a>
+
+            </div>
+
+            <!-- <br/><br/> -->
+            <!-- <a href="">Launch your Token!</a> -->
+            
+            <div style="padding-top: 10px;">
+
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                  0%
+                </div>
+              </div>
+
+            </div>
+
+            <p style="font-size: 17px;">
+              <strong>Total Supply:</strong> {{ user_nft_obj.nft_total_supply }} 
+              |
+              <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
+
+            </p>
+
+            
+              
           {% else %}
 
             <model-viewer 
@@ -43,12 +87,12 @@
           {% endif %}
     
 
-          {% if user_nft_obj.length > 0 %}
+          {% if user_nft_obj is not None %}
 
             <!-- TODO: add progress-bar, etc. -->
             
             <!-- <span class="badge rounded-pill text-bg-secondary" style="font-size: 14px;">
-              Active N
+              Active NFT Sale!
             </span> -->
 
           {% else %}
@@ -120,9 +164,22 @@
                   Create your NFT
                 </a> -->
 
-                <button id="user_create_nft" class="btn btn-outline-info rounded-pill">
-                  Create your NFT
-                </button>
+                {% if user_nft_obj is not None %}
+
+                  <!-- TODO: anything needed here? -->
+
+                  <!-- <button class="btn btn-primary rounded-pill">
+                    Launch your NFT
+                  </button> -->
+
+                {% else %}
+
+                  <button id="user_create_nft" class="btn btn-outline-info rounded-pill">
+                    Create your NFT
+                  </button>
+
+                {% endif %}                
+
 
               {% else %}
 
@@ -203,8 +260,8 @@
               {% if same_user is True %}
                 
                 <span style="padding-left: 12px;">
-                  <i class="bi bi-link"></i> <a href="">
-                    add a personal website
+                  <i class="bi bi-link"></i> <a href="{% url 'edit_user_profile' profile_id=profile_id %}">
+                    add your personal website
                   </a>
                 </span>
 
@@ -228,8 +285,8 @@
  
                 <span style="padding-left: 12px;">
                   <i class="bi bi-discord"></i> 
-                  <a href="">
-                    add a discord
+                  <a href="{% url 'edit_user_profile' profile_id=profile_id %}">
+                    add your discord
                   </a>
                 </span> 
 
@@ -299,7 +356,7 @@
 
                 {% if same_user is True %}
                   <b>Add a brief description for the project(s) you are currently working on.</b>
-                  You can always provide further details and updates in the project log.
+                  You can always provide further details and updates in the project log, below.
                   <br/>
                   
                 {% else %}
@@ -384,10 +441,6 @@
 
           } else if (response['success'] === true){
 
-
-            // TODO: 
-              // ensure the URL redirect is in-place for blackslash (caused me confusion and not ideal)
-              // go from there...
             window.location.href = 'http://127.0.0.1:7500/create-nft'
 
           }
