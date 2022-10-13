@@ -17,22 +17,25 @@
           <!-- <img src="{% static 'images/coin_one.png' %}" class="rounded" width="330" height="330"> -->
           
           {% if user_nft_obj is not None %}
-            
+             
           <!-- TODO: need to display user uploaded file -->
           <!-- src="media/{{ user_nft_obj.nft_media_file }}" -->
           <!-- src="{% static '3d_model/main_four_uF8SX1R.glb' %}"   -->
 
-            <h4 style="padding-top: 10px;">
-              {{ user_nft_obj.nft_name }}
+          <!-- TODO: display date format properly and go from there -->
+          <!-- Oct. 12, 2022, 2:37 a.m. -->
+            <h4 style="padding-top: 10px; font-weight: 900;">
+              {{ user_nft_obj.nft_name }} | {{ user_nft_obj.nft_updated_at.strftime('%m. %d, %Y') }}
             </h4>  
-
+ 
             <model-viewer 
               src="{{ user_nft_obj.nft_media_file.url }}"
               ar ar-modes="webxr scene-viewer quick-look" 
               camera-controls
+              camera-orbit="250deg 85deg 125%"
               shadow-intensity="1"
               auto-rotate
-              rotation-per-second="550%"
+              rotation-per-second="450%"
               style="width: 340px; height: 340px;" 
               ></model-viewer>
 
@@ -79,6 +82,7 @@
             <model-viewer 
             src="{% static '3d_model/placeholder_new.glb' %}"  
             ar ar-modes="webxr scene-viewer quick-look" 
+            camera-orbit="250deg 85deg 125%"
             camera-controls
             shadow-intensity="1"
             auto-rotate

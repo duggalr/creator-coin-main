@@ -556,7 +556,7 @@ def update_token_form(request):
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
     'image/svg+xml', 'image/webp', 'model/gltf-binary'
   ]
-
+ 
   if request.method == 'POST': # TODO: do we need to do any user-auth-verification here?
     user_nft = request.POST['user_nft_obj']
     nft_name = request.POST['token_name']
@@ -618,14 +618,6 @@ def update_token_form(request):
         'nft_price': request.POST['token_price_field'],
         'nft_total_supply': request.POST['nft_total_supply']
       })
-
-
-    # # TODO: add the media image?
-    # user_nft_object = get_object_or_404(UserNft, id=user_nft.id)
-    # user_nft_object.nft_name = nft_name
-    # user_nft_object.nft_price = nft_price
-    # user_nft_object.nft_total_supply = nft_total_supply
-    # user_nft_object.save()
 
 
   three_dim_file_types = [
