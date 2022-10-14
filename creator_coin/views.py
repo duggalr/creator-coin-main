@@ -31,7 +31,7 @@ from dotenv import load_dotenv
 # load_dotenv(os.path.join(BASE_DIR, '.env'))
 load_dotenv("/Users/rahul/Documents/main/personal_learning_projects/creator_coin_new/creator_coin_new/.env")
 
-from . import utils
+# from . import utils
 
 
 
@@ -234,7 +234,13 @@ def create_profile(request):
 # TODO: 
   # ensure only the user who created the profile has access to edit page
 def edit_user_profile(request, profile_id):
+  user_pk_address = request.user
+  user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+  print('user-obj:', user_obj)
+
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+  if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
+    return redirect('user_token_page', profile_id=profile_id)
 
   if request.method == "POST":
     print(request.POST)
@@ -468,6 +474,12 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
   #  Web3User.objects.get(user_pk_address=current_user_pk_address)
 
+  creator_obj = CreatorProfile.objects.get(user_obj=user_object)
+  user_nft_objects = UserNft.objects.filter(creator_obj=creator_obj)
+  if len(user_nft_objects) > 0:
+    return redirect('user_token_page', profile_id=user_object.id)
+
+
   max_file_size = 100
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
@@ -485,6 +497,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
     form_validation_error = False
     if content_type in accepted_content_types and upload_file_mb_size <= max_file_size:
       nft_name = request.POST['token_name']
+      nft_symbol = request.POST['token_symbol']
       nft_price = request.POST['token_price_field']
       nft_total_supply = request.POST['nft_total_supply']
 
@@ -509,6 +522,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
         user_nft_obj = UserNft.objects.create(
           creator_obj=user_profile_obj,
           nft_name=nft_name,
+          nft_symbol=nft_symbol,  # TODO: need to reinforce it's only 5 letters
           nft_price=nft_price,
           nft_total_supply=nft_total_supply,
           nft_media_file=uploaded_file
@@ -542,15 +556,23 @@ def update_token_form(request):
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
   creator_profile = CreatorProfile.objects.get(user_obj=user_object)
   user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
+  
+  # TODO:          
+    # NFT-View for Owner and Public** 
 
-  # TODO: 
-    # where will we add the NFT name and created/updated-date/launch-date? 
-      # **do project-log, desc-markdown, share before NFT launch & etherscan
-    # once launched, NFT-metadata can not be updated
-      # can the total-supply change?
     # **if user has already created NFT, at the moment, they cannot create and launch another one <-- prevent this**
       # think about other, similar cases to this
  
+    # once launched, NFT-metadata can not be updated
+      # can the total-supply change? <-- not initially (after, yes)
+ 
+    # **finalize all auth/user-settings in profile-page, etc.
+    # actually use it to launch an NFT 
+      # **(Optional): do project-log, desc-markdown, share before NFT launch & etherscan
+  
+    # **ensure the placeholder and coin object look really good <-- first thing the user will see
+ 
+
   max_file_size = 100
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',

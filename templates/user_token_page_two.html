@@ -18,15 +18,17 @@
           
           {% if user_nft_obj is not None %}
              
-          <!-- TODO: need to display user uploaded file -->
-          <!-- src="media/{{ user_nft_obj.nft_media_file }}" -->
-          <!-- src="{% static '3d_model/main_four_uF8SX1R.glb' %}"   -->
+            <!-- <div> -->
 
-          <!-- TODO: display date format properly and go from there -->
-          <!-- Oct. 12, 2022, 2:37 a.m. -->
-            <h4 style="padding-top: 10px; font-weight: 900;">
-              {{ user_nft_obj.nft_name }} | {{ user_nft_obj.nft_updated_at.strftime('%m. %d, %Y') }}
-            </h4>  
+              <!-- <h4 style="display: inline;" style="padding-top: 10px; font-weight: 900;">
+                {{ user_nft_obj.nft_name }}
+              </h4> -->
+              <!-- |  -->
+              <!-- <span style="font-weight: 900;">
+                Updated: {{ user_nft_obj.nft_updated_at|date:"Y-m-d" }}
+              </span> -->
+
+            <!-- </div> -->
  
             <model-viewer 
               src="{{ user_nft_obj.nft_media_file.url }}"
@@ -47,11 +49,21 @@
 
             <div style="padding-top: 10px;">
 
-              <button class="btn btn-primary rounded-pill">
-                Launch your NFT
-              </button>
-              &nbsp;
-              <a href="{% url 'update_token_form' %}">Edit Token Settings</a>
+              <h4 style="display: inline;" style="font-weight: 800;">
+                {{ user_nft_obj.nft_name }}
+              </h4>
+
+              <div style="padding-top: 10px;"></div>
+
+              {% if same_user is True %}
+
+                <button class="btn btn-primary rounded-pill">
+                  Launch your NFT
+                </button>
+                &nbsp;
+                <a href="{% url 'update_token_form' %}">Edit Token Settings</a>
+                
+              {% endif %}
 
             </div>
 
@@ -68,14 +80,14 @@
 
             </div>
 
-            <p style="font-size: 17px;">
+            <p style="font-size: 18px;">
+
               <strong>Total Supply:</strong> {{ user_nft_obj.nft_total_supply }} 
               |
               <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
 
             </p>
 
-            
               
           {% else %}
 
@@ -129,7 +141,7 @@
               </h2>
               
               {% if creator_profile.creator_email is not None and creator_profile.creator_email != '' %}
-                <span>
+                <span style="font-size: 18px;">
                   | {{ creator_profile.creator_email }}
                 </span>
               {% endif %}
@@ -426,6 +438,9 @@
       </div>
     </div>
   </div>
+
+  <br/>
+
 
 
 
