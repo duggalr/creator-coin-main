@@ -108,11 +108,34 @@ def user_token_page(request, profile_id):
     'user_nft_obj': user_nft_obj
   })
 
-
-
-
-def mint_new_nft_token():
+ 
+  
+# TODO: authenticate request (request user is same as owner of NFT and go from there) 
+def mint_new_nft_token(request, profile_id):
   pass
+  # # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
+  # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+
+  # user_nft_obj = None
+  # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile_obj)
+  # # print('user-nft-objs:', user_nft_objects)
+  # # if len(user_nft_objects) == 1:
+  # #   user_nft_obj = user_nft_objects[0]
+
+  # same_user = False
+  # if request.user.is_anonymous is False:
+  #   current_user_pk_address = request.user.user_pk_address
+  #   if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
+  #     same_user = True
+
+
+  # user_pk_address = request.user
+  # user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+  # print('user-obj:', user_obj)
+
+  # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+  # if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
+  #   return redirect('user_token_page', profile_id=profile_id)
 
 
 

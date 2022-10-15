@@ -57,9 +57,10 @@
 
               {% if same_user is True %}
 
-                <button class="btn btn-primary rounded-pill">
+                <!-- <button class="btn btn-primary rounded-pill" id="launch-nft">
                   Launch your NFT
-                </button>
+                </button> -->
+                <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
                 &nbsp;
                 <a href="{% url 'update_token_form' %}">Edit Token Settings</a>
                 
@@ -472,6 +473,15 @@
 
       
     });
+
+
+    // $( "#launch-nft" ).click(function() {
+
+    //   window.location.href = ''
+
+    // })
+
+    
 
 
   </script>

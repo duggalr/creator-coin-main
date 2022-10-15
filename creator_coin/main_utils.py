@@ -82,6 +82,6 @@ def deploy_contract():
   # add purchase functionality (safeMint)
   # enusre all transactions are logged on Ropsten 
   # import to CreatorCoin with etherscan api
+  # **start from scratch and fix all final-bugs, etc. <-- record demo** 
 
-
-
+ 
