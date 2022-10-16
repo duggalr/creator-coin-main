@@ -32,6 +32,7 @@ from dotenv import load_dotenv
 load_dotenv("/Users/rahul/Documents/main/personal_learning_projects/creator_coin_new/creator_coin_new/.env")
 
 # from . import utils
+from . import main_utils
 
 
 
@@ -112,7 +113,18 @@ def user_token_page(request, profile_id):
   
 # TODO: authenticate request (request user is same as owner of NFT and go from there) 
 def mint_new_nft_token(request, profile_id):
-  pass
+  user_pk_address = request.user
+  user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+  print('user-obj:', user_obj)
+
+  creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+  if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
+    return redirect('user_token_page', profile_id=profile_id)
+
+  
+
+
+
   # # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
   # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
 
@@ -374,7 +386,7 @@ class UserNonceView(APIView):
     
     UserNonce.objects.filter(user=web_three_user_obj).delete()
 
-    nonce = utils.generate_nonce()
+    nonce = main_utils.generate_nonce()
     user_nonce_obj = UserNonce.objects.create(
       nonce=nonce,
       user=web_three_user_obj
