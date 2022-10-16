@@ -205,9 +205,15 @@ a.link{
 
 
 
+.project-user-pk-address{
+  color: gray;
+  font-size: 16px;
+}
+
 .project-subheading-information{
   display: flex;
   align-items: center;
+  /* padding-top: 10px; */
 
 }
 
@@ -242,9 +248,9 @@ a.link{
 }
 
 .home-description{
-  font-size: 17px;
+  font-size: 18px;
   max-width: 30em;
-  color: grey;
+  /* color: grey; */
 }
 
 .home-buttons{
@@ -297,7 +303,7 @@ a.link{
 }
 
 #explore-paragraph{
-  font-size: 18px; 
+  font-size: 20px; 
   /* font-weight: bolder; */
 }
 

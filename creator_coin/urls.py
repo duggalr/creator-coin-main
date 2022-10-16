@@ -7,13 +7,13 @@ from . import views
 
 urlpatterns = [
   path('', views.home, name='home'),
-  path('home_original', views.home_original, name='home_original'),  # TODO: delete this
+  # path('home_original', views.home_original, name='home_original'),  # TODO: delete this
   
-  path('manifesto', views.about_page, name='about_page'),
-  re_path(r'^manifesto/$', RedirectView.as_view(url = reverse_lazy('about_page') )),
+  path('manifesto/', views.about_page, name='about_page'),
+  # re_path(r'^manifesto/$', RedirectView.as_view(url = reverse_lazy('about_page') )),
 
-  path('explore', views.explore_project, name='explore_project'),
-  re_path(r'^explore/$', RedirectView.as_view(url = reverse_lazy('explore_project') )),
+  path('explore/', views.explore_project, name='explore_project'),
+  # re_path(r'^explore/$', RedirectView.as_view(url = reverse_lazy('explore_project') )),
 
   path('profile/<int:profile_id>/', views.user_token_page, name='user_token_page'),
   # re_path(r'^profile/(?P<profile_id>\d+)/$', RedirectView.as_view(url = reverse_lazy('user_token_page') )),
@@ -27,12 +27,13 @@ urlpatterns = [
   path('create-profile/', views.create_profile, name='create_profile'),
   # re_path(r'^create-profile/$', RedirectView.as_view(url = reverse_lazy('create_profile') )),
 
+  path('my-profile', views.my_profile, name='my_profile'),
+
   # TODO: correct once this functionality is added... 
   path('deploy_new_nft/', views.deploy_new_nft, name='deploy_new_nft'),  
   path('mint_new_nft_token/<int:profile_id>/', views.mint_new_nft_token, name='mint_new_nft_token'),
 
-
-  path('user_profile/', views.user_profile, name='user_profile'),
+  # path('user_profile/', views.user_profile, name='user_profile'),
   path('logout/', views.logout_view, name='logout'),
 
   path('generate_nonce/', views.UserNonceView.as_view(), name='user_nounce_view'),
@@ -48,8 +49,5 @@ urlpatterns = [
 
 
 
-# TODO: 
-  # bake the texture and get this to work 
-    # need to get exported model ready/complete so can start backend
 
 

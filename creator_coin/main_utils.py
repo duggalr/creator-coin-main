@@ -3,6 +3,7 @@ import secrets
 import solcx
 from web3 import Web3
 
+import magic
 
 
 
@@ -124,6 +125,29 @@ def deploy_contract_main():
 
 # deploy_contract_main()
 
+
+
+def check_if_three_dim_model(f):
+  accepted_content_types = [
+    'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
+    'image/svg+xml', 'image/webp', 'model/gltf-binary'
+  ]
+
+  content_type = magic.from_buffer(f.read(), mime=True) # verifies the uploaded file
+  print('ct:', content_type)
+
+    # if 'nft_image_upload' in request.FILES:
+    #   uploaded_file = request.FILES['nft_image_upload']
+    #   upload_file_mb_size = uploaded_file.size / 1024 / 1024
+      
+    #   if content_type in accepted_content_types and upload_file_mb_size <= max_file_size and form_validation_error is False:
+    #     nft_name = request.POST['token_name']
+    #     nft_symbol = request.POST['token_symbol']
+    #     nft_price = request.POST['token_price_field']
+    #     nft_total_supply = request.POST['nft_total_supply']
+
+
+# check_if_three_dim_model()
 
 
 

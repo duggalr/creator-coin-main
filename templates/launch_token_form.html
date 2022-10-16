@@ -18,13 +18,13 @@
           
           <h3 id="explore-header">
             <!-- <i class="bi bi-pencil-fill" style="font-size: 20px;"></i> Create -->
-            &#127881; Create your NFT
+            Create your NFT
             <!-- <i class="bi bi-chevron-down" style="font-size: 20px;"></i> -->
           </h3>
           
           <p id="explore-paragraph">
             <i>
-              here's a &#129346; to your success!
+              Here's a &#129346; to your success!
             </i>
           </p>
 
@@ -68,8 +68,8 @@
 
                 {% else %}
                   
-                  <img id="container_image_element" src="{{ nft_uploaded_image_url }}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5;" >
-                  
+                  <img id="container_image_element" src="{{ nft_uploaded_image_url }}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5; " >
+
                 {% endif %}
 
               {% endif %}
@@ -77,13 +77,16 @@
             </div>
 
 
+            <div style="margin-top: 20px"></div>
+
+
             {% if nft_uploaded_image_url is None %}
 
-              <input id="nft_image_upload" type="file" name="nft_image_upload" style="display:none" required />
+              <input id="nft_image_upload" type="file" name="nft_image_upload" style="display:none" />
 
             {% else %}
               
-              <input id="nft_image_upload" type="file" name="nft_image_upload"  />
+                <input id="nft_image_upload" type="file" name="nft_image_upload" />
 
             {% endif %}
 
@@ -134,7 +137,7 @@
               </label>
 
               <div class="col-sm-2">
-                <input type="text" class="form-control" id="token_symbol" name="token_symbol" placeholder="optional.." maxlength="3">
+                <input type="text" class="form-control" id="token_symbol" name="token_symbol" placeholder="optional.." value="{{ nft_symbol }}" maxlength="3">
                 <div class="form-text">Max 3 letters!</div>
               </div>
 
@@ -182,12 +185,27 @@
               </label>
               
               <div class="col-sm-7">
-                <input name="nft_total_supply" type="range" class="form-range" value="{{ nft_total_supply }}" min="1" max="5000" id="nft_total_supply" oninput="this.nextElementSibling.value = this.value" required>
-                <output>
-                  <strong>
-                    {{ nft_total_supply }}
-                  </strong>
-                </output>
+                
+                {% if nft_total_supply is not None %}
+
+                  <input name="nft_total_supply" type="range" class="form-range" value="{{ nft_total_supply }}" min="1" max="5000" id="nft_total_supply" oninput="this.nextElementSibling.value = this.value" required>
+                  <output>
+                    <strong>
+                      {{ nft_total_supply }}
+                    </strong>
+                  </output>
+
+                {% else %}
+
+                  <input name="nft_total_supply" type="range" class="form-range" value="500" min="1" max="5000" id="nft_total_supply" oninput="this.nextElementSibling.value = this.value" required>
+                  <output>
+                    <strong>
+                      500
+                    </strong>
+                  </output>
+
+                {% endif %}
+
                 <div class="form-text">(Initial Platform Limit of 5000. More can be minted later on.)</div>
               </div>
               
@@ -211,7 +229,7 @@
               <input type="hidden" id="user_nft_obj" name="user_nft_obj" value="{{ user_nft_obj.id }}">
               
               
-              {% if user_editing is True %}
+              <!-- {% if user_editing is True %}
               
                 <div class="col-sm-7">
                   <button type="submit" class="btn btn-outline-primary">Edit your NFT</button>
@@ -220,16 +238,28 @@
                 <div class="col-sm-7">
                   <button type="submit" class="btn btn-outline-primary">Create your NFT</button>
                 </div>
-              {% endif %}
-              
+              {% endif %} -->
+
+              <div class="col-sm-7">
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
+              </div>              
               
             </div>
+
+            <!-- 
+              TODO:
+                - add ability to delete NFT 
+                - re-create new one and upload 3D model and/or image <-- ensure it's good now with image/model-viewer
+                - go from there to launch:
+                  - add IPFS storage and etherscan
+             -->
 
 
             {% if form_validation_error %}
 
               <div style="color: red; font-size: 16px;">
-                Your form submission was not valid. Please correct and try again.
+                <!-- Your form submission was not valid. Please correct and try again. -->
+                {{ form_validation_error_message }}
               </div>
 
             {% endif %}
@@ -289,12 +319,14 @@
       var valid_input = validatePrice(field_val);
       if (valid_input === true){
 
-        var usd_conversion_rate = 1242.01
+        var usd_conversion_rate = 1301.91
         var usd_price = usd_conversion_rate * parseFloat(field_val)
         console.log('usd-price:', usd_price, parseFloat(field_val))
 
+        var rounded_usd_price = Number((usd_price).toFixed(3));
+
         // $('#token_price_div').text( 'Approximately $' + Math.round(usd_price) + ' USD / Token' );
-        $('#token_price_div').text( '~$' + usd_price + ' USD / NFT' );
+        $('#token_price_div').text( '~$' + rounded_usd_price + ' USD / NFT' );
 
       } else {
 
@@ -413,32 +445,6 @@
 
 
 
-
-// parent_div.appendChild(child_div)
-// parent_div.appendChild(image_elem)
-
-//   if (!validImageTypes.includes(fileType)) {  // invalid file type code goes here.
-//     // alert('please enter a valid image file...')
-//     document.getElementById('image_upload_error_message').style.display = '';
-//   }
-
-//   var image_elem = document.createElement('img')
-//   image_elem.id = 'container_image_element'
-//   image_elem.src = URL.createObjectURL(userFile); // set src to blob url
-//   image_elem.style = 'border-radius: 5%; box-shadow: 5px 5px #F5F5F5; width: 100%'
-//   // parent_div.appendChild(child_div)
-//   // parent_div.appendChild(image_elem)
-
-//   var main_div = document.getElementById('image_container')
-//   main_div.appendChild(image_elem)
-
-//   document.getElementById('main_nft_image_upload').style.display = 'none'
-//   document.getElementById('nft_image_upload').style.display = ''
-
-// } else{
-//   e.preventDefault();
-//   document.getElementById('nft_image_upload').style.display = '';
-//   document.getElementById('image_upload_error_message').style.display = '';
 
 
 

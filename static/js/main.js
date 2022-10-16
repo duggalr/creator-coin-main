@@ -1,17 +1,21 @@
 const API_HOST = 'http://127.0.0.1:7500/'
 
-let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+let ethersProvider;
 
-
-
-// console.log('eth-provider:', ethersProvider)
+// let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
 
 
 // let web3;
 // let user_account_pk_address;
 
-// const loginErrorModal = new bootstrap.Modal('#loginErrorOne')
-// const loginErrorTwoModal = new bootstrap.Modal('#loginErrorTwo')
+let loginErrorModal;
+let loginErrorTwoModal;
+
+var loginModalExists = document.getElementById("loginErrorOne");
+if (loginModalExists != null){
+  loginErrorModal = new bootstrap.Modal('#loginErrorOne')
+  loginErrorTwoModal = new bootstrap.Modal('#loginErrorTwo')
+}
 
 
 // Much of the metamask login is based from:
@@ -53,9 +57,7 @@ const detectCurrentProvider = () => {
 };
 
 
-// TODO: start from login and go from there
-  // why is Metamask not working right now when trying to login (not showing signature)?
-    // **try on every testnet, etc.
+
 const onConnect = async () => {
 
   // const currentProvider = detectCurrentProvider();
@@ -86,6 +88,8 @@ const onConnect = async () => {
       //   loginErrorModal.show();
       // }
 
+      ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+
       const walletUnlocked =  await currentProvider._metamask.isUnlocked();
       // console.log('is-unlocked:', walletUnlocked );
 
@@ -93,9 +97,6 @@ const onConnect = async () => {
 
         await currentProvider.request({ method: 'eth_requestAccounts' });
         let web3 = new Web3(currentProvider);
-
-        
-        // console.log('web3:', web3)
   
         // const userAccount = await web3.eth.getAccounts();
         // console.log('user-account:', userAccount);
@@ -126,7 +127,7 @@ const onConnect = async () => {
 
             // TODO: is personal_sign safe? 
 
-            console.log('user-nonce: ' + user_nonce + ' user-pk: ' + user_account_pk_address);
+            // console.log('user-nonce: ' + user_nonce + ' user-pk: ' + user_account_pk_address);
 
             var message = "\nBy signing this message, you will sign the randomly generated nonce. This will help complete your registration to the platform. \n\nNonce: " + user_nonce + " \n\nWallet Address: " + user_account_pk_address
             signature = await currentProvider.request({
@@ -149,7 +150,7 @@ const onConnect = async () => {
               nonce_signature: signature,
             };
             
-            axios.post(API_HOST + "login", data).then((response) => {
+            axios.post(API_HOST + "login/", data).then((response) => {
               
               if(response.status == 200){
                 console.log("res-data:", response);
@@ -394,18 +395,22 @@ const mintToken = async () => {
 
 
 
+if (window.ethereum){
 
-window.ethereum.on('accountsChanged', (accounts) => {
-  // Handle the new accounts, or lack thereof.
-  // "accounts" will always be an array, but it can be empty.
-  console.log('account-changed:', accounts);
-  // if (accounts.length > 0) {
-  //   var current_account = accounts[0]
-  // }
+  window.ethereum.on('accountsChanged', (accounts) => {
+    // Handle the new accounts, or lack thereof.
+    // "accounts" will always be an array, but it can be empty.
+    console.log('account-changed:', accounts);
+    // if (accounts.length > 0) {
+    //   var current_account = accounts[0]
+    // }
+  
+    window.location.href = 'http://127.0.0.1:7500/logout'
+  
+  });
+  
+}
 
-  window.location.href = 'http://127.0.0.1:7500/logout'
-
-});
 
 
 // TODO: handle the event changes (do chain-change on token buy/deploy)

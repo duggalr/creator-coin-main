@@ -14,8 +14,8 @@
   </li>
 
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="project-log-tab" data-bs-toggle="tab" data-bs-target="#project-log" type="button" role="tab" aria-controls="project-log" aria-selected="false">
-      <i class="bi bi-box-fill"></i> Your Collection of NFT's
+    <button class="nav-link" id="user-nft-tab" data-bs-toggle="tab" data-bs-target="#user-nft-collection" type="button" role="tab" aria-controls="user-nft-collection" aria-selected="false">
+      <i class="bi bi-box-fill"></i> NFT's you have bought
     </button>
   </li>
 
@@ -48,8 +48,20 @@
     <div class="row align-items-start">
 
       <ul class="list-group list-group-flush">
+        
+        <!-- TODO: add default if no transaction history; else, show all the transaction-history linking to etherscan -->
 
         <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">
+              All transactions linked to your NFT will be shown here...
+            </div>
+            <!-- N/A -->
+          </div>
+          <!-- <span>$500 (bought 50 CC)</span>           -->
+        </li>
+
+        <!-- <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
             <div class="fw-bold">
               Subheading
@@ -67,7 +79,7 @@
           <span>$50 (bought 5 CC)</span>          
         </li>
 
-      </ul>
+      </ul> -->
       
     </div>
     
@@ -78,7 +90,17 @@
   
     <ul class="list-group list-group-flush">
 
+    <!-- TODO: add default if no project-log; else, show all the project-log -->
+
       <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">
+            This will be a place for you to provide updates on your projects... (can be used in parallel with Github) 
+          </div>
+        </div>
+      </li>
+
+      <!-- <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
           <div class="fw-bold">Update One</div>          
           This is the launch of Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
@@ -88,7 +110,7 @@
           Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
           got going, so those scientists and physicists could get back to business.
         </div>
-      </li>
+      </li> -->
 
     </ul>
 
@@ -105,7 +127,38 @@
   </div> -->
 
 
-  <div class="tab-pane fade" id="contact" role="open-tasks" aria-labelledby="open-tasks-tab">
+  <div class="tab-pane fade" id="user-nft-collection" role="user-nft-collection" aria-labelledby="user-nft-tab">
+
+    <ul class="list-group list-group-flush">
+
+      <!-- TODO: add default if no project-log; else, show all the project-log -->
+
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold" >
+              Nothing yet... &#128564;
+            </div>
+          </div>
+        </li>
+  
+        <!-- <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Update One</div>          
+            This is the launch of Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
+            Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
+            get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
+            you thought of while you were writing it. Indeed, that's why I write them. 
+            Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
+            got going, so those scientists and physicists could get back to business.
+          </div>
+        </li> -->
+  
+      </ul>
+
+  </div>
+
+
+  <div class="tab-pane fade" id="open-tasks" role="open-tasks" aria-labelledby="open-tasks-tab">
     ...
   </div>
   

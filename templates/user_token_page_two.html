@@ -14,7 +14,6 @@
       <div class="row"> 
 
         <div class="col-4">
-          <!-- <img src="{% static 'images/coin_one.png' %}" class="rounded" width="330" height="330"> -->
           
           {% if user_nft_obj is not None %}
              
@@ -30,16 +29,26 @@
 
             <!-- </div> -->
  
-            <model-viewer 
-              src="{{ user_nft_obj.nft_media_file.url }}"
-              ar ar-modes="webxr scene-viewer quick-look" 
-              camera-controls
-              camera-orbit="250deg 85deg 125%"
-              shadow-intensity="1"
-              auto-rotate
-              rotation-per-second="450%"
-              style="width: 340px; height: 340px;" 
-              ></model-viewer>
+            {% if user_three_dim_upload is False %}
+
+              <img src="{{ user_nft_obj.nft_media_file.url }}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5; " >
+
+            {% else %}
+
+              <model-viewer 
+                src="{{ user_nft_obj.nft_media_file.url }}"
+                ar ar-modes="webxr scene-viewer quick-look" 
+                camera-controls
+                camera-orbit="250deg 85deg 125%"
+                shadow-intensity="1"
+                auto-rotate
+                rotation-per-second="450%"
+                style="width: 340px; height: 340px;" 
+                ></model-viewer>
+
+            {% endif %}
+
+            
 
             <!-- <br/> -->
  
@@ -60,10 +69,11 @@
                 <!-- <button class="btn btn-primary rounded-pill" id="launch-nft">
                   Launch your NFT
                 </button> -->
-                <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
+
+                <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
                 &nbsp;
-                <a href="{% url 'update_token_form' %}">Edit Token Settings</a>
-                
+                <a href="{% url 'update_token_form' %}">Edit Token Settings</a> -->
+                  
               {% endif %}
 
             </div>
@@ -89,6 +99,11 @@
 
             </p>
 
+            <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a> -->
+            <button class="btn btn-primary rounded-pill" id="launch-nft">Launch your NFT</button>
+              &nbsp;
+            <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
+
               
           {% else %}
 
@@ -99,10 +114,11 @@
             camera-controls
             shadow-intensity="1"
             auto-rotate
-            rotation-per-second="550%"
-            style="width: 300px; height: 300px;" 
+            rotation-per-second="400%"
+            style="width: 350px; height: 350px;"
             ></model-viewer>
 
+            
           {% endif %}
     
 
@@ -117,13 +133,25 @@
           {% else %}
 
             {% if same_user is True %}
-              <span class="badge rounded-pill text-bg-secondary" style="font-size: 14px;">
+
+              {% if user_nft_obj is not None %}
+
+                <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
+                &nbsp;
+                <a href="{% url 'update_token_form' %}">Edit Token Settings</a>
+                
+              {% endif %}
+
+              <span class="badge rounded-pill text-bg-secondary" style="font-size: 15px;">
                 No active NFT sale. Maybe you should launch one?
               </span>
+
             {% else %}
+
               <span class="badge rounded-pill text-bg-secondary" style="font-size: 15px;">
                 User does not have a NFT for sale at the moment.
               </span>
+
             {% endif %}
 
           {% endif %}
@@ -175,7 +203,7 @@
               
               {% if same_user is True %}
 
-                <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-dark rounded-pill" role="button">
+                <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-dark rounded-pill" role="button" style="font-size: 17px;"> 
                   Edit Profile
                 </a>
 
@@ -193,7 +221,7 @@
 
                 {% else %}
 
-                  <button id="user_create_nft" class="btn btn-outline-info rounded-pill">
+                  <button id="user_create_nft" class="btn btn-outline-info rounded-pill" style="font-size: 17px;">
                     Create your NFT
                   </button>
 
@@ -221,9 +249,11 @@
             
             </div>
 
-
           </div>
-
+          
+          <p class="project-user-pk-address">
+            <i class="bi bi-key-fill"></i> {{ creator_profile.user_obj.user_pk_address }}
+          </p>
 
 
           <div class="project-subheading-information">
@@ -231,9 +261,9 @@
             {% if github_profile is not None %}
                 
               <span>
-                <i class="bi bi-github"></i> <a href="{{ github_profile.github_profile_url }}">Github</a>
-                <!-- <i class="bi bi-check-circle" rel="tooltip" title="" id="blah"></i> -->
-                <i style="color: skyblue;" class="bi bi-check-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i>
+                <i class="bi bi-github"></i> <a href="{{ github_profile.github_profile_url }}" target="_blank" rel="noopener noreferrer">Github</a>
+                <!-- <i style="color: skyblue;" class="bi bi-check-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i> -->
+                <i style="color: skyblue;" class="bi bi-check-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i>
               </span>
 
             {% else %}
@@ -248,7 +278,7 @@
 
                 <span>
                   <i class="bi bi-github"></i> 
-                  <a href="{% url 'github_login' %}">
+                  <a href="{% url 'github_login' %}" target="_blank" rel="noopener noreferrer">
                     add your github
                   </a>
                 </span>
@@ -269,7 +299,7 @@
             {% if creator_profile.creator_personal_website|length > 0 and creator_profile.creator_personal_website is not None %}
 
               <span style="padding-left: 12px;">
-                <i class="bi bi-link"></i> <a href="{{ creator_profile.creator_personal_website }}">
+                <i class="bi bi-link"></i> <a href="{{ creator_profile.creator_personal_website }}" target="_blank" rel="noopener noreferrer">
                   Personal Website
                 </a>
               </span>
@@ -293,7 +323,7 @@
 
               <span style="padding-left: 12px;">
                 <i class="bi bi-discord"></i> 
-                <a href="{{ creator_profile.creator_discord_website }}">
+                <a href="{{ creator_profile.creator_discord_website }}" target="_blank" rel="noopener noreferrer">
                   Discord
                 </a>
               </span>  
@@ -367,7 +397,7 @@
 
           <div class="project-desc">  
 
-            <p>
+            <p style="font-size: 17px;">
 
               {% if creator_profile.creator_description is not None and creator_profile.creator_description != '' %}
                 {{ creator_profile.creator_description }}
@@ -401,8 +431,8 @@
 
       </div>
 
-      <button id="test-one-button">Test One</button>
-      <button id="test-two-button">Test Two</button>
+      <!-- <button id="test-one-button">Test One</button>
+      <button id="test-two-button">Test Two</button> -->
 
       <br/>
 
@@ -428,8 +458,12 @@
           <p>
             Before creating a NFT, you must <b>complete</b> the following 2 steps:
             <ul>
-              <li>Add your name by going to <a href="{% url 'edit_user_profile' profile_id=profile_id %}">edit profile.</a> Also, add a nice description while your at it!</li>
-              <li>Add your github.</li> 
+              <li>Add your name by going to <a href="{% url 'edit_user_profile' profile_id=profile_id %}">edit profile.</a> Add a nice description while your at it!</li>
+              <li>
+                <b>
+                  Add and verify your github.
+                </b>
+              </li> 
             </ul>
             &#127882; <b>I know your excited</b>, and based on historical data, the above steps should only take you ~30 seconds to complete. 
           </p>

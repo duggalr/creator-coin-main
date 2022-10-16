@@ -72,7 +72,7 @@ class CreatorProfile(models.Model):
 class UserNft(models.Model):
   creator_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
   nft_name = models.CharField(max_length=2000, blank=True, null=True)
-  # nft_symbol = models.CharField(max_length=3, blank=True, null=True) # TODO:
+  nft_symbol = models.CharField(max_length=3, blank=True, null=True)
   nft_price = models.FloatField()
   nft_total_supply = models.IntegerField()
   nft_media_file = models.FileField()
