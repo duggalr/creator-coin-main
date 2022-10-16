@@ -1,0 +1,441 @@
+
+/* NAVBAR */
+
+/* .navbar-light .navbar-brand {
+  color: #333333;
+} */
+
+.navbar-brand{
+  /* font-family: 'Roboto', sans-serif; */
+  /* font-family: 'Raleway', sans-serif; */
+  /* font-family: 'Hubballi', cursive; */
+
+  /* font-family: 'Dancing Script', cursive; */
+  /* font-family: 'Fredoka', sans-serif; */
+  /* font-family: 'League Gothic', sans-serif; */
+  /* font-family: 'Lobster', cursive; */
+  /* font-family: 'Merriweather', serif; */
+  font-family: 'Pacifico', cursive;
+
+  /* font-weight: 600; */
+  font-size: 38px;
+
+  margin-left: 22px;
+  margin-top: 8px;
+  /* margin: 6px; */
+  
+
+}
+
+.navbar-brand a{
+  text-decoration: none;
+  /* color: black; */
+  color: #333333;
+}
+
+.navbar-brand a:hover{
+  color: black;
+}
+
+.navbar-profile-link{
+  margin-top: 8px;
+}
+
+/* .navbar-profile-link a{ */
+  /* font-size: 24px; */
+/* } */
+
+
+/* .navbar-profile-link a:hover{
+  color: lightblue;
+} */
+
+#main-nav-bar{
+  padding-right: 7%;
+}
+
+#main-nav-bar ul{
+  padding-top: 6px;
+  /* padding-right: 10%; */
+}
+
+.nav-link{
+  text-decoration: none;
+  color: black;
+  /* font-family: 'Raleway', sans-serif; */
+  /* font-family: 'Roboto', sans-serif; */
+  font-family: 'Hubballi', cursive;
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 6px;
+}
+
+.nav-link:hover{
+  text-decoration: underline;
+  cursor:pointer;
+  font-weight: 900;
+  color: black;
+}
+
+.nav-link:focus{
+  color: black;
+}
+
+
+
+/* Project Page */
+
+.main-body{
+  padding-left: 2.5%;
+  padding-top: 0.5%;
+  padding-right: 8%;
+  font-family: 'Hubballi', cursive;
+}
+
+.main-body .container{
+  /* padding-left: 8%;
+  padding-right: 5%;
+  padding-top: 3%; */
+  
+  padding-left: 4%;
+  padding-right: 2%;
+  padding-top: 2.5%;
+
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Hubballi', cursive;
+
+  /* Remove the next line if you want the span to appear next to the h1 */
+  /* justify-content: space-between; */
+  
+  /* border-bottom: 0.5px solid #000; */
+  /* padding: 10px 30px; */
+  /* padding-left: 12px; */
+}
+
+.project-header span {
+  font-size: 15.5px;
+}
+
+.project-fund-header{
+  margin-left: auto;
+}
+
+#project-token-price{
+  font-size: 14px;
+  /* font-weight: bold; */
+}
+
+.project-title{
+  font-size: 34px;
+  font-weight: 800;
+  color: black;
+}
+
+.project-title img{
+  /* border-radius: 21px; */
+  height: 50px;
+  width: 50px;
+}
+
+#project-fund-button{
+  width: 7em;
+  font-size: 15px;
+}
+
+
+.project-user-link{
+  font-size: 15px;
+  color: grey;
+}
+
+.project-token-detail{
+  float: right;
+  font-size: 16.5px;
+  color: grey;
+  width: 100%;
+}
+
+
+#project-links-section h4{
+  padding-left: 4%;
+}
+
+#project-links-section ul{
+  list-style-type: none;
+  padding-left: 6%;
+  
+}
+
+#project-links-section ul li{
+  font-size: 18px;
+  /* float: right; */
+}
+
+#project-links-section ul li:not(:last-child) { 
+  margin-bottom: 8px;  
+}
+
+.project-desc{
+  font-size: 16.5px;
+  color: black;
+  max-width: 45em;
+  /* border-bottom: 0.5px solid #000; */
+  /* padding-left: 12px; */
+  padding-top: 3%;
+  /* line-height: 1.5; */
+}
+
+
+
+
+#project-text-main{
+  padding-left: 3%;
+
+}
+
+
+a.link{
+  cursor: pointer;
+}
+
+
+
+.project-subheading-information{
+  display: flex;
+  align-items: center;
+
+}
+
+
+#project-progress-bar{
+  height: 15px; 
+  width: 50%; 
+  margin-left: auto;
+}
+
+
+
+
+ 
+/* HOME */
+#home-container{
+  padding-top: 3%;
+  font-family: 'Hubballi', cursive;
+  padding-left: 2%;
+}
+
+/* #home-container{
+  max-width: 30em;
+  font-size: 0px;
+} */
+
+.home-header{
+  font-size: 36px;
+  font-weight: bolder;
+  max-width: 17em;
+  color: black;
+}
+
+.home-description{
+  font-size: 17px;
+  max-width: 30em;
+  color: grey;
+}
+
+.home-buttons{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 3%;
+
+}
+
+.home-buttons button{
+  /* width: 8em; */
+  font-size: 20px;
+}
+
+.home-manifesto{
+  text-decoration: none;
+  color: #0a58ca;
+  /* font-size: 20px; */
+}
+
+/* .home-manifesto:hover{
+  text-decoration: underline;
+} */
+
+/* #home-right-column{
+  padding-right: 3%;
+} */
+
+#home_page_featured_image{
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+#home-left-column{
+  padding-top: 2%;
+}
+
+
+
+
+
+/* Explore Page */
+#explore-container-main{
+  font-family: 'Hubballi', cursive;  
+}
+
+#explore-header{
+  font-size: 30px;
+  font-weight: bolder;
+}
+
+#explore-paragraph{
+  font-size: 18px; 
+  /* font-weight: bolder; */
+}
+
+.card{
+  /* padding: 1.5em .5em .5em; */
+  /* border-radius: 2em; */
+  /* text-align: center; */
+  box-shadow: 0 3px 6px rgba(0,0,0,.2);
+  top: 0;
+  transition: top ease 0.5s;
+}
+
+.card:hover{
+  top: -5px;
+  cursor: pointer;
+}
+
+.card-header-div{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Hubballi', cursive;
+}
+
+#main-card-div{
+  padding-top: 10px;
+}
+
+
+
+/* Create Form Page */
+
+.container {
+  position: relative;
+}
+
+#nft_image_placeholder:hover{
+  cursor: pointer;
+}
+
+#nft_image_placeholder{
+  border: 0.8px dashed black;
+  width: 280px;
+
+  /* opacity: 1.0;
+  transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -webkit-transition: opacity 1s ease-in-out; */
+}
+
+/* #nft_image_placeholder:hover{
+  opacity: 3.0;
+  transition: opacity .55s ease-in-out;
+  -moz-transition: opacity .55s ease-in-out;
+  -webkit-transition: opacity .55s ease-in-out;
+} */
+
+
+
+.form-group.required .control-label:after { 
+  color: #d00;
+  content: "*";
+  position: absolute;
+  /* margin-left: 8px; */
+  /* top:7px; */
+}
+
+
+
+
+
+
+
+
+
+
+/* NEW CSS */
+
+/* Home Page */
+
+.word-changer{
+  text-decoration: underline;
+}
+
+/* .form-group.required .control-label:after { 
+  content:"*";
+  color:red;
+} */
+
+#home_page_nft{
+  font-size: 18px;
+  font-weight: 900;
+  padding-top: 6px;
+}
+
+
+
+
+.list-group-item.left-side,
+.list-group-item.right-side {
+  margin: 0 0 -1px;
+  float: left;
+  width: 50%;
+  border-bottom-width:0px;
+}
+
+.split-items .list-group-item.left-side{
+  border-top-right-radius:0px;
+  border-bottom-right-radius:0px;
+}
+
+.split-items .list-group-item.right-side{
+  border-top-left-radius:0px;
+  border-bottom-left-radius:0px;
+  border-bottom-right-radius:0px;
+  border-top-right-radius:4px;
+  border-left: 0;
+}
+
+
+
+
+/* Manifesto Section */
+.manifesto_section{
+  max-width: 40em;
+  font-family: 'Hubballi', cursive;
+  font-size: 17px;
+  /* line-height: 1.5em; */
+  padding-top: 25px;
+}
+
+#manifesto_header{
+  text-align: center;
+  font-family: 'Hubballi', cursive;
+  font-weight: 900;
+  
+}
+
+
+
+
