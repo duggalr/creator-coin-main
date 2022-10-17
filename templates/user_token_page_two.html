@@ -42,7 +42,7 @@
                 camera-orbit="250deg 85deg 125%"
                 shadow-intensity="1"
                 auto-rotate
-                rotation-per-second="450%"
+                rotation-per-second="250%"
                 style="width: 340px; height: 340px;" 
                 ></model-viewer>
 
@@ -56,15 +56,23 @@
               Launch your NFT
             </button> -->
 
-            <div style="padding-top: 10px;">
+            <div style="padding-top: 14px;">
 
-              <h4 style="display: inline;" style="font-weight: 800;">
+              <p style="display: inline; font-weight: 400; font-size: 22px; ">
                 {{ user_nft_obj.nft_name }}
-              </h4>
-
-              <div style="padding-top: 10px;"></div>
+              </p>
 
               {% if same_user is True %}
+
+                <span>
+                  | <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
+                  |
+                  <i class="bi bi-trash-fill" style="color: red;"></i> 
+                  <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
+                  <strong>Delete NFT</strong>
+                  </a>
+
+                </span>
 
                 <!-- <button class="btn btn-primary rounded-pill" id="launch-nft">
                   Launch your NFT
@@ -75,6 +83,9 @@
                 <a href="{% url 'update_token_form' %}">Edit Token Settings</a> -->
                   
               {% endif %}
+
+              <div style="padding-top: 3px;"></div>
+
 
             </div>
 
@@ -93,18 +104,22 @@
 
             <p style="font-size: 18px;">
 
-              <strong>Total Supply:</strong> {{ user_nft_obj.nft_total_supply }} 
+              <!-- <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
+              | -->
+              <strong>Total Sold:</strong> 0 
               |
-              <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
-
+              <strong>Total Supply:</strong> {{ user_nft_obj.nft_total_supply }} 
+            
             </p>
 
             <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a> -->
-            <button class="btn btn-primary rounded-pill" id="launch-nft">Launch your NFT</button>
-              &nbsp;
-            <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
 
-              
+            <!-- <button class="btn btn-primary rounded-pill" id="launch-nft-button">Launch your NFT</button>
+              &nbsp;
+            <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a> -->
+
+            <!-- <a href="{% url 'update_token_form' %}">Delete NFT</a> -->
+
           {% else %}
 
             <model-viewer 
@@ -122,29 +137,33 @@
           {% endif %}
     
 
-          {% if user_nft_obj is not None %}
 
-            <!-- TODO: add progress-bar, etc. -->
-            
-            <!-- <span class="badge rounded-pill text-bg-secondary" style="font-size: 14px;">
-              Active NFT Sale!
-            </span> -->
+          {% if same_user is True %}
 
-          {% else %}
+             {% if user_nft_obj is not None %}
 
-            {% if same_user is True %}
+              <button class="btn btn-primary rounded-pill" id="launch-nft-button">Launch your NFT</button>
+              &nbsp;
+              <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>`
 
-              {% if user_nft_obj is not None %}
-
-                <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
+                <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
                 &nbsp;
-                <a href="{% url 'update_token_form' %}">Edit Token Settings</a>
+                <a href="{% url 'update_token_form' %}">Edit Token Settings</a> -->
                 
-              {% endif %}
+            {% else %}
 
               <span class="badge rounded-pill text-bg-secondary" style="font-size: 15px;">
                 No active NFT sale. Maybe you should launch one?
               </span>
+
+            {% endif %}
+
+          {% else %}
+            
+            {% if user_nft_obj is not None %}
+              
+              <!-- TODO: purchase button here -->
+              <button>Buy NFT</button>
 
             {% else %}
 

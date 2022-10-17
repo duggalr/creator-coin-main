@@ -2,8 +2,16 @@ import json #to save the output in a JSON file
 import secrets
 import solcx
 from web3 import Web3
-
 import magic
+
+import nft_storage
+from nft_storage.api import nft_storage_api
+from nft_storage.model.error_response import ErrorResponse
+from nft_storage.model.upload_response import UploadResponse
+from nft_storage.model.unauthorized_error_response import UnauthorizedErrorResponse
+from nft_storage.model.forbidden_error_response import ForbiddenErrorResponse
+
+
 
 
 
@@ -149,5 +157,49 @@ def check_if_three_dim_model(f):
 
 # check_if_three_dim_model()
 
+
+
+def store_file_in_ipfs():
+  # Defining the host is optional and defaults to https://api.nft.storage
+  # See configuration.py for a list of all supported configuration parameters.
+  configuration = nft_storage.Configuration(
+      host = "https://api.nft.storage"
+  )
+
+  # The client must configure the authentication and authorization parameters
+  # in accordance with the API server security policy.
+  # Examples for each auth method are provided below, use the example that
+  # satisfies your auth use case.
+
+  # Configure Bearer authorization (JWT): bearerAuth
+  configuration = nft_storage.Configuration(
+      access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQ5MzU0ZWMxYUFFNjA2ZDhlZERhODUxNDdFRGJmMjkxMGYxYUY3MjciLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2NTk2OTE2MDQxOCwibmFtZSI6IkNyZWF0b3JDb2luIE1haW4ifQ.L2-03ymr8GwJLft-lhePbu3NFX0pPk7TyaRGCd96WiY'
+  )
+
+  # Enter a context with an instance of the API client
+  with nft_storage.ApiClient(configuration) as api_client:
+      # Create an instance of the API class
+      api_instance = nft_storage_api.NFTStorageAPI(api_client)
+      body = open('/Users/rahul/Desktop/Screen Shot 2022-10-16 at 11.47.51 AM.png', 'rb') # file_type | 
+
+      # example passing only required values which don't have defaults set
+      try:
+          # Store a file
+          api_response = api_instance.store(body=body, _check_return_type=False)
+          print(api_response)
+          if api_response['ok'] is True:
+            uploaded_data = api_response['value']
+            ipfs_cid = uploaded_data['cid']
+            return True, ipfs_cid
+          
+          else:
+            return False, None
+
+      except nft_storage.ApiException as e:
+          print("Exception when calling NFTStorageAPI->store: %s\n" % e)
+          return False, None
+
+
+# store_file_in_ipfs()
 
 

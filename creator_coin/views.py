@@ -578,7 +578,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
           # print('uploaded-file:', uploaded_file)
           
           user_pk_address = request.POST['user_obj']
-          # print('user-obj:', user_pk_address)
+          print('user-obj:', user_pk_address)
           
           # TODO: can this user_pk_address return not found or invalid value?
           user_object = Web3User.objects.get(user_pk_address=user_pk_address)
@@ -753,6 +753,37 @@ def verify_user_profile(request):
     return JsonResponse({'success': True})
   
   return JsonResponse({'success': False})
+
+
+
+def delete_non_minted_nft(request):
+  current_user_pk_address = request.user.user_pk_address
+  user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  creator_profile = CreatorProfile.objects.get(user_obj=user_object)
+  # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
+  UserNft.objects.filter(creator_obj=creator_profile).delete()
+  
+  return redirect('user_token_page', profile_id=creator_profile.id)
+
+
+
+def get_minted_nft_metadata(request):
+  current_user_pk_address = request.user.user_pk_address
+  user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  creator_profile = CreatorProfile.objects.get(user_obj=user_object)
+  user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
+  return JsonResponse({
+    'nft_name': user_nft_obj.nft_name,
+    'nft_symbol': user_nft_obj.nft_symbol,
+    'nft_price': user_nft_obj.nft_price,
+    'nft_total_supply': user_nft_obj.nft_total_supply,
+    'nft_media_file': user_nft_obj.nft_media_file.url
+  })
+
+
+
+def upload_nft_metadata(request):
+  pass
 
 
 

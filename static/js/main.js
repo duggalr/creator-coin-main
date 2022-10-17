@@ -2,9 +2,16 @@ const API_HOST = 'http://127.0.0.1:7500/'
 
 let ethersProvider;
 
-// let ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+if (window.ethereum){
+  
+  // TODO: 
+    // 'any' refers to any network 
+    // will this approach mess up the code below?
+  ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
 
+}
 
+ 
 // let web3;
 // let user_account_pk_address;
 
@@ -519,6 +526,25 @@ const testTwo = async (web3js, bytecode, abi) => {
 }
 
 
+function getNFTData(){
+
+  return new Promise(function(){
+    
+    // fetch metadata (ajax-request)
+    fetch(API_HOST + "get-nft-metadata/")
+    .then(response => response.json())
+    .then(json => {
+      // console.log('js:', json)
+      return json;
+
+      
+    })
+
+  })
+
+}
+
+
 const mainTestThree = async (bytecode, abi) => {
 
   // var mainProvider = await ethers.getDefaultProvider();
@@ -540,16 +566,33 @@ const mainTestThree = async (bytecode, abi) => {
     ethersProvider.getSigner(accounts[0])
   ); 
 
-  collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
-  // let transHash = await collectiblesContract.getDeployTransaction();
-  // console.log('trans-hash:', transHash);
-  console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+  let nftMetaData = await getNFTData();
 
-  await collectiblesContract.deployTransaction.wait();
+  // TODO: AJAX request to upload the metadata to IPFS, save URL, send as response to here and go from there
+ 
+  // TODO: below after the IPFS-URL is retrieved and saved in DB, under nft 
+  // await collectiblesFactory.deploy(
+  //   nftMetaData['nft_name'],
+  //   nftMetaData['nft_symbol'],
+  //   nftMetaData['nft_total_supply'],
+  //   20, // max-token-sale-per-purchase
+  //   Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
+
+  // )
+
+  // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
+
+    
+  // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
+  // // let transHash = await collectiblesContract.getDeployTransaction();
+  // // console.log('trans-hash:', transHash);
+  // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+
+  // await collectiblesContract.deployTransaction.wait();
   
-  // console.log(
-  //   `Contract mined! address: ${collectiblesContract.address} transactionHash: ${collectiblesContract.deployTransaction.hash}`,
-  // );
+  // // console.log(
+  // //   `Contract mined! address: ${collectiblesContract.address} transactionHash: ${collectiblesContract.deployTransaction.hash}`,
+  // // );
 
 }
 
@@ -570,24 +613,23 @@ const mainTestFour = async () => {
 
 
 // TODO: deploy on goerli testnet with signature and interact (purchase/fetch-data, etc.) with contract through webapp
-$( "#test-one-button" ).click(async () => {
-
+// $( "#test-one-button" ).click(async () => {
+$( "#launch-nft-button" ).click(async () => {
+  
   fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
   .then(response => response.json())
   .then(json => {
     var bytecode = json["contracts"]["NFTMain.sol"]["CreatorNFT"]["evm"]["bytecode"]["object"];
     var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["CreatorNFT"]["metadata"] )["output"]["abi"];
 
-    // console.log('bytecode:', bytecode);
-    // console.log('abi:', abi);
-  
+    console.log('bytecode:', bytecode);
+    console.log('abi:', abi);
 
-    // testTwo('', bytecode, abi);
+    // // testTwo('', bytecode, abi);
     mainTestThree(bytecode, abi);
-    // mainTestFour()
+    // // mainTestFour()
 
   })
-
   
   // console.log('eth-selected-addr:', ethereum.selectedAddress);
   // // testOne()

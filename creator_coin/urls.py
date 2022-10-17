@@ -24,6 +24,12 @@ urlpatterns = [
   # re_path(r'^create-nft/$', RedirectView.as_view(url = reverse_lazy('create_token_form') )),
   path('update-nft/', views.update_token_form, name='update_token_form'),
  
+  path('delete-nft/', views.delete_non_minted_nft, name='delete_non_minted_nft'),
+
+
+  path('get-nft-metadata/', views.get_minted_nft_metadata, name='get_minted_nft_metadata'),
+
+
   path('create-profile/', views.create_profile, name='create_profile'),
   # re_path(r'^create-profile/$', RedirectView.as_view(url = reverse_lazy('create_profile') )),
 
