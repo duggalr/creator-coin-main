@@ -443,7 +443,7 @@ class LoginView(APIView):
             saved_nonce_obj = UserNonce.objects.get(user=user_obj)
             saved_nonce = saved_nonce_obj.nonce
 
-            message = "\nBy signing this message, you will sign the randomly generated nonce. This will help complete your registration to the platform. \n\nNonce: " + saved_nonce + " \n\nWallet Address: " + user_pk_address
+            message = "\nBy signing this message, you will sign the randomly generated nonce.  \n\nNonce: " + saved_nonce + " \n\nWallet Address: " + user_pk_address
             encode_msg = encode_defunct(text=message)
 
             recovered_signed_address = ( w3.eth.account.recover_message(encode_msg, signature=user_nonce_signature) )
@@ -775,15 +775,42 @@ def get_minted_nft_metadata(request):
   return JsonResponse({
     'nft_name': user_nft_obj.nft_name,
     'nft_symbol': user_nft_obj.nft_symbol,
-    'nft_price': user_nft_obj.nft_price,
+    'nft_price': str(user_nft_obj.nft_price),
     'nft_total_supply': user_nft_obj.nft_total_supply,
-    'nft_media_file': user_nft_obj.nft_media_file.url
+    'nft_media_file': user_nft_obj.nft_media_file.url,
+    'nft_ipfs_url': user_nft_obj.nft_ipfs_url
   })
 
 
 
-def upload_nft_metadata(request):
-  pass
+def save_nft_metadata(request):
+  current_user_pk_address = request.user.user_pk_address
+  user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  creator_profile = CreatorProfile.objects.get(user_obj=user_object)
+  user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
+
+  ipfs_uploaded, ipfs_cid = main_utils.store_file_in_ipfs(user_nft_obj)
+  print('ipfs-res:', ipfs_uploaded, ipfs_cid)
+
+  if ipfs_uploaded:
+    user_nft_obj.nft_ipfs_url = "ipfs://" + ipfs_cid
+    user_nft_obj.save()
+
+    return JsonResponse({'success': True})
+
+  else:
+    return JsonResponse({'success': False, 'error_message': 'Could not upload file to IPFS.'})
+
+
+# handle-eth-account-change
+def handle_account_change(request):
+  # print(request)
+  # print(request.user)
+  if request.user.is_anonymous is False:  # TODO: user was logged in; let's log out the previous user and redirect to home?
+    return JsonResponse({'redirect': True})
+  else:
+    return JsonResponse({'redirect': False})
+  
 
 
 

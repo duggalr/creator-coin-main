@@ -3,6 +3,7 @@ import secrets
 import solcx
 from web3 import Web3
 import magic
+import os
 
 import nft_storage
 from nft_storage.api import nft_storage_api
@@ -12,6 +13,10 @@ from nft_storage.model.unauthorized_error_response import UnauthorizedErrorRespo
 from nft_storage.model.forbidden_error_response import ForbiddenErrorResponse
 
 
+from dotenv import load_dotenv
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv( os.path.join(BASE_DIR, 'creator_coin_new/.env') )
 
 
 
@@ -159,47 +164,49 @@ def check_if_three_dim_model(f):
 
 
 
-def store_file_in_ipfs():
-  # Defining the host is optional and defaults to https://api.nft.storage
-  # See configuration.py for a list of all supported configuration parameters.
+def store_file_in_ipfs(obj):
   configuration = nft_storage.Configuration(
-      host = "https://api.nft.storage"
+    host = "https://api.nft.storage"
   )
 
-  # The client must configure the authentication and authorization parameters
-  # in accordance with the API server security policy.
-  # Examples for each auth method are provided below, use the example that
-  # satisfies your auth use case.
-
-  # Configure Bearer authorization (JWT): bearerAuth
   configuration = nft_storage.Configuration(
-      access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQ5MzU0ZWMxYUFFNjA2ZDhlZERhODUxNDdFRGJmMjkxMGYxYUY3MjciLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2NTk2OTE2MDQxOCwibmFtZSI6IkNyZWF0b3JDb2luIE1haW4ifQ.L2-03ymr8GwJLft-lhePbu3NFX0pPk7TyaRGCd96WiY'
+    access_token = os.getenv("nft_storage_accesss_token")
   )
 
-  # Enter a context with an instance of the API client
   with nft_storage.ApiClient(configuration) as api_client:
-      # Create an instance of the API class
-      api_instance = nft_storage_api.NFTStorageAPI(api_client)
-      body = open('/Users/rahul/Desktop/Screen Shot 2022-10-16 at 11.47.51 AM.png', 'rb') # file_type | 
+    api_instance = nft_storage_api.NFTStorageAPI(api_client)
 
-      # example passing only required values which don't have defaults set
-      try:
-          # Store a file
-          api_response = api_instance.store(body=body, _check_return_type=False)
-          print(api_response)
-          if api_response['ok'] is True:
-            uploaded_data = api_response['value']
-            ipfs_cid = uploaded_data['cid']
-            return True, ipfs_cid
-          
-          else:
-            return False, None
+    obj_fp = BASE_DIR + obj.nft_media_file.url
+    contents = open(obj_fp, 'rb')
 
-      except nft_storage.ApiException as e:
-          print("Exception when calling NFTStorageAPI->store: %s\n" % e)
-          return False, None
+    # body = open('/Users/rahul/Desktop/Screen Shot 2022-10-16 at 11.47.51 AM.png', 'rb') # file_type | 
+
+    # example passing only required values which don't have defaults set
+    try:
+      # Store a file
+      api_response = api_instance.store(body=contents, _check_return_type=False)
+      print('api-res', api_response)
+      if api_response['ok'] is True:
+        uploaded_data = api_response['value']
+        ipfs_cid = uploaded_data['cid']
+        return True, ipfs_cid
+      else:
+        return False, None
+
+    except nft_storage.ApiException as e:
+      print("Exception when calling NFTStorageAPI->store: %s\n" % e)
+      return False, None
 
 
-# store_file_in_ipfs()
+# import os
+
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "creator_coin_new.settings")
+
+# from models import UserNft
+
+# obj = UserNft.objects.all()[1]
+# store_file_in_ipfs(obj)
+
+
 
 

@@ -28,6 +28,10 @@ urlpatterns = [
 
 
   path('get-nft-metadata/', views.get_minted_nft_metadata, name='get_minted_nft_metadata'),
+  path('save-nft-metadata/', views.save_nft_metadata, name='save_nft_metadata'),
+  
+  path('handle-account-change/', views.handle_account_change, name='handle_account_change'),
+
 
 
   path('create-profile/', views.create_profile, name='create_profile'),

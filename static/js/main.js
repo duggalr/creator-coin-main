@@ -136,7 +136,7 @@ const onConnect = async () => {
 
             // console.log('user-nonce: ' + user_nonce + ' user-pk: ' + user_account_pk_address);
 
-            var message = "\nBy signing this message, you will sign the randomly generated nonce. This will help complete your registration to the platform. \n\nNonce: " + user_nonce + " \n\nWallet Address: " + user_account_pk_address
+            var message = "\nBy signing this message, you will sign the randomly generated nonce.  \n\nNonce: " + user_nonce + " \n\nWallet Address: " + user_account_pk_address
             signature = await currentProvider.request({
               method: 'personal_sign',
               params: [ message, user_account_pk_address ],
@@ -402,6 +402,27 @@ const mintToken = async () => {
 
 
 
+function handleAccountChange(){
+
+  return new Promise(function(){
+    
+    // fetch metadata (ajax-request)
+    fetch(API_HOST + "handle-account-change/")
+    .then(response => response.json())
+    .then(json => {
+
+      if (json['redirect'] === true){
+        window.location.href = 'http://127.0.0.1:7500/logout'
+      }
+
+    })
+
+  })
+
+}
+
+
+
 if (window.ethereum){
 
   window.ethereum.on('accountsChanged', (accounts) => {
@@ -411,8 +432,8 @@ if (window.ethereum){
     // if (accounts.length > 0) {
     //   var current_account = accounts[0]
     // }
-  
-    window.location.href = 'http://127.0.0.1:7500/logout'
+
+    handleAccountChange();
   
   });
   
@@ -528,16 +549,32 @@ const testTwo = async (web3js, bytecode, abi) => {
 
 function getNFTData(){
 
-  return new Promise(function(){
+  return new Promise(function(resolve, reject){
     
     // fetch metadata (ajax-request)
     fetch(API_HOST + "get-nft-metadata/")
     .then(response => response.json())
     .then(json => {
       // console.log('js:', json)
-      return json;
-
+      resolve(json);
       
+    })
+
+  })
+
+}
+
+
+function saveNFTData() {
+
+  return new Promise(function(resolve, reject){
+    
+    // fetch metadata (ajax-request)
+    fetch(API_HOST + "save-nft-metadata/")
+    .then(response => response.json())
+    .then(json => {
+      // console.log('js:', json)
+      resolve(json);
     })
 
   })
@@ -566,7 +603,27 @@ const mainTestThree = async (bytecode, abi) => {
     ethersProvider.getSigner(accounts[0])
   ); 
 
-  let nftMetaData = await getNFTData();
+  const nftSaveResp = await saveNFTData();
+
+  console.log('nft-save-resp:', nftSaveResp);
+
+  if (nftSaveResp['success'] === true){  // deploy the token
+
+    let nftMetaData = await getNFTData();
+
+    await collectiblesFactory.deploy(
+      nftMetaData['nft_name'],
+      nftMetaData['nft_symbol'],
+      nftMetaData['nft_total_supply'],
+      20, // max-token-sale-per-purchase
+      Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
+      nftMetaData['nft_ipfs_url']
+    )
+
+  } else { // TODO: need to display error explaining what happened
+
+  }
+
 
   // TODO: AJAX request to upload the metadata to IPFS, save URL, send as response to here and go from there
  

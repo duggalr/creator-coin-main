@@ -78,7 +78,7 @@ class UserNft(models.Model):
   nft_media_file = models.FileField()
   nft_created_date = models.DateTimeField(auto_now_add=True)
   nft_updated_at = models.DateTimeField(auto_now=True)
-  # nft_ipfs_url = models.URLField() # TODO: 
+  nft_ipfs_url = models.CharField(max_length=2000, blank=True, null=True)
 
   
 class GithubProfile(models.Model):
