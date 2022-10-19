@@ -81,11 +81,12 @@ class UserNft(models.Model):
   nft_updated_at = models.DateTimeField(auto_now=True)
   nft_ipfs_url = models.CharField(max_length=2000, blank=True, null=True)
 
+  nft_deployed_date = models.DateTimeField(auto_now_add=True)
   nft_deployed = models.BooleanField(default=False)
   nft_deployed_transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
   nft_deployed_contract_data = models.CharField(max_length=2000, blank=True, null=True)
-  nft_deployed_nonce = models.IntegerField()
-  nft_deployed_chain_id = models.IntegerField()
+  nft_deployed_nonce = models.IntegerField(default=-1)
+  nft_deployed_chain_id = models.IntegerField(default=-1)
 
 
 class GithubProfile(models.Model):

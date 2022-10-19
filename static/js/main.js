@@ -590,6 +590,7 @@ function saveNFTLaunchedData(contractData){
       type: 'POST',
       url: API_HOST + "nft-launch-final/",
       data: {
+        csrfmiddlewaretoken: csrfToken,
         'nft_transaction_hash': contractData['hash'],
         'nft_deployed_data': contractData['data'],
         'nft_deployed_nonce': contractData['nonce'],
@@ -657,8 +658,7 @@ const mainTestThree = async (bytecode, abi) => {
 
     // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
     // // 0x68Ea1a2504a4287900E51Db51658F21704F09720
-    saveNFTLaunchedData(collectiblesContract.deployTransaction)
-
+    saveNFTLaunchedData(collectiblesContract.deployTransaction);
 
   // let transHash = await collectiblesContract.getDeployTransaction();
   // console.log('trans-hash:', transHash);

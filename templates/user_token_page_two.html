@@ -142,13 +142,24 @@
 
              {% if user_nft_obj is not None %}
 
-              <button class="btn btn-primary rounded-pill" id="launch-nft-button">Launch your NFT</button>
-              &nbsp;
-              <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
+              {% if user_nft_obj.nft_deployed is True %}
 
-                <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
+                <button class="btn btn-primary rounded-pill" id="launch-nft-button">
+                  Cancel NFT  Sale
+                </button>
+
+              {% else %}
+
+                <button class="btn btn-primary rounded-pill" id="launch-nft-button">Launch your NFT</button>
                 &nbsp;
-                <a href="{% url 'update_token_form' %}">Edit Token Settings</a> -->
+                <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
+
+                  <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
+                  &nbsp;
+                  <a href="{% url 'update_token_form' %}">Edit Token Settings</a> -->
+
+              {% endif %}
+              
                 
             {% else %}
 
@@ -162,8 +173,7 @@
             
             {% if user_nft_obj is not None %}
               
-              <!-- TODO: purchase button here -->
-              <button>Buy NFT</button>
+              <button id="buy-nft">Buy NFT</button>
 
             {% else %}
 
@@ -526,6 +536,8 @@
  
   <script>
 
+    const csrfToken = '{{ csrf_token }}';
+
     const nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
 
     $( "#user_create_nft" ).click(function() {
@@ -561,13 +573,14 @@
     // })
 
 
-    function off(){
-      document.getElementById("overlay").style.display = "none";
-    }
+    // function off(){
+    //   document.getElementById("overlay").style.display = "none";
+    // }
 
-    function on(){
-      document.getElementById("overlay").style.display = "block";
-    }
+    // function on(){
+    //   document.getElementById("overlay").style.display = "block";
+    // }
+    
     
 
 

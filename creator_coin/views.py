@@ -144,6 +144,9 @@ def user_token_page(request, profile_id):
     if file_extension in three_dim_file_types:
       user_three_dim_upload = True
 
+  # nft_currently_deployed = True
+  # if user_nft_obj is not None:
+    
   return render(request, 'user_token_page_two.html', {
     'creator_profile': creator_profile_obj,
     'same_user': same_user,
@@ -154,6 +157,9 @@ def user_token_page(request, profile_id):
   })
 
  
+
+
+
   
 # TODO: authenticate request (request user is same as owner of NFT and go from there) 
 def mint_new_nft_token(request, profile_id):
