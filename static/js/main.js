@@ -569,7 +569,6 @@ function saveNFTData() {
 
   return new Promise(function(resolve, reject){
     
-    // fetch metadata (ajax-request)
     fetch(API_HOST + "save-nft-metadata/")
     .then(response => response.json())
     .then(json => {
@@ -580,6 +579,34 @@ function saveNFTData() {
   })
 
 }
+
+
+
+function saveNFTLaunchedData(contractData){
+
+  return new Promise(function(resolve, reject){
+
+    $.ajax({
+      type: 'POST',
+      url: API_HOST + "nft-launch-final/",
+      data: {
+        'nft_transaction_hash': contractData['hash'],
+        'nft_deployed_data': contractData['data'],
+        'nft_deployed_nonce': contractData['nonce'],
+        'nft_deployed_chain_id': contractData['chainId']
+      },
+      success: function (response) {
+        console.log('res:', response);
+        // TODO: refresh page?
+  
+      }
+  
+    })
+
+  })
+
+}
+
 
 
 const mainTestThree = async (bytecode, abi) => {
@@ -602,8 +629,15 @@ const mainTestThree = async (bytecode, abi) => {
     bytecode,
     ethersProvider.getSigner(accounts[0])
   ); 
+  
+  document.getElementById("overlay").style.display = "block";
+
+  // document.getElementById("spinning_border").style.display = ''
+  // document.getElementById("overlay").style.display = ''
 
   const nftSaveResp = await saveNFTData();
+
+  document.getElementById("overlay").style.display = "none";;
 
   console.log('nft-save-resp:', nftSaveResp);
 
@@ -611,7 +645,8 @@ const mainTestThree = async (bytecode, abi) => {
 
     let nftMetaData = await getNFTData();
 
-    await collectiblesFactory.deploy(
+    // Load a metamask signature
+    let collectiblesContract = await collectiblesFactory.deploy( 
       nftMetaData['nft_name'],
       nftMetaData['nft_symbol'],
       nftMetaData['nft_total_supply'],
@@ -620,10 +655,23 @@ const mainTestThree = async (bytecode, abi) => {
       nftMetaData['nft_ipfs_url']
     )
 
+    // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+    // // 0x68Ea1a2504a4287900E51Db51658F21704F09720
+    saveNFTLaunchedData(collectiblesContract.deployTransaction)
+
+
+  // let transHash = await collectiblesContract.getDeployTransaction();
+  // console.log('trans-hash:', transHash);
+  // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+
+    // if user signs above, send request to verify the launched-nft
+      // refresh page with views fetching associated etherscan data and buy-button being shown
+
+
   } else { // TODO: need to display error explaining what happened
 
-  }
-
+  }  
+ 
 
   // TODO: AJAX request to upload the metadata to IPFS, save URL, send as response to here and go from there
  

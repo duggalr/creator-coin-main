@@ -144,7 +144,7 @@
 
               <button class="btn btn-primary rounded-pill" id="launch-nft-button">Launch your NFT</button>
               &nbsp;
-              <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>`
+              <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
 
                 <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
                 &nbsp;
@@ -499,8 +499,31 @@
   <br/>
 
 
+  <!-- <div id="overlay">
+    <div class="w-100 d-flex justify-content-center align-items-center">
+      <div id="spinning_border" class="spinner-border" role="status" style="display: none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div> -->
 
+  <div id="overlay" style="display: none;">
+    <div id="overlay-text">
+      <div id="spinning_border" class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <!-- <strong>Loading...</strong> -->
+      &nbsp; NFT is getting ready for takeoff... &#128640;
+    </div>
+  </div>
 
+  <!-- TODO: add loading placeholder on deploy and go from there -->
+  <!-- <button onclick="on()">Turn on overlay effect</button> -->
+
+  <!-- <br/>
+  <br/> -->
+
+ 
   <script>
 
     const nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
@@ -537,6 +560,14 @@
 
     // })
 
+
+    function off(){
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function on(){
+      document.getElementById("overlay").style.display = "block";
+    }
     
 
 

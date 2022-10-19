@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 # from django.urls import reverse
 
 from rest_framework.views import APIView 
@@ -815,5 +816,31 @@ def handle_account_change(request):
 
 
 
+@require_http_methods(["POST"])
+def nft_launch_final(request):
+  current_user_pk_address = request.user.user_pk_address
+  user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  creator_profile = CreatorProfile.objects.get(user_obj=user_object)
+  user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
 
- 
+  # ipfs_uploaded, ipfs_cid = main_utils.store_file_in_ipfs(user_nft_obj)
+  # print('ipfs-res:', ipfs_uploaded, ipfs_cid)
+
+  nft_transaction_hash = request.POST['nft_transaction_hash']
+  nft_deployed_data = request.POST['nft_deployed_data']
+  nft_deployed_nonce = request.POST['nft_deployed_nonce']
+  nft_deployed_chain_id = request.POST['nft_deployed_chain_id']
+
+  user_nft_obj.nft_deployed = True
+  user_nft_obj.nft_deployed_transaction_hash = nft_transaction_hash
+  user_nft_obj.nft_deployed_contract_data = nft_deployed_data
+  user_nft_obj.nft_deployed_nonce = nft_deployed_nonce
+  user_nft_obj.nft_deployed_chain_id = nft_deployed_chain_id
+  user_nft_obj.save()
+
+  return JsonResponse({'success': True})
+
+
+
+
+
