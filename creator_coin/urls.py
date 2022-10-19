@@ -27,10 +27,12 @@ urlpatterns = [
   path('delete-nft/', views.delete_non_minted_nft, name='delete_non_minted_nft'),
 
 
+  path('fetch-nft-main-data/', views.fetch_nft_main_data, name='fetch_nft_main_data'),
   path('get-nft-metadata/', views.get_minted_nft_metadata, name='get_minted_nft_metadata'),
   path('save-nft-metadata/', views.save_nft_metadata, name='save_nft_metadata'),
   
   path('nft-launch-final/', views.nft_launch_final, name='nft_launch_final'),
+  
 
 
   path('handle-account-change/', views.handle_account_change, name='handle_account_change'),

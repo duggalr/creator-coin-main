@@ -836,15 +836,33 @@ def nft_launch_final(request):
   nft_deployed_data = request.POST['nft_deployed_data']
   nft_deployed_nonce = request.POST['nft_deployed_nonce']
   nft_deployed_chain_id = request.POST['nft_deployed_chain_id']
+  nft_contract_address = request.POST['nft_contract_address']
 
   user_nft_obj.nft_deployed = True
   user_nft_obj.nft_deployed_transaction_hash = nft_transaction_hash
   user_nft_obj.nft_deployed_contract_data = nft_deployed_data
   user_nft_obj.nft_deployed_nonce = nft_deployed_nonce
   user_nft_obj.nft_deployed_chain_id = nft_deployed_chain_id
+  user_nft_obj.nft_deployed_contract_address = nft_contract_address
   user_nft_obj.save()
 
   return JsonResponse({'success': True})
+
+
+
+
+def fetch_nft_main_data(request):
+  current_user_pk_address = request.user.user_pk_address
+  user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  creator_profile = CreatorProfile.objects.get(user_obj=user_object)
+  user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
+
+  nft_contract_address = user_nft_obj.nft_deployed_contract_address
+  return JsonResponse({'nft_contract_address': nft_contract_address})
+
+  # fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
+  # f = open()
+
 
 
 

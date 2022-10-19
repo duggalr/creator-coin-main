@@ -189,6 +189,10 @@
         </div>
         
 
+        <!-- TODO: delete afterwards -->
+        <button id="buy-nft">Buy NFT</button>
+         
+
         <div class="col-8" id="project-text-main">
 
           <div class="project-header">
@@ -530,13 +534,17 @@
   <!-- TODO: add loading placeholder on deploy and go from there -->
   <!-- <button onclick="on()">Turn on overlay effect</button> -->
 
-  <!-- <br/>
-  <br/> -->
+  
+  <br/>
+  <!-- <br/> -->
+
 
  
   <script>
 
     const csrfToken = '{{ csrf_token }}';
+    const mainContractAddress = '{{ user_nft_obj.nft_deployed_contract_address }}'
+
 
     const nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
 
