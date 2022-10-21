@@ -865,12 +865,13 @@ function get_nft_bytecode_abi(){
 
 
 
-function get_nft_contract_address(){
+function get_nft_contract_address(creatorProfileID){
 
   return new Promise(function(resolve, reject){
     
     // fetch metadata (ajax-request)
-    fetch(API_HOST + "fetch-nft-main-data/")
+    
+    fetch(API_HOST + "fetch-nft-main-data/" + creatorProfileID)
     .then(response => response.json())
     .then(json => {
 
@@ -892,31 +893,41 @@ const buyNFTMain = async () => {
   var contractABI = bytecodeDict['abi']
   var contractByteCode = bytecodeDict['bytecode']
   
-  // var contractData = await get_nft_contract_address();
-  // var contractAddress = contractData['nft_contract_address']
+  // console.log('href:', window.location.href )
+  // var profileUrl = window.location.href
+  // var profileID = profileUrl.split("/")
+  // console.log(profileID)
 
+  var contractData = await get_nft_contract_address(creatorProfileID);
+  // console.log('ct-data:', contractData);
+  var mainContractAddress = contractData['nft_contract_address'];
+  console.log('main-contract-addr:', mainContractAddress)
+  
   var existingContract = new ethers.Contract(
     mainContractAddress,
     contractABI,
     ethersProvider.getSigner()
-  );
-
+  ); 
+ 
   console.log('existing-contract:', existingContract);
   
   var tokPrice = await existingContract.getTokenPrice();
   console.log('tok-price:', tokPrice);
-
-  // TODO: enter the correct price and go from there <-- ensure buy is good and then, finalize all; (project-log/share only thing left)
+  console.log('tok-number:', ethers.utils.formatEther( tokPrice ) )
+    
   var numTokens = 1;
-  let result = await existingContract.safeMint(numTokens, {'value': 1120000000000000000});
+  let result = await existingContract.safeMint(numTokens, {'value': "1200000000000000000"});
   // result = await existingContract.wait();
   console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
 
+  // TODO: 
+    // buy --> balance needs to be deducted from current user and platform-address needs to receive money
+      // ensure this is correct and go from there
+
+ 
   // var tokMaxSupply = await existingContract.getMaxTokenSupply();
   // console.log('tok-supply:', tokMaxSupply);
-
   
-
   
   // fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
   // .then(response => response.json())

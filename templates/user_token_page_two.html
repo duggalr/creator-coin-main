@@ -173,7 +173,7 @@
             
             {% if user_nft_obj is not None %}
               
-              <button id="buy-nft">Buy NFT</button>
+              <!-- <button id="buy-nft">Buy NFT</button> -->
 
             {% else %}
 
@@ -189,7 +189,8 @@
         </div>
         
 
-        <!-- TODO: delete afterwards -->
+        <!-- TODO: delete afterwards and add in approriate spot -->
+        <!-- what if user clicks this and isn't logged in? -->
         <button id="buy-nft">Buy NFT</button>
          
 
@@ -527,7 +528,7 @@
         <span class="visually-hidden">Loading...</span>
       </div>
       <!-- <strong>Loading...</strong> -->
-      &nbsp; NFT is getting ready for takeoff... &#128640;
+      &nbsp; Your NFT is getting ready for takeoff... &#128640;
     </div>
   </div>
 
@@ -544,6 +545,7 @@
 
     const csrfToken = '{{ csrf_token }}';
     const mainContractAddress = '{{ user_nft_obj.nft_deployed_contract_address }}'
+    const creatorProfileID = '{{ creator_profile.id }}'
 
 
     const nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')

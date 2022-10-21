@@ -66,7 +66,7 @@ contract CreatorNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnabl
     function safeMint(uint256 _numTokens) public payable {
       
         uint256 tokenId = _tokenIdCounter.current();
-        require( _numTokens > 0 && _numTokens <= _maxTokenPerSale, "Amount of tokens exceeds amount of tokens you can purchase in a single purchase.");
+        require( _numTokens > 0 && _numTokens <= _maxTokenPerSale, "Amount of NFTs exceeds the amount of NFTs you can purchase at a single time.");
         require(_maxTokenSupply >= tokenId + _numTokens, "Not enough tokens left to buy.");  // (tokenID+1) since tokenID starts at 0
         require(msg.value == _tokenPrice * _numTokens, "Amount of ether sent not correct.");  // require msg.value to be exactly correct
 
@@ -80,8 +80,8 @@ contract CreatorNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnabl
         uint256 _platformCost = (_platformFee * msg.value) / 100;
         uint256 _remainingValue = msg.value - _platformCost;
 
-        (bool platformSent, bytes memory platformData) = _platformAddress.call{value: _platformCost}("");  // send to platform
-        require(platformSent, "Failed to send Ether");
+        // (bool platformSent, bytes memory platformData) = _platformAddress.call{value: _platformCost}("");  // send to platform
+        // require(platformSent, "Failed to send Ether");
 
         (bool sent, bytes memory data) = _deployerAddress.call{value: _remainingValue}("");  // sent to creator
         require(sent, "Failed to send Ether");

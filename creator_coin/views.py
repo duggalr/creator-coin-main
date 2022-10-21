@@ -838,6 +838,8 @@ def nft_launch_final(request):
   nft_deployed_chain_id = request.POST['nft_deployed_chain_id']
   nft_contract_address = request.POST['nft_contract_address']
 
+  # print('nft-launch-post:', request.POST)
+
   user_nft_obj.nft_deployed = True
   user_nft_obj.nft_deployed_transaction_hash = nft_transaction_hash
   user_nft_obj.nft_deployed_contract_data = nft_deployed_data
@@ -849,16 +851,23 @@ def nft_launch_final(request):
   return JsonResponse({'success': True})
 
 
+ 
+# TODO: add profile-id to params for this url; fetch that object and go from them to implement buy (ensure handled well)
+def fetch_nft_main_data(request, profile_id):
+  print('pid:', profile_id)
+  creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+  # UserNft.objects.get()
+  user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
 
 
-def fetch_nft_main_data(request):
-  current_user_pk_address = request.user.user_pk_address
-  user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
-  creator_profile = CreatorProfile.objects.get(user_obj=user_object)
-  user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
+  # print( 'url:', request.build_absolute_uri() )
+  # current_user_pk_address = request.user.user_pk_address
+  # user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  # creator_profile = CreatorProfile.objects.get(user_obj=user_object)
+  # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
 
-  nft_contract_address = user_nft_obj.nft_deployed_contract_address
-  return JsonResponse({'nft_contract_address': nft_contract_address})
+  # nft_contract_address = user_nft_obj.nft_deployed_contract_address
+  return JsonResponse({'nft_contract_address': user_nft_obj.nft_deployed_contract_address})
 
   # fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
   # f = open()
