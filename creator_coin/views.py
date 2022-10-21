@@ -424,10 +424,12 @@ class UserNonceView(APIView):
     user_nonce_obj.save()
 
     rv = {}
+    rv['success'] = True
     rv['data'] = {'nonce': nonce}
     rv['message'] = 'user nonce created'
 
-    return Response(rv, status = status.HTTP_200_OK)
+    return JsonResponse(rv)
+    # return Response(rv, status = status.HTTP_200_OK)
 
 
 

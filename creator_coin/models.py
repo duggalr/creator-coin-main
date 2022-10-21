@@ -97,9 +97,6 @@ class UserNftTransactionHistory(models.Model):
   transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
 
 
-
-
-
 class GithubProfile(models.Model):
   user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
   github_username = models.CharField(max_length=2000)
