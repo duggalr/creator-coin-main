@@ -1,7 +1,6 @@
 const API_HOST = 'http://127.0.0.1:7500/'
 
 let ethersProvider;
-// let signer;
 let loginErrorModal;
 let loginErrorTwoModal;
 let loginErrorThreeModel;
@@ -15,8 +14,6 @@ if (loginModalExists != null){  // on homepage
 }
 
 
-
-// const requestNonce = async (user_account_pk_address) => {
 
 function requestNonce(user_account_pk_address){
 
@@ -89,7 +86,7 @@ const handleSignupButtonClick = async () => {
       let userNonceRes;
       try{
         userNonceRes = await requestNonce(user_account_pk_address);
-        console.log('user-nonce-res:', userNonceRes)
+        // console.log('user-nonce-res:', userNonceRes)
       } catch(error){  // user-nonce-request with response != 200 (rare situation)
         loginErrorThreeModel.show();
       }
@@ -155,13 +152,66 @@ const handleSignupButtonClick = async () => {
 
 
 
+function handleAccountChange(){
+
+  return new Promise(function(){
+    
+    // fetch metadata (ajax-request)
+    fetch(API_HOST + "handle-account-change/")
+    .then(response => response.json())
+    .then(json => {
+
+      if (json['redirect'] === true){
+        window.location.href = 'http://127.0.0.1:7500/logout'
+      }
+
+    })
+
+  })
+
+}
 
 
 
 
 
 
-// Listeners
+
+
+
+
+// Eth Listeners
+if (window.ethereum){
+
+  window.ethereum.on('accountsChanged', (accounts) => {
+
+    console.log('account-changed:', accounts);
+    handleAccountChange();
+  
+  });
+  
+}
+
+if (window.ethereum){
+
+  window.ethereum.on('chainChanged', (chainId) => {
+
+    console.log('chain-changed:', chainId);
+    // window.location.reload();
+    window.location.href = 'http://127.0.0.1:7500/logout';
+
+  })
+
+};
+
+
+
+
+
+
+
+
+// DOM Listeners
 
 var signupLinkClicked;
 $('#main-signup-login-button').on('click', function(){
@@ -174,6 +224,8 @@ $('#main-signup-login-button').on('click', function(){
   }
 
 })
+
+
 
 
 
