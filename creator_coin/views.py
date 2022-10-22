@@ -880,8 +880,15 @@ def fetch_nft_main_data(request, profile_id):
 
 
 
+# TODO: 
+  # is this not a secure way to 'save' an executed buy-transaction 
+  # rather, use etherscan api to fetch token-transactions
+    # use contract-function-call to fetch total-supply  
 @require_http_methods(["POST"])
 def save_nft_transaction_data(request):
+  """
+  Save a buy transaction that just occured for a specific NFT
+  """
   print('save-nft-post:', request.POST)
   
   profile_id = request.POST['profile_id']
@@ -900,6 +907,7 @@ def save_nft_transaction_data(request):
   nft_history_obj.save()
 
   return JsonResponse({'success': True})
+
 
 
 

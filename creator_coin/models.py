@@ -92,10 +92,16 @@ class UserNft(models.Model):
 
 # All purchases will be recorded here
   # after, can add transfers, etc. as well 
+# TODO: delete this table as it is not secure approach 
 class UserNftTransactionHistory(models.Model):
   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
   transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
   transaction_created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
+
+
+# class UserNftTotalSupply(models.Model):
+#   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
+#   total_sold = models.IntegerField()
 
 
 class GithubProfile(models.Model):
@@ -130,5 +136,12 @@ class UserBetaEmails(models.Model):
   user_email = models.EmailField()
 
 
+
+
+# TODO: 
+  # **Need to confirm chain-id on purchase and deployment 
+    # **can only sign if chain-id is mainnet (or specific testnet)** 
+
+ 
 
 
