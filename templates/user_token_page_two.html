@@ -288,14 +288,25 @@
                 </span> -->
               
               {% endif %}
+              
 
             </div>
 
           </div>
           
+          
           <p class="project-user-pk-address">
             <i class="bi bi-key-fill"></i> {{ creator_profile.user_obj.user_pk_address }}
+            <!-- <button id="post-update-button" style="margin-left: 13em;">Post Update</button> -->
           </p>
+
+          <!-- <div>
+            <p class="project-user-pk-address">
+              <i class="bi bi-key-fill"></i> {{ creator_profile.user_obj.user_pk_address }}
+            </p>
+            <button style="text-align: right;">Post Update</button>
+          </div> -->
+
 
 
           <div class="project-subheading-information">
@@ -387,6 +398,7 @@
             
           </div>
 
+          
           <div class="project-desc">  
 
             <p style="font-size: 17px;">
@@ -480,6 +492,64 @@
       &nbsp; Your NFT is getting ready for takeoff... &#128640;
     </div>
   </div>
+
+
+
+  <!-- Project Log Modal -->
+  <div class="modal" tabindex="-1" id="projectLogModal" style="font-family: 'Hubballi', cursive;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">&#9999; <strong>Post an Update</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+
+        <form method="post">{% csrf_token %}
+          
+          <div class="modal-body">
+          
+            <div class="mb-3">
+              <label for="log-title" class="form-label">
+                <strong>
+                  Project Title:
+                </strong>
+              </label>
+              <input type="text" class="form-control" id="log-title" name="log-title" placeholder="got to have a title...">
+            </div>
+
+            <!-- 
+              TODO:
+              - Finish project-log (create/delete/retrieve)
+              - add chain-id verification on deploy and purchase 
+              - modify contract to add platform payable address
+                - confirm everything works and then UI/3D-models
+            
+            -->
+
+            <div class="mb-3">
+              <label for="log-update" class="form-label">
+                <strong>
+                  Project Update:
+                </strong>
+              </label>
+              <textarea class="form-control" id="log-update" name="log-update" rows="5" placeholder="share an update..."></textarea>
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button id="project-log-update-button" type="submit" class="btn btn-info" style="color: white;">Submit</button>
+          </div>
+
+      </form>
+
+
+      </div>
+    </div>
+  </div>
+
 
   
   

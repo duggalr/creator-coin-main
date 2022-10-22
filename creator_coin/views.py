@@ -10,7 +10,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from rest_framework.authtoken.models import Token
 
-from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft, UserBetaEmails, UserNftTransactionHistory
+from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft, UserBetaEmails, UserNftTransactionHistory, CreatorProjectLog
 # from .serializers import Web3UserSerializer
 
 from requests_oauthlib import OAuth2Session
@@ -145,7 +145,30 @@ def user_token_page(request, profile_id):
   # if user_nft_obj is not None:
     
 
+  if request.method == 'POST':
+
+    print('post-data:', request.POST)
+
+    creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+  
+    current_user_pk_address = request.user.user_pk_address
+    if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
+      log_title = request.POST['log-title']
+      log_update = request.POST['log-update']
+      cl = CreatorProjectLog.objects.create(
+        creator_obj = creator_profile_obj,
+        log_title = log_title,
+        log_description = log_update
+      )
+      cl.save()
+
+      return redirect('user_token_page', profile_id=profile_id)
+
+
   nft_transaction_history = UserNftTransactionHistory.objects.filter(nft_obj=user_nft_obj)
+
+  
+  project_log_list = CreatorProjectLog.objects.filter(creator_obj=creator_profile_obj).order_by('-log_created_date')
 
   return render(request, 'user_token_page_two.html', {
     'creator_profile': creator_profile_obj,
@@ -154,7 +177,8 @@ def user_token_page(request, profile_id):
     'github_profile': github_profile,
     'user_nft_obj': user_nft_obj,
     'user_three_dim_upload': user_three_dim_upload,
-    'nft_transaction_history': nft_transaction_history
+    'nft_transaction_history': nft_transaction_history,
+    'project_log_list': project_log_list
   })
 
  

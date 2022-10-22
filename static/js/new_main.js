@@ -4,6 +4,7 @@ let ethersProvider;
 let loginErrorModal;
 let loginErrorTwoModal;
 let loginErrorThreeModel;
+let projectLogModal;
 
 
 
@@ -20,6 +21,12 @@ let nftVerificationModal;
 var nftVerificationModalExists = document.getElementById('nftVerificationModal');
 if (nftVerificationModalExists != null){
   nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
+}
+
+
+var projectLogModalExists = document.getElementById("projectLogModal");
+if (projectLogModalExists != null){
+  projectLogModal = new bootstrap.Modal('#projectLogModal');
 }
 
 
@@ -675,6 +682,18 @@ $( "#delete-nft-button" ).click(async () => {
 
 
 
+$( "#post-update-button" ).click(async () => {
+
+  projectLogModal.show();
+
+})
+
+
+// $("#project-log-update-button").click(async () => {
+
+// })
+
   
+
 
 

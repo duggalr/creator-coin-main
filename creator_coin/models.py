@@ -62,6 +62,14 @@ class CreatorProfile(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
 
+class CreatorProjectLog(models.Model):
+  creator_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
+  log_title = models.CharField(max_length=2000, blank=True, null=True)
+  log_description = models.TextField(blank=True, null=True)
+  log_created_date = models.DateTimeField(auto_now_add=True)
+
+
+
 # class UserToken(models.Model):
 #   user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
 #   token_name = models.CharField(max_length=2000, blank=True, null=True)
@@ -134,6 +142,8 @@ class UserBetaEmails(models.Model):
   Emails saved from the homepage
   """
   user_email = models.EmailField()
+
+
 
 
 
