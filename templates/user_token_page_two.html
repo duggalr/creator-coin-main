@@ -17,17 +17,17 @@
           
           {% if user_nft_obj is not None %}
              
-            <!-- <div> -->
+            <!-- <div>
 
-              <!-- <h4 style="display: inline;" style="padding-top: 10px; font-weight: 900;">
+              <h4 style="display: inline;" style="padding-top: 10px; font-weight: 900;">
                 {{ user_nft_obj.nft_name }}
-              </h4> -->
-              <!-- |  -->
-              <!-- <span style="font-weight: 900;">
+              </h4>
+              | 
+              <span style="font-weight: 900;">
                 Updated: {{ user_nft_obj.nft_updated_at|date:"Y-m-d" }}
-              </span> -->
+              </span>
 
-            <!-- </div> -->
+            </div> -->
  
             {% if user_three_dim_upload is False %}
 
@@ -150,9 +150,16 @@
 
               {% if user_nft_obj.nft_deployed is True %}
 
-                <button class="btn btn-primary rounded-pill" id="delete-nft-button">
+                <!-- <button class="btn btn-primary rounded-pill" id="delete-nft-button">
                   Cancel NFT  Sale
-                </button>
+                </button> -->
+
+                <!-- <button id="delete-nft-button" type="button" class="btn btn-outline-danger" style="font-size: 16px;">
+                  Cancel NFT  Sale
+                </button> -->
+
+                <button type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
+                
 
               {% else %}
 
@@ -167,26 +174,10 @@
 
                 <!-- <button class="btn btn-primary rounded-pill" id="launch-nft-button" style="font-size: 18px;">Launch your NFT</button>
                 &nbsp; -->
-                <!-- <span>                  
-                  <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
-                  <i class="bi bi-trash-fill" style="color: red;"></i> 
-                  <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
-                    <strong>Delete NFT</strong>
-                  </a>
-                </span> -->
-        
-                
-                <!-- <i class="bi bi-trash-fill" style="color: red;"></i> 
-                <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
-                <strong>Delete NFT</strong> -->
-
-                  <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
-                  &nbsp;
-                  <a href="{% url 'update_token_form' %}">Edit Token Settings</a> -->
 
               {% endif %}
               
-                
+                 
             {% else %}
 
               <span class="badge rounded-pill text-bg-secondary" style="font-size: 15px;">
@@ -199,7 +190,7 @@
             
             {% if user_nft_obj is not None %}
               
-              <!-- <button id="buy-nft">Buy NFT</button> -->
+            <button type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
 
             {% else %}
 
@@ -267,14 +258,19 @@
                   Edit Profile
                 </a>
                 
-
                 {% if user_nft_obj is not None %}
 
-                  <button class="btn btn-info btn-lg rounded-pill" id="launch-nft-button" style="font-size: 18px; color: white;">Launch your NFT!</button>
+                  {% if user_nft_obj.nft_deployed is False %}
+                    
+                    <button class="btn btn-info btn-lg rounded-pill" id="launch-nft-button" style="font-size: 18px; color: white;">Launch your NFT</button>
 
-                  <!-- <button class="btn btn-primary rounded-pill">
-                    Launch your NFT
-                  </button> -->
+                  {% else %}
+
+                    <button id="delete-nft-button" type="button" class="btn btn-outline-danger rounded-pill" style="font-size: 16px;">
+                      Cancel NFT  Sale
+                    </button>
+
+                  {% endif %}
 
                 {% else %}
 
@@ -293,17 +289,6 @@
               
               {% endif %}
 
-              <!-- {% if github_profile is None %}
-                <a href="{% url 'github_login' %}" class="btn btn-secondary">
-                  <i class="fa fa-github fa-fw"></i>
-                  <span>Add your Github</span>
-                </a>
-              {% endif %} -->
-              
-              <!-- <button onclick="deployToken()">Deploy Token</button>
-              <button onclick="getBalance()">Buy</button>
-              <button onclick="mintToken()">Mint Token</button> -->
-            
             </div>
 
           </div>
@@ -319,7 +304,6 @@
                 
               <span>
                 <i class="bi bi-github"></i> <a href="{{ github_profile.github_profile_url }}" target="_blank" rel="noopener noreferrer">Github</a>
-                <!-- <i style="color: skyblue;" class="bi bi-check-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i> -->
                 <i style="color: skyblue;" class="bi bi-check-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i>
               </span>
 
@@ -400,55 +384,6 @@
 
             {% endif %}
 
-
-            <!-- {% if same_user is True %}
-
-              <span >
-                <i class="bi bi-link"></i> <a href="">
-                  add a personal website
-                </a>
-              </span>
-
-              <span style="padding-left: 12px;">
-                <i class="bi bi-discord"></i> 
-                <a href="">
-                  add a discord for your community
-                </a>
-              </span> 
-
-            {% else %}
-
-              {% if creator_profile.github_website is not none %}
-                <span >
-                  <i class="bi bi-github"></i> <a href="{{ creator_profile.github_webite }}">Github</a>
-                </span>
-              {% else %}
-                <span>
-                  <i class="bi bi-github"></i>
-                  Creator has not linked their Github
-                </span>
-
-              {% endif %}
-              
-              {% if creator_profile.project_website is not none %}
-                <span>
-                  <i class="bi bi-link"></i> <a href="{{ creator_profile.project_website }}">Personal Website</a>
-                </span>
-                {% endif %}
-
-              {% if creator_profile.discord_website is not none %}
-                <span style="padding-left: 12px;">
-                  <i class="bi bi-discord"></i> <a href="{{ creator_profile.discord_website }}">Discord</a>
-                </span> 
-
-              {% endif %}
-
-            {% endif %} -->
-            
-
-            <!-- <div id="project-progress-bar" class="progress">
-              <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 30%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">30%</div>
-            </div> -->
             
           </div>
 
@@ -470,14 +405,7 @@
                 {% endif %}
 
               {% endif %}
-           
-              <!-- Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
-              Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
-              get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
-              you thought of while you were writing it. Indeed, that's why I write them. 
-              Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
-              got going, so those scientists and physicists could get back to business. -->
-
+                
             </p>
 
           </div>
@@ -488,8 +416,6 @@
 
       </div>
 
-      <!-- <button id="test-one-button">Test One</button>
-      <button id="test-two-button">Test Two</button> -->
 
       <br/>
 

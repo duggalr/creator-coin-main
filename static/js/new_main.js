@@ -6,6 +6,7 @@ let loginErrorTwoModal;
 let loginErrorThreeModel;
 
 
+
 var loginModalExists = document.getElementById("loginErrorOne");
 if (loginModalExists != null){  // on homepage
   loginErrorModal = new bootstrap.Modal('#loginErrorOne');
@@ -20,10 +21,6 @@ var nftVerificationModalExists = document.getElementById('nftVerificationModal')
 if (nftVerificationModalExists != null){
   nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
 }
-
-
-
-
 
 
 
@@ -159,10 +156,6 @@ const handleSignupButtonClick = async () => {
 }
 
 
-
-
-
-
 function handleAccountChange(){
 
   return new Promise(function(){
@@ -183,6 +176,177 @@ function handleAccountChange(){
 }
 
 
+
+
+
+function getNFTData(){
+
+  return new Promise(function(resolve, reject){
+    
+    // fetch metadata (ajax-request)
+    fetch(API_HOST + "get-nft-metadata/")
+    .then(response => response.json())
+    .then(json => {
+      // console.log('js:', json)
+      resolve(json);
+      
+    })
+
+  })
+
+}
+
+
+function saveNFTData() {
+
+  return new Promise(function(resolve, reject){
+    
+    fetch(API_HOST + "save-nft-metadata/")
+    .then(response => response.json())
+    .then(json => {
+      // console.log('js:', json)
+      resolve(json);
+    })
+
+  })
+
+}
+
+
+
+function saveNFTLaunchedData(contractData, contractAddress){
+
+  return new Promise(function(resolve, reject){
+
+    $.ajax({
+      type: 'POST',
+      url: API_HOST + "nft-launch-final/",
+      data: {
+        csrfmiddlewaretoken: csrfToken,
+        'nft_transaction_hash': contractData['hash'],
+        'nft_deployed_data': contractData['data'],
+        'nft_deployed_nonce': contractData['nonce'],
+        'nft_deployed_chain_id': contractData['chainId'],
+        'nft_contract_address': contractAddress
+      },
+      success: function (response) {
+        console.log('res:', response);
+        // TODO: refresh page?
+  
+        window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
+
+      }
+  
+    })
+
+  })
+
+}
+
+
+
+const mainTestThree = async (bytecode, abi) => {
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const network = await provider.getNetwork();
+  const chainId = network.chainId;
+  
+  console.log('network:', network);
+  console.log('chain-id:', chainId);
+
+  const accounts = await provider.listAccounts();
+  console.log('network-accounts:', accounts);
+
+  // console.log('ets-provider:', ethersProvider)
+
+  let collectiblesFactory = new ethers.ContractFactory(
+    abi,
+    bytecode,
+    provider.getSigner(accounts[0])
+  ); 
+  
+  document.getElementById("overlay").style.display = "block";
+
+
+  let nftSaveResp;
+  try {
+    nftSaveResp = await saveNFTData();
+    // userNonceRes = await requestNonce(user_account_pk_address);
+    // console.log('user-nonce-res:', userNonceRes)
+  } catch(error){  // user-nonce-request with response != 200 (rare situation)
+    // loginErrorThreeModel.show();
+    console.log('error:', error)
+  }
+
+  // const nftSaveResp = await saveNFTData();
+
+  document.getElementById("overlay").style.display = "none";;
+
+  console.log('nft-save-resp:', nftSaveResp);
+
+  if (nftSaveResp['success'] === true){  // deploy the token
+
+    let nftMetaData;
+    try {
+      nftMetaData = await getNFTData();
+    } catch(error){
+      console.log('error:', error)
+    }
+
+    // Load a metamask signature
+    let collectiblesContract = await collectiblesFactory.deploy( 
+      nftMetaData['nft_name'],
+      nftMetaData['nft_symbol'],
+      nftMetaData['nft_total_supply'],
+      20, // max-token-sale-per-purchase
+      Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
+      nftMetaData['nft_ipfs_url']
+    )
+
+    // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+    // // 0x68Ea1a2504a4287900E51Db51658F21704F09720
+    saveNFTLaunchedData(collectiblesContract.deployTransaction, collectiblesContract.address);
+
+  // let transHash = await collectiblesContract.getDeployTransaction();
+  // console.log('trans-hash:', transHash);
+  // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+
+    // if user signs above, send request to verify the launched-nft
+      // refresh page with views fetching associated etherscan data and buy-button being shown
+
+
+  } else { // TODO: need to display error explaining what happened
+
+  }  
+ 
+
+  // TODO: AJAX request to upload the metadata to IPFS, save URL, send as response to here and go from there
+ 
+  // TODO: below after the IPFS-URL is retrieved and saved in DB, under nft 
+  // await collectiblesFactory.deploy(
+  //   nftMetaData['nft_name'],
+  //   nftMetaData['nft_symbol'],
+  //   nftMetaData['nft_total_supply'],
+  //   20, // max-token-sale-per-purchase
+  //   Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
+
+  // )
+
+  // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
+
+    
+  // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
+  // // let transHash = await collectiblesContract.getDeployTransaction();
+  // // console.log('trans-hash:', transHash);
+  // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+
+  // await collectiblesContract.deployTransaction.wait();
+  
+  // // console.log(
+  // //   `Contract mined! address: ${collectiblesContract.address} transactionHash: ${collectiblesContract.deployTransaction.hash}`,
+  // // );
+
+}
 
 
 
@@ -300,8 +464,36 @@ $( "#user_create_nft" ).click(function() {
 
 
 
+$( "#launch-nft-button" ).click(async () => {
+  
+  fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
+  .then(response => response.json())
+  .then(json => {
+    var bytecode = json["contracts"]["NFTMain.sol"]["CreatorNFT"]["evm"]["bytecode"]["object"];
+    var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["CreatorNFT"]["metadata"] )["output"]["abi"];
+
+    console.log('bytecode:', bytecode);
+    console.log('abi:', abi);
+
+    mainTestThree(bytecode, abi);
+
+  })
+  
+});
+
+
+$( "#delete-nft-button" ).click(async () => {
+
+  alert("Implement Delete Button")
+
+})
 
 
 
+
+
+
+
+  
 
 

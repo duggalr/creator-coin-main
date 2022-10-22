@@ -629,6 +629,8 @@ const mainTestThree = async (bytecode, abi) => {
 
   const accounts = await provider.listAccounts();
   console.log('network-accounts:', accounts);
+  
+  console.log('eths-provider:', ethersProvider)
 
   let collectiblesFactory = new ethers.ContractFactory(
     abi,

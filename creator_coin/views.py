@@ -105,9 +105,6 @@ def my_profile(request):
   # t
 
 def user_token_page(request, profile_id):
-  # web_three_user_obj = get_object_or_404(Web3User, id=web_three_user_id)
-  # creator_profile_obj = CreatorProfile.objects.get(user_obj=web_three_user_obj)
-  # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
 
   user_nft_obj = None
