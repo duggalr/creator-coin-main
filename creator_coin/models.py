@@ -95,6 +95,7 @@ class UserNft(models.Model):
 class UserNftTransactionHistory(models.Model):
   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
   transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
+  transaction_created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
 
 
 class GithubProfile(models.Model):

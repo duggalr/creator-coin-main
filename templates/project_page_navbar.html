@@ -86,6 +86,34 @@
         {% endif %}
 
 
+
+        {% for n_obj in nft_transaction_history %}
+
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">
+                <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
+                <a href="https://etherscan.io/tx/{{ n_obj.transaction_hash }}">NFT Purchased</a>
+              </div>
+
+              <span style="color: gray;">
+                <i class="bi bi-hash"></i>{{ n_obj.transaction_hash }}
+              </span>
+              
+            </div>
+
+            <span>
+              <strong>
+                {{ n_obj.nft_obj.nft_price }} ETH
+              </strong>
+            </span>
+
+          </li>
+
+        {% endfor %}
+        
+
+
         
 
 

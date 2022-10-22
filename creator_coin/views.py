@@ -10,7 +10,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from rest_framework.authtoken.models import Token
 
-from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft, UserBetaEmails
+from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft, UserBetaEmails, UserNftTransactionHistory
 # from .serializers import Web3UserSerializer
 
 from requests_oauthlib import OAuth2Session
@@ -144,13 +144,17 @@ def user_token_page(request, profile_id):
   # nft_currently_deployed = True
   # if user_nft_obj is not None:
     
+
+  nft_transaction_history = UserNftTransactionHistory.objects.filter(nft_obj=user_nft_obj)
+
   return render(request, 'user_token_page_two.html', {
     'creator_profile': creator_profile_obj,
     'same_user': same_user,
     'profile_id': profile_id,
     'github_profile': github_profile,
     'user_nft_obj': user_nft_obj,
-    'user_three_dim_upload': user_three_dim_upload
+    'user_three_dim_upload': user_three_dim_upload,
+    'nft_transaction_history': nft_transaction_history
   })
 
  
@@ -853,7 +857,7 @@ def nft_launch_final(request):
  
 # TODO: add profile-id to params for this url; fetch that object and go from them to implement buy (ensure handled well)
 def fetch_nft_main_data(request, profile_id):
-  print('pid:', profile_id)
+  # print('pid:', profile_id)
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
   # UserNft.objects.get()
   user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
@@ -866,12 +870,36 @@ def fetch_nft_main_data(request, profile_id):
   # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
 
   # nft_contract_address = user_nft_obj.nft_deployed_contract_address
-  return JsonResponse({'nft_contract_address': user_nft_obj.nft_deployed_contract_address})
+  return JsonResponse({
+    'nft_contract_address': user_nft_obj.nft_deployed_contract_address,
+    'nft_token_price': user_nft_obj.nft_price
+  })
 
   # fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
   # f = open()
 
 
+
+@require_http_methods(["POST"])
+def save_nft_transaction_data(request):
+  print('save-nft-post:', request.POST)
+  
+  profile_id = request.POST['profile_id']
+  creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+  # UserNft.objects.get()
+  user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
+
+  # Save the bought transaction 
+    # keep a running count of the supply in new model? 
+  print('post-data:', request.POST)
+
+  nft_history_obj = UserNftTransactionHistory.objects.create(
+    nft_obj = user_nft_obj, 
+    transaction_hash = request.POST['nft_transaction_hash']
+  )
+  nft_history_obj.save()
+
+  return JsonResponse({'success': True})
 
 
 

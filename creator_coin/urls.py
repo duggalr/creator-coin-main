@@ -27,6 +27,9 @@ urlpatterns = [
   path('save-nft-metadata/', views.save_nft_metadata, name='save_nft_metadata'),
   path('nft-launch-final/', views.nft_launch_final, name='nft_launch_final'),
   path('handle-account-change/', views.handle_account_change, name='handle_account_change'),
+  path('save-nft-transaction-data/', views.save_nft_transaction_data, name='save_nft_transaction_data'),
+
+
 
   # TODO: correct once this functionality is added... 
   path('deploy_new_nft/', views.deploy_new_nft, name='deploy_new_nft'),  

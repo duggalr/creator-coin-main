@@ -352,6 +352,164 @@ const mainTestThree = async (bytecode, abi) => {
 
 
 
+function get_nft_contract_address(creatorProfileID){
+
+  return new Promise(function(resolve, reject){
+    
+    // fetch metadata (ajax-request)
+    
+    fetch(API_HOST + "fetch-nft-main-data/" + creatorProfileID)
+    .then(response => response.json())
+    .then(json => {
+
+      resolve(json);
+
+    })
+
+  })
+
+}
+
+
+
+function saveTransactionData(result){
+
+  // console.log('creator-profile-id:', creatorProfileID)
+
+  return new Promise(function(resolve, reject){
+
+    $.ajax({
+      type: 'POST',
+      url: API_HOST + "save-nft-transaction-data/",
+      data: {
+        csrfmiddlewaretoken: csrfToken,
+        'profile_id': creatorProfileID,
+        'nft_transaction_hash': result['hash']
+      },
+      success: function (response) {
+        console.log('res:', response);
+        // TODO: refresh page?
+        // window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
+
+      }
+  
+    })
+
+  })
+
+}
+
+
+
+function get_nft_bytecode_abi(){
+
+  return new Promise(function(resolve, reject){
+
+    fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
+    .then(response => response.json())
+    .then(json => {
+      var bytecode = json["contracts"]["NFTMain.sol"]["CreatorNFT"]["evm"]["bytecode"]["object"];
+      var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["CreatorNFT"]["metadata"] )["output"]["abi"];
+
+      resolve({'bytecode': bytecode, 'abi': abi});
+
+    })  
+
+
+  })
+
+}
+
+
+
+
+
+const buyNFTMain = async () => {
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const network = await provider.getNetwork();
+  const chainId = network.chainId;
+  
+  // console.log('network:', network);
+  // console.log('chain-id:', chainId);
+
+  const accounts = await provider.listAccounts();
+  // console.log('network-accounts:', accounts);
+
+
+  let bytecodeDict;
+  try{
+    bytecodeDict = await get_nft_bytecode_abi();
+  } catch(error){
+    console.log(error)
+  }
+  
+  if (typeof bytecodeDict !== undefined){
+
+    var contractABI = bytecodeDict['abi']
+
+    let contractData;
+    try{
+      contractData = await get_nft_contract_address(creatorProfileID);
+    } catch(error) {
+      console.log(error)
+    }
+
+    if (typeof contractData !== undefined){
+
+      // console.log('ct-data:', contractData);
+      var mainContractAddress = contractData['nft_contract_address'];
+      var tokenPrice = contractData['nft_token_price'];
+      // var tokenSupply = contractData['nft_token_supply'];
+
+      console.log('main-contract-addr:', mainContractAddress)
+
+      var existingContract = new ethers.Contract(
+        mainContractAddress,
+        contractABI,
+        provider.getSigner(accounts[0])
+      ); 
+
+      // console.log('existing-contract:', existingContract);
+
+      // console.log('ct-data:', contractData)
+      // var tokPriceStr = (tokenPrice * (10**18)).toString();
+      // console.log('tok-price-str:', tokPriceStr, tokenPrice);
+      
+      // var numTokens = 1;
+      var tokPriceStr = (tokenPrice * (10**18)).toString();
+      try {
+        let result = await existingContract.safeMint(1, {'value': tokPriceStr});
+        // // result = await existingContract.wait();
+        console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
+        
+        saveTransactionData(result)
+
+      } catch(error){
+
+      }
+      
+
+    }
+    
+  }
+
+  
+  // var tokPrice = await existingContract.getTokenPrice();
+  // console.log('tok-price:', tokPrice);
+  // console.log('tok-number:', ethers.utils.formatEther( tokPrice ) )
+    
+  // // var numTokens = 1;
+  // var tokPriceStr = (tokPrice * (10**18)).toString();
+  // let result = await existingContract.safeMint(numTokens, {'value': tokPriceStr});
+  // // result = await existingContract.wait();
+  // console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
+
+
+}
+
+
+
 
 
 
@@ -462,24 +620,51 @@ $( "#user_create_nft" ).click(function() {
 
 
 
-
-
+var launchNFTClicked;
 $( "#launch-nft-button" ).click(async () => {
+
+  if (launchNFTClicked){
+    return false;
+  } else {
+    launchNFTClicked = true;
+
+    fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
+    .then(response => response.json())
+    .then(json => {
+      var bytecode = json["contracts"]["NFTMain.sol"]["CreatorNFT"]["evm"]["bytecode"]["object"];
+      var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["CreatorNFT"]["metadata"] )["output"]["abi"];
   
-  fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
-  .then(response => response.json())
-  .then(json => {
-    var bytecode = json["contracts"]["NFTMain.sol"]["CreatorNFT"]["evm"]["bytecode"]["object"];
-    var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["CreatorNFT"]["metadata"] )["output"]["abi"];
+      console.log('bytecode:', bytecode);
+      console.log('abi:', abi);
+  
+      mainTestThree(bytecode, abi);
+  
+    })
 
-    console.log('bytecode:', bytecode);
-    console.log('abi:', abi);
+  }
 
-    mainTestThree(bytecode, abi);
+  
 
-  })
   
 });
+
+
+
+
+var userBuyNFTClicked;
+$( "#buy-nft-buttton" ).click(async () => {
+
+  if (userBuyNFTClicked){
+    return false;
+  } else {
+    userBuyNFTClicked = true;
+    // TODO:
+    buyNFTMain()
+  }
+
+
+})
+
 
 
 $( "#delete-nft-button" ).click(async () => {
@@ -487,10 +672,6 @@ $( "#delete-nft-button" ).click(async () => {
   alert("Implement Delete Button")
 
 })
-
-
-
-
 
 
 
