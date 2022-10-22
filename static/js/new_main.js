@@ -299,10 +299,7 @@ $( "#user_create_nft" ).click(function() {
 
 
 
-// TODO: 
-  // verify github seemed to verify my GH in new tab and logged me out? 
-    // verify on same tab and just reload page with new data on page
-  // try it in chrome incog and go from there
+
 
 
 

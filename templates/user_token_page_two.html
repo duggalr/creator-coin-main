@@ -64,13 +64,13 @@
 
               {% if same_user is True %}
 
-                <span>
+                <span style="font-size: 19px;">
                   | <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
-                  |
+                  <!-- |
                   <i class="bi bi-trash-fill" style="color: red;"></i> 
                   <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
                   <strong>Delete NFT</strong>
-                  </a>
+                  </a> -->
 
                 </span>
 
@@ -106,7 +106,13 @@
 
               <!-- <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
               | -->
-              <strong>Total Sold:</strong> 0 
+
+              {% if user_nft_obj.nft_deployed is False %}
+                <strong style="color: gray;">Total Sold: 0</strong>
+              {% else %}
+                <strong>Total Sold:</strong> 0 
+              {% endif %}
+
               |
               <strong>Total Supply:</strong> {{ user_nft_obj.nft_total_supply }} 
             
@@ -144,15 +150,35 @@
 
               {% if user_nft_obj.nft_deployed is True %}
 
-                <button class="btn btn-primary rounded-pill" id="launch-nft-button">
+                <button class="btn btn-primary rounded-pill" id="delete-nft-button">
                   Cancel NFT  Sale
                 </button>
 
               {% else %}
 
-                <button class="btn btn-primary rounded-pill" id="launch-nft-button">Launch your NFT</button>
-                &nbsp;
+                <i class="bi bi-pen-fill"></i>
                 <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
+                <!-- &nbsp; -->
+                |
+                <i class="bi bi-trash-fill" style="color: red;"></i> 
+                <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
+                  <strong>Delete NFT</strong>
+                </a>
+
+                <!-- <button class="btn btn-primary rounded-pill" id="launch-nft-button" style="font-size: 18px;">Launch your NFT</button>
+                &nbsp; -->
+                <!-- <span>                  
+                  <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
+                  <i class="bi bi-trash-fill" style="color: red;"></i> 
+                  <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
+                    <strong>Delete NFT</strong>
+                  </a>
+                </span> -->
+        
+                
+                <!-- <i class="bi bi-trash-fill" style="color: red;"></i> 
+                <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
+                <strong>Delete NFT</strong> -->
 
                   <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
                   &nbsp;
@@ -237,13 +263,14 @@
               
               {% if same_user is True %}
 
-                <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-dark rounded-pill" role="button" style="font-size: 17px;"> 
+                <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-dark rounded-pill" role="button" style="font-size: 16.5px;"> 
                   Edit Profile
                 </a>
+                
 
                 {% if user_nft_obj is not None %}
 
-                  <!-- TODO: anything needed here? -->
+                  <button class="btn btn-info btn-lg rounded-pill" id="launch-nft-button" style="font-size: 18px; color: white;">Launch your NFT!</button>
 
                   <!-- <button class="btn btn-primary rounded-pill">
                     Launch your NFT
@@ -308,7 +335,7 @@
 
                 <span>
                   <i class="bi bi-github"></i> 
-                  <a href="{% url 'github_login' %}" target="_blank" rel="noopener noreferrer">
+                  <a href="{% url 'github_login' %}" >
                     add your github
                   </a>
                 </span>

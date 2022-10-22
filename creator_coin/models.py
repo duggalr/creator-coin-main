@@ -81,7 +81,7 @@ class UserNft(models.Model):
   nft_updated_at = models.DateTimeField(auto_now=True)
   nft_ipfs_url = models.CharField(max_length=2000, blank=True, null=True)
 
-  nft_deployed_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
+  # nft_deployed_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
   nft_deployed = models.BooleanField(default=False)
   nft_deployed_contract_address = models.CharField(max_length=2000, blank=True, null=True)
   nft_deployed_transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
@@ -121,7 +121,11 @@ class GithubProfile(models.Model):
 #   nft_image = models.ImageField(upload_to='nft_images/', verbose_name='Image')
 
 
+
 class UserBetaEmails(models.Model):
+  """
+  Emails saved from the homepage
+  """
   user_email = models.EmailField()
 
 
