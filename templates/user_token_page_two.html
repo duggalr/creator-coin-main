@@ -7,9 +7,9 @@
   {% include 'navbar.html' %}
 
    
-  <div class="main-body">
+  <div class="animate__animated animate__fadeIn main-body">
 
-    <div class="animate__animated animate__fadeIn  container">
+    <div class="container">
 
       <div class="row"> 
 
@@ -191,7 +191,7 @@
 
         <!-- TODO: delete afterwards and add in approriate spot -->
         <!-- what if user clicks this and isn't logged in? -->
-        <button id="buy-nft">Buy NFT</button>
+        <!-- <button id="buy-nft">Buy NFT</button> -->
          
 
         <div class="col-8" id="project-text-main">
@@ -240,10 +240,6 @@
                 <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-dark rounded-pill" role="button" style="font-size: 17px;"> 
                   Edit Profile
                 </a>
-
-                <!-- <a href="{% url 'create_token_form' %}" class="btn btn-outline-info rounded-pill" role="button">
-                  Create your NFT
-                </a> -->
 
                 {% if user_nft_obj is not None %}
 
@@ -532,13 +528,9 @@
     </div>
   </div>
 
-  <!-- TODO: add loading placeholder on deploy and go from there -->
-  <!-- <button onclick="on()">Turn on overlay effect</button> -->
-
+  
   
   <br/>
-  <!-- <br/> -->
-
 
  
   <script>
@@ -548,32 +540,32 @@
     const creatorProfileID = '{{ creator_profile.id }}'
 
 
-    const nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
+    // const nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
 
-    $( "#user_create_nft" ).click(function() {
+    // $( "#user_create_nft" ).click(function() {
       
-      // Verify profile details
-      $.ajax({
-        url: "{% url 'verify_user_profile' %}",
-        success: function (response) {
-          console.log('res:', response);
+    //   // Verify profile details
+    //   $.ajax({
+    //     url: "{% url 'verify_user_profile' %}",
+    //     success: function (response) {
+    //       console.log('res:', response);
           
-          if (response['success'] === false){
+    //       if (response['success'] === false){
 
-            nftVerificationModal.show();
+    //         nftVerificationModal.show();
 
-          } else if (response['success'] === true){
+    //       } else if (response['success'] === true){
 
-            window.location.href = 'http://127.0.0.1:7500/create-nft'
+    //         window.location.href = 'http://127.0.0.1:7500/create-nft'
 
-          }
+    //       }
 
-        }
+    //     }
 
-      })
+    //   })
 
       
-    });
+    // });
 
 
     // $( "#launch-nft" ).click(function() {
@@ -591,8 +583,6 @@
     //   document.getElementById("overlay").style.display = "block";
     // }
     
-    
-
 
   </script>
 

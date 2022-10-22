@@ -26,6 +26,7 @@ if (loginModalExists != null){
 }
 
 
+
 // Much of the metamask login is based from:
   // https://github.com/ManaanAnsari/MetaMask-Login-Python
 

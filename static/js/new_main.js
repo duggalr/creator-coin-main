@@ -14,6 +14,18 @@ if (loginModalExists != null){  // on homepage
 }
 
 
+let nftVerificationModal;
+
+var nftVerificationModalExists = document.getElementById('nftVerificationModal');
+if (nftVerificationModalExists != null){
+  nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
+}
+
+
+
+
+
+
 
 function requestNonce(user_account_pk_address){
 
@@ -151,7 +163,6 @@ const handleSignupButtonClick = async () => {
 
 
 
-
 function handleAccountChange(){
 
   return new Promise(function(){
@@ -186,7 +197,8 @@ if (window.ethereum){
   window.ethereum.on('accountsChanged', (accounts) => {
 
     console.log('account-changed:', accounts);
-    handleAccountChange();
+    // handleAccountChange();
+    window.location.href = 'http://127.0.0.1:7500/logout';
   
   });
   
@@ -205,7 +217,10 @@ if (window.ethereum){
 };
 
 
+// User switch works 
+  // **user connnected does not work <-- need to ensure user is connected 
 
+ 
 
 
 
@@ -218,7 +233,7 @@ $('#main-signup-login-button').on('click', function(){
 
   if (signupLinkClicked){ // prevent multiple clicks
     return false;
-  } else{
+  } else {
     signupLinkClicked = true;
     handleSignupButtonClick();
   }
@@ -227,8 +242,67 @@ $('#main-signup-login-button').on('click', function(){
 
 
 
+function verifyProfileDetails(){
+
+  return new Promise(function(resolve, reject){
+
+    var apiURL = new URL(API_HOST + 'verify_user_profile');
+    // console.log('api-url:', apiURL)
+
+    // Verify profile details
+    $.ajax({
+      url: apiURL,
+      success: function (response) {
+        console.log('res:', response);
+        
+        if (response['success'] === false){
+
+          // console.log('nft-verf-modal:', nftVerificationModal);
+          nftVerificationModal.show();
+
+        } else if (response['success'] === true){
+
+          window.location.href = 'http://127.0.0.1:7500/create-nft'
+
+        }
+
+      }
+
+    })
 
 
+  })
+
+}
+
+
+
+const handleCreateNFTClick = async () => {
+
+  await verifyProfileDetails();
+
+}
+
+
+var userCreateNFTClicked;
+$( "#user_create_nft" ).click(function() {
+      
+  if (userCreateNFTClicked){
+    return false;
+  } else {
+    userCreateNFTClicked = true;
+    handleCreateNFTClick();
+  }
+
+});
+
+
+
+
+// TODO: 
+  // verify github seemed to verify my GH in new tab and logged me out? 
+    // verify on same tab and just reload page with new data on page
+  // try it in chrome incog and go from there
 
 
 
