@@ -255,7 +255,7 @@
               {% if same_user is True %}
 
                 <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-dark rounded-pill" role="button" style="font-size: 16.5px;"> 
-                  Edit Profile
+                  Edit Your Profile
                 </a>
                 
                 {% if user_nft_obj is not None %}
@@ -275,7 +275,7 @@
                 {% else %}
 
                   <button id="user_create_nft" class="btn btn-outline-info rounded-pill" style="font-size: 17px;">
-                    Create your NFT
+                    Create a NFT
                   </button>
 
                 {% endif %}                
@@ -513,25 +513,16 @@
             <div class="mb-3">
               <label for="log-title" class="form-label">
                 <strong>
-                  Project Title:
+                  Log Title:
                 </strong>
               </label>
               <input type="text" class="form-control" id="log-title" name="log-title" placeholder="got to have a title..." required>
             </div>
 
-            <!-- 
-              TODO:
-              - Finish project-log (create/delete/retrieve)
-              - add chain-id verification on deploy and purchase 
-              - modify contract to add platform payable address
-                - confirm everything works and then UI/3D-models
-            
-            -->
-
             <div class="mb-3">
               <label for="log-update" class="form-label">
                 <strong>
-                  Project Update:
+                  Log Update:
                 </strong>
               </label>
               <textarea class="form-control" id="log-update" name="log-update" rows="5" placeholder="share an update..." required></textarea>

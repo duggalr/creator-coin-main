@@ -716,5 +716,44 @@ $( "#post-update-button" ).click(async () => {
 
   
 
+// // Homepage DOM
+// TODO: finish this and go from there
+$('#join_beta_form').submit(function(e){
+
+  e.preventDefault();
+
+  var user_email = $('#user_email_value').val();
+  $.ajax({
+    type: 'POST',
+    url: "",
+    data: {
+      'user_email': user_email,
+      csrfmiddlewaretoken: homepageCSRFTok
+    },
+    success: function (response) {
+      console.log('res:', response);
+      
+      if (response['success'] === true){
+
+        // success_message
+        
+        $('#join_beta_form').hide();
+        $('#success_message').show();
+
+      } else if (response['duplicate'] === true){
+
+        $('#join_beta_form').hide();
+        $('#duplicate_message').show();
+
+      }
+
+    }
+
+  })
+
+})
+
+
+
 
 

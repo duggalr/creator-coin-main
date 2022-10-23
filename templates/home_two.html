@@ -96,44 +96,53 @@
               CreatorCoin serves as a medium to help individual's fund their personal 
               side projects. Creators can easily launch a NFT of themselves on the platform.
               Supporters can purchase the NFT, and benefit through NFT ownership. 
-              If your interested in joining as a creator, enter your email and we will reach out.
+              If your interested in joining as a creator, enter your email and I will reach out.              
               <!-- <b>Currently in <strong>private beta.</strong></b> -->
-              <a href="#about">See the Demo!</a>
+              <a href="#about">Watch the demo to learn how it works!</a>
 
               <div class="col-sm-9 col-sm-offset-9">
 
-                <form method="post" id="join_beta_form">{% csrf_token %}
-                  <div class="input-group input-group-lg" style="padding-top: 10px;">
-                    <input id="user_email_value" type="text" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="Recipient's username with two button addons" aria-describedby="emailHelp" required>
-                    <button type="submit" id="join_beta_button" class="btn btn-dark" style="color: white;">Join as a Creator!</button>
-                  </div>
-                </form>
+                {% if anon_user is True %}
 
-                <div id="success_message" style="color: limegreen; display: none;">
-                  Thank you. We have got your email.
-                </div>
-                
-                <!-- TODO: change the email primary contact -->
-                <div id="duplicate_message" style="color: limegreen; display: none;">
-                  Your email is already registered. 
-                  If you haven't received an email from us, send an email to duggalr42@gmail.com 
-                </div>
+                  <form method="post" id="join_beta_form">{% csrf_token %}
+                    <div class="input-group input-group-lg" style="padding-top: 10px;">
+                      <input id="user_email_value" type="text" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="creator email" aria-describedby="emailHelp" required>
+                      <button type="submit" id="join_beta_button" class="btn btn-dark" style="color: white;">Join as a Creator!</button>
+                    </div>
+                  </form>
+
+                  <div id="success_message" style="color: limegreen; display: none;">
+                    Thank you. We have got your email.
+                  </div>
+                  
+                  <!-- TODO: change the email primary contact -->
+                  <div id="duplicate_message" style="color: limegreen; display: none;">
+                    Your email is already registered. 
+                    If you haven't received an email from us, send an email to creatorcoin42@gmail.com
+                  </div>
+
+                  <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
+                    <!-- <i>
+                      Only 
+                      <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
+                      Supported.
+                    </i> -->
+                    <!-- <i>After entering your email, we will reach out. Currently in Beta!</i> -->
+                    We will NEVER spam you.
+                  </div>
+
+                {% else %}
 
                 <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
-                  <!-- <i>
+                  <i>
                     Only 
                     <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
                     Supported.
-                  </i> -->
-                  <!-- <i>After entering your email, we will reach out. Currently in Beta!</i> -->
-                  We will NEVER spam you.
+                  </i>                  
                 </div>
 
+                {% endif %}
 
-                <!-- <p>
-                  you have successfully signed up! 
-                </p> -->
-  
 
               </div>
 
@@ -168,6 +177,8 @@
 
           <div class="col-4">
 
+            <h2 class="homepage-nft-title">CreatorCoin's First NFT</h2>
+
             <model-viewer 
             src="{% static '3d_model/new_three.glb' %}"  
             ar ar-modes="webxr scene-viewer quick-look" 
@@ -175,7 +186,7 @@
             camera-orbit="280deg 85deg 125%"
             shadow-intensity="1"
             auto-rotate
-            rotation-per-second="300%"
+            rotation-per-second="200%"
             style="width: 400px; height: 400px;" 
             ></model-viewer>
           
@@ -185,8 +196,8 @@
               </div>
             </div>
             <p id="home_page_nft">
-              <!-- TODO: set this profile-id and go from there -->
-              <a href="{% url 'user_token_page' profile_id=1 %}">Visit NFT Page</a> | Price: 0.1 <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: 978 left
+              <!-- TODO: Link CreatorCoin's NFT on homepage -->
+              <a href="{% url 'user_token_page' profile_id=1 %}">View NFT</a> | Price: 0.1 <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: 978 left
             </p>
 
           </div>
@@ -218,9 +229,9 @@
 
       <section id="about" class="text-center">
 
-        <h2 class="my-4">
+        <h2 class="my-4 homepage-video-title">
           <strong>
-            Here's how it works:
+            Watch how it works:
           </strong>
         </h2>
                
@@ -258,7 +269,7 @@
             <h3>
               <i class="bi bi-1-square" ></i>
             </h3>
-            <p style="font-size: 17px;">
+            <p class="homepage-helper-text">
               <!-- A creator can signup on the platform and create a user profile.  -->
               A creator signup's on the platform and create's a user profile.
             </p>
@@ -271,8 +282,8 @@
             <h3>
               <i class="bi bi-2-square"></i>
             </h3>
-            <p style="font-size: 17px;">
-              After <a href="https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps">verifying</a> their Github, 
+            <p class="homepage-helper-text">
+              After <strong><a href="https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps" target="_blank" rel="noopener noreferrer">verifying</a> their Github,</strong> 
               the creator can launch their NFT. Everyday, several new NFT's will be shown on the homepage.            
             </p>
 
@@ -285,8 +296,8 @@
               <!-- <i class="bi bi-3-circle"></i> -->
               &#127881;
             </h3>
-            <p style="font-size: 17px;">
-              Supporters can explore the NFT's on the platform 
+            <p class="homepage-helper-text">
+              Supporters can explore different NFT's on the platform,
               and buy ones they like.
             </p>
             
@@ -303,27 +314,9 @@
 
   
   <br/>
+  <br/>
 
 
-  
-    <!-- <footer class="bg-black text-white text-center text-lg-left">
-    
-      Copyright
-      <div
-        class="text-center p-0"
-        style="background-color: rgba(0, 0, 0, 0.2);"
-      >
-        © 2022
-        <a class="text-white" href="https://mdbootstrap.com/"
-          >Rahul Production</a
-        >
-        
-      </div>
-      Copyright
-
-    </footer>
-    
-  </footer> -->
 
 
 
@@ -332,61 +325,18 @@
 
 <script>
 
-  
 
-
-  var tok = '{{ csrf_token }}'
-  // console.log('tok:', tok);
-
-  // TODO: finish this and go from there
-  $('#join_beta_form').submit(function(e){
-
-    e.preventDefault();
-
-    var user_email = $('#user_email_value').val();
-    $.ajax({
-      type: 'POST',
-      url: "",
-      data: {
-        'user_email': user_email,
-        csrfmiddlewaretoken: tok
-      },
-      success: function (response) {
-        console.log('res:', response);
-        
-        if (response['success'] === true){
-
-          // success_message
-          
-          $('#join_beta_form').hide();
-          $('#success_message').show();
-
-        } else if (response['duplicate'] === true){
-
-          $('#join_beta_form').hide();
-          $('#duplicate_message').show();
-
-        }
-
-      }
-
-    })
-
-  })
+  var homepageCSRFTok = '{{ csrf_token }}'
 
 
   var currentCount = 0;
-
   var changeWordList = [
     "Engineers", "Researchers", "Hackers", "Builders"
   ]
 
   function _changeText() {
     let el = document.getElementsByClassName('word-changer')[0];
-    // console.log(el)
-
     let totalListCount = changeWordList.length;
-    // console.log(totalListCount, currentCount)
 
     currentCount += 1
 
@@ -401,28 +351,9 @@
 
     }    
 
-    // //iterate over all .word-changer elements
-    // for (let i = 0; i < els.length; i++) {
-    //   let el = els[i];
-    //   // read out elements data-counter and data-max attributes
-    //   let counter = parseInt(el.dataset.counter);
-    //   let max =  parseInt(el.dataset.max);
-      
-    //   if(counter < max ) {
-    //     // Update counter and replace word based on the "hashmap"
-    //       counter++;
-    //     el.innerHTML = changeList[el.textContent]; // This is where the words get swapped
-    //     el.dataset.counter = counter;
-    //   }
-
-    // }
-
   }
 
-
   setInterval(_changeText, 2000);
-
-
   
 
 </script>

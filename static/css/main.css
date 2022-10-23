@@ -250,12 +250,21 @@ a.link{
   font-size: 0px;
 } */
 
+
+.homepage-nft-title, .homepage-video-title{
+  font-size: 30px;
+  font-weight: 800;
+  color: black;
+}
+
+
 .home-header{
   font-size: 36px;
   font-weight: bolder;
   max-width: 17em;
   color: black;
 }
+
 
 .home-description{
   font-size: 18px;
@@ -296,6 +305,11 @@ a.link{
 
 #home-left-column{
   padding-top: 2%;
+}
+
+
+.homepage-helper-text{
+  font-size: 19px;
 }
 
 
@@ -448,8 +462,14 @@ a.link{
 #manifesto_header{
   text-align: center;
   font-family: 'Hubballi', cursive;
+  font-weight: 900;  
+}
+
+.manifesto-helper-text{
+  font-family: 'Hubballi', cursive;
   font-weight: 900;
-  
+  color: gray;
+  font-size: 17px;
 }
 
 

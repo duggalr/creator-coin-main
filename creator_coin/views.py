@@ -31,15 +31,12 @@ from . import main_utils
 
 
 # TODO:
+  # add good logging for debugging later on...
   # review security/permissions of each view function
   # update 3D models 
   # record video 
   # proceed to next-steps
 
-
-
-# TODO: 
-  # add good logging for debugging later on...
 
 
 
@@ -51,22 +48,24 @@ from . import main_utils
 #   return render(request, 'home_one.html')
 
 
-def home(request):
+def home(request):  
+
   if request.method == "POST":
     user_email = request.POST['user_email']
-
-    email_objects = UserBetaEmails.objects.filter(user_email=user_email)
-    if len(email_objects) == 0:
-      b = UserBetaEmails.objects.create(
-        user_email=user_email
-      )
-      b.save()
-      # return redirect('home')
-      return JsonResponse({'success': True})
-    else: 
-      return JsonResponse({'duplicate': True})
-      
-  return render(request, 'home_two.html')
+    if user_email != '':
+      email_objects = UserBetaEmails.objects.filter(user_email=user_email)
+      if len(email_objects) == 0:
+        b = UserBetaEmails.objects.create(
+          user_email=user_email
+        )
+        b.save()
+        return JsonResponse({'success': True})
+      else: 
+        return JsonResponse({'duplicate': True})
+    
+  return render(request, 'home_two.html', {
+    'anon_user': request.user.is_anonymous
+  })
 
 
 def about_page(request):
