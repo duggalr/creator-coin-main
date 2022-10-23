@@ -204,8 +204,7 @@ body{
 
 
 #project-text-main{
-  padding-left: 3%;
-
+  padding-left: 1%;
 }
 
 
@@ -255,6 +254,7 @@ a.link{
   font-size: 30px;
   font-weight: 800;
   color: black;
+  text-align: center;
 }
 
 

@@ -73,6 +73,9 @@ def about_page(request):
 
 
 # TODO:
+  # fetch all profiles with a NFT MINTED**
+  # then, fetch all others
+    # filter for both in the dropdown
 def explore_project(request):
   # all_projects = UserProject.objects.all()
   # # nft_images = ProjectNftImage.objects.all()
@@ -90,11 +93,6 @@ def explore_project(request):
   
   # return render(request, 'explore_project.html', {'all_projects': all_projects})
 
-  # TODO: 
-    # fetch all profiles with a NFT MINTED**
-    # then, fetch all others
-      # filter for both in the dropdown
-
   return render(request, 'explore_project.html')
 
 
@@ -107,8 +105,6 @@ def my_profile(request):
   return redirect('user_token_page', profile_id=creator_profile_obj.id)
 
 
-# web3-user-id --> change to slug 
-  # t
 
 def user_token_page(request, profile_id):
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)

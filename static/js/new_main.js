@@ -131,7 +131,8 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
             let userLoginInfoRes = await completeLogin(data);
             if (userLoginInfoRes['success'] === true){
               if (redirect_profile_id !== undefined) {
-                window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id;
+                window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id + '?click=buy-button'
+                // buyNFTMain()
               } else {
                 window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];
               }

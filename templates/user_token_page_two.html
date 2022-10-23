@@ -206,11 +206,6 @@
         </div>
         
 
-        <!-- TODO: delete afterwards and add in approriate spot -->
-        <!-- what if user clicks this and isn't logged in? -->
-        <!-- <button id="buy-nft">Buy NFT</button> -->
-         
-
         <div class="col-8" id="project-text-main">
 
           <div class="project-header">
@@ -554,52 +549,27 @@
     const mainContractAddress = '{{ user_nft_obj.nft_deployed_contract_address }}'
     const creatorProfileID = '{{ creator_profile.id }}'
 
+    // var url_string = "http://www.example.com/t.html?a=1&b=3&c=m2-m3-m4-m5"; 
 
-    // const nftVerificationModal = new bootstrap.Modal('#nftVerificationModal')
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var c = url.searchParams.get("click");
+    console.log('click-param:', c);
 
-    // $( "#user_create_nft" ).click(function() {
+    if (c == 'buy-button'){
+      console.log('aslkdj')
+      document.getElementById('buy-nft-buttton').click();
+      window.onload = function() {
+        $("#buy-nft-buttton").click();
+      }
       
-    //   // Verify profile details
-    //   $.ajax({
-    //     url: "{% url 'verify_user_profile' %}",
-    //     success: function (response) {
-    //       console.log('res:', response);
-          
-    //       if (response['success'] === false){
+    }
 
-    //         nftVerificationModal.show();
-
-    //       } else if (response['success'] === true){
-
-    //         window.location.href = 'http://127.0.0.1:7500/create-nft'
-
-    //       }
-
-    //     }
-
-    //   })
-
-      
-    // });
-
-
-    // $( "#launch-nft" ).click(function() {
-
-    //   window.location.href = ''
-
-    // })
-
-
-    // function off(){
-    //   document.getElementById("overlay").style.display = "none";
-    // }
-
-    // function on(){
-    //   document.getElementById("overlay").style.display = "block";
-    // }
     
 
   </script>
+
+
 
 
 
