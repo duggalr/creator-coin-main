@@ -551,7 +551,7 @@ if (window.ethereum){
   window.ethereum.on('accountsChanged', (accounts) => {
 
     console.log('account-changed:', accounts);
-    // // handleAccountChange();
+    handleAccountChange();
     // window.location.href = 'http://127.0.0.1:7500/logout';
   
   });
@@ -565,7 +565,7 @@ if (window.ethereum){
   window.ethereum.on('chainChanged', (chainId) => {
 
     console.log('chain-changed:', chainId);
-    // window.location.reload();
+    window.location.reload();
     // window.location.href = 'http://127.0.0.1:7500/logout';
 
   })

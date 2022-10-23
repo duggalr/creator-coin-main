@@ -251,9 +251,13 @@
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
             <div class="fw-bold">
-              <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
-              <a href="https://etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">NFT Purchased</a>
-              | <span style="color: darkgray;">{{ nft_obj.nft_transaction_history_obj.transaction_created_date  }}</span>
+              <a href="">NFT Bought</a>
+              |
+              <a href="https://etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">Etherscan Transaction</a>
+              | 
+              <span style="color: darkgray;">{{ nft_obj.nft_transaction_history_obj.transaction_created_date  }}</span>
+              <!-- <a href="https://etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">NFT Purchased</a>
+              | <span style="color: darkgray;">{{ nft_obj.nft_transaction_history_obj.transaction_created_date  }}</span> -->
             </div>
 
             <span style="color: gray;">
