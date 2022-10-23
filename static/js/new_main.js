@@ -559,7 +559,6 @@ if (window.ethereum){
 }
 
 
-// TODO: new tab is causing 'chain' switched?
 if (window.ethereum){
 
   window.ethereum.on('chainChanged', (chainId) => {
@@ -573,12 +572,7 @@ if (window.ethereum){
 };
 
 
-// User switch works 
-  // **user connnected does not work <-- need to ensure user is connected 
-
  
-
-
 
 
 

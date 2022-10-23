@@ -30,6 +30,13 @@ from . import main_utils
 
 
 
+# TODO:
+  # review security/permissions of each view function
+  # update 3D models 
+  # record video 
+  # proceed to next-steps
+
+
 
 # TODO: 
   # add good logging for debugging later on...
