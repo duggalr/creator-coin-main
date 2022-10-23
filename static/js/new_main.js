@@ -459,12 +459,11 @@ const buyNFTMain = async () => {
     const network = await provider.getNetwork();
     const chainId = network.chainId;
     
-    // console.log('network:', network);
-    // console.log('chain-id:', chainId);
+    console.log('network:', network);
+    console.log('chain-id:', chainId);
   
     const accounts = await provider.listAccounts();
     // console.log('network-accounts:', accounts);
-  
   
     let bytecodeDict;
     try{
@@ -491,8 +490,9 @@ const buyNFTMain = async () => {
         var tokenPrice = contractData['nft_token_price'];
         // var tokenSupply = contractData['nft_token_supply'];
   
-        console.log('main-contract-addr:', mainContractAddress)
+        console.log('main-contract-addr:', mainContractAddress, contractABI, contractData)
   
+        console.log('accounts:', accounts[0])
         var existingContract = new ethers.Contract(
           mainContractAddress,
           contractABI,

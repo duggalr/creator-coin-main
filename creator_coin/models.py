@@ -157,9 +157,7 @@ class UserBetaEmails(models.Model):
 
 
 
-# TODO: 
-  # **Need to confirm chain-id on purchase and deployment 
-    # **can only sign if chain-id is mainnet (or specific testnet)** 
+
 
  
 
