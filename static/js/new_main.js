@@ -75,7 +75,7 @@ function completeLogin(userData){
 }
 
 
-const handleSignupButtonClick = async () => {
+const handleSignupButtonClick = async (redirect_profile_id) => {
 
   if (window.ethereum && window.ethereum.isMetaMask) {
 
@@ -130,7 +130,13 @@ const handleSignupButtonClick = async () => {
           try{
             let userLoginInfoRes = await completeLogin(data);
             if (userLoginInfoRes['success'] === true){
-              window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];  // TODO: redirect to profile?
+              if (redirect_profile_id !== undefined) {
+                window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id;
+              } else {
+                window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];
+              }
+
+              
             }
           } catch(error) {  // user login request failed
             console.log(error)
@@ -397,6 +403,11 @@ function saveTransactionData(result){
         console.log('res:', response);
         // TODO: refresh page?
         // window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
+        if (response['success'] === true){
+          window.location.href = 'http://127.0.0.1:7500/profile/' + response['redirect_profile_id']
+        } else { // TODO: display error message in modal
+          console.log('you must be logged in...')
+        }
 
       }
   
@@ -433,73 +444,87 @@ function get_nft_bytecode_abi(){
 
 const buyNFTMain = async () => {
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const network = await provider.getNetwork();
-  const chainId = network.chainId;
+  // Determine if user is logged in or not
+
+  console.log('anon-user:', anonUser)
+
+  if (anonUser === 'True'){
+    
+    handleSignupButtonClick(creatorProfileID)
+
+  } else {
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const network = await provider.getNetwork();
+    const chainId = network.chainId;
+    
+    // console.log('network:', network);
+    // console.log('chain-id:', chainId);
   
-  // console.log('network:', network);
-  // console.log('chain-id:', chainId);
-
-  const accounts = await provider.listAccounts();
-  // console.log('network-accounts:', accounts);
-
-
-  let bytecodeDict;
-  try{
-    bytecodeDict = await get_nft_bytecode_abi();
-  } catch(error){
-    console.log(error)
-  }
+    const accounts = await provider.listAccounts();
+    // console.log('network-accounts:', accounts);
   
-  if (typeof bytecodeDict !== undefined){
-
-    var contractABI = bytecodeDict['abi']
-
-    let contractData;
+  
+    let bytecodeDict;
     try{
-      contractData = await get_nft_contract_address(creatorProfileID);
-    } catch(error) {
+      bytecodeDict = await get_nft_bytecode_abi();
+    } catch(error){
       console.log(error)
     }
-
-    if (typeof contractData !== undefined){
-
-      // console.log('ct-data:', contractData);
-      var mainContractAddress = contractData['nft_contract_address'];
-      var tokenPrice = contractData['nft_token_price'];
-      // var tokenSupply = contractData['nft_token_supply'];
-
-      console.log('main-contract-addr:', mainContractAddress)
-
-      var existingContract = new ethers.Contract(
-        mainContractAddress,
-        contractABI,
-        provider.getSigner(accounts[0])
-      ); 
-
-      // console.log('existing-contract:', existingContract);
-
-      // console.log('ct-data:', contractData)
-      // var tokPriceStr = (tokenPrice * (10**18)).toString();
-      // console.log('tok-price-str:', tokPriceStr, tokenPrice);
-      
-      // var numTokens = 1;
-      var tokPriceStr = (tokenPrice * (10**18)).toString();
-      try {
-        let result = await existingContract.safeMint(1, {'value': tokPriceStr});
-        // // result = await existingContract.wait();
-        console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
+    
+    if (typeof bytecodeDict !== undefined){
+  
+      var contractABI = bytecodeDict['abi']
+  
+      let contractData;
+      try{
+        contractData = await get_nft_contract_address(creatorProfileID);
+      } catch(error) {
+        console.log(error)
+      }
+  
+      if (typeof contractData !== undefined){
+  
+        // console.log('ct-data:', contractData);
+        var mainContractAddress = contractData['nft_contract_address'];
+        var tokenPrice = contractData['nft_token_price'];
+        // var tokenSupply = contractData['nft_token_supply'];
+  
+        console.log('main-contract-addr:', mainContractAddress)
+  
+        var existingContract = new ethers.Contract(
+          mainContractAddress,
+          contractABI,
+          provider.getSigner(accounts[0])
+        ); 
+  
+        // console.log('existing-contract:', existingContract);
+  
+        // console.log('ct-data:', contractData)
+        // var tokPriceStr = (tokenPrice * (10**18)).toString();
+        // console.log('tok-price-str:', tokPriceStr, tokenPrice);
         
-        saveTransactionData(result)
-
-      } catch(error){
-
+        // var numTokens = 1;
+        var tokPriceStr = (tokenPrice * (10**18)).toString();
+        try {
+          let result = await existingContract.safeMint(1, {'value': tokPriceStr});
+          // // result = await existingContract.wait();
+          console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
+          
+          saveTransactionData(result)
+  
+        } catch(error){
+  
+        }
+        
+  
       }
       
-
     }
-    
+
   }
+
+
 
   
   // var tokPrice = await existingContract.getTokenPrice();
@@ -526,20 +551,22 @@ if (window.ethereum){
   window.ethereum.on('accountsChanged', (accounts) => {
 
     console.log('account-changed:', accounts);
-    // handleAccountChange();
-    window.location.href = 'http://127.0.0.1:7500/logout';
+    // // handleAccountChange();
+    // window.location.href = 'http://127.0.0.1:7500/logout';
   
   });
   
 }
 
+
+// TODO: new tab is causing 'chain' switched?
 if (window.ethereum){
 
   window.ethereum.on('chainChanged', (chainId) => {
 
     console.log('chain-changed:', chainId);
     // window.location.reload();
-    window.location.href = 'http://127.0.0.1:7500/logout';
+    // window.location.href = 'http://127.0.0.1:7500/logout';
 
   })
 

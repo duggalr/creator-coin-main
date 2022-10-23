@@ -10,7 +10,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 # from rest_framework.authtoken.models import Token
 
-from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft, UserBetaEmails, UserNftTransactionHistory, CreatorProjectLog
+from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft, UserBetaEmails, UserNftTransactionHistory, CreatorProjectLog, UserNftCollection
 # from .serializers import Web3UserSerializer
 
 from requests_oauthlib import OAuth2Session
@@ -169,7 +169,10 @@ def user_token_page(request, profile_id):
   
   project_log_list = CreatorProjectLog.objects.filter(creator_obj=creator_profile_obj).order_by('-log_created_date')
 
+  user_nft_collection =  UserNftCollection.objects.filter(creator_obj=creator_profile_obj)
+
   return render(request, 'user_token_page_two.html', {
+    'anon_user': request.user.is_anonymous,
     'creator_profile': creator_profile_obj,
     'same_user': same_user,
     'profile_id': profile_id,
@@ -177,7 +180,8 @@ def user_token_page(request, profile_id):
     'user_nft_obj': user_nft_obj,
     'user_three_dim_upload': user_three_dim_upload,
     'nft_transaction_history': nft_transaction_history,
-    'project_log_list': project_log_list
+    'project_log_list': project_log_list,
+    'user_nft_collection': user_nft_collection
   })
 
  
@@ -927,24 +931,41 @@ def save_nft_transaction_data(request):
   """
   print('save-nft-post:', request.POST)
   
-  profile_id = request.POST['profile_id']
-  creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-  # UserNft.objects.get()
-  user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
+  if request.user.is_anonymous is False:
 
-  # Save the bought transaction 
-    # keep a running count of the supply in new model? 
-  print('post-data:', request.POST)
+    profile_id = request.POST['profile_id']
+    creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+    # UserNft.objects.get()
+    user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
 
-  nft_history_obj = UserNftTransactionHistory.objects.create(
-    nft_obj = user_nft_obj, 
-    transaction_hash = request.POST['nft_transaction_hash']
-  )
-  nft_history_obj.save()
-
-  return JsonResponse({'success': True})
+    # Save the bought transaction 
+      # keep a running count of the supply in new model? 
+    print('post-data:', request.POST)
 
 
+    # TODO: needs etherscan confirmation 
+      # split into rejected/pending/success
+    nft_history_obj = UserNftTransactionHistory.objects.create(
+      nft_obj = user_nft_obj, 
+      transaction_hash = request.POST['nft_transaction_hash']
+    )
+    nft_history_obj.save()
+
+
+    web_three_user_obj = Web3User.objects.get(user_pk_address=request.user)
+    buyer_cp_obj = CreatorProfile.objects.get(user_obj=web_three_user_obj)
+
+    buyer_nft_collect_obj = UserNftCollection.objects.create(
+      creator_obj = buyer_cp_obj,
+      nft_transaction_history_obj = nft_history_obj
+      # nft_obj = user_nft_obj      
+    )
+    buyer_nft_collect_obj.save()
+
+    return JsonResponse({'success': True, 'redirect_profile_id': buyer_cp_obj.id})
+
+  else:
+    return JsonResponse({'success': False})
 
 
 

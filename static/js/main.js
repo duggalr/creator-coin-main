@@ -892,7 +892,6 @@ function get_nft_contract_address(creatorProfileID){
 
 
 const buyNFTMain = async () => {
-
   
   var bytecodeDict = await get_nft_bytecode_abi();
   var contractABI = bytecodeDict['abi']

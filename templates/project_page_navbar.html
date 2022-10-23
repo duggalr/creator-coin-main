@@ -27,8 +27,8 @@
 
 
   <li class="nav-item" role="presentation">
-    <button class="nav-link disabled" id="user-nft-tab" data-bs-toggle="tab" data-bs-target="#user-nft-collection" type="button" role="tab" aria-controls="user-nft-collection" aria-selected="false">
-      <i class="bi bi-box-fill"></i> NFT's you have bought
+    <button class="nav-link" id="user-nft-tab" data-bs-toggle="tab" data-bs-target="#user-nft-collection" type="button" role="tab" aria-controls="user-nft-collection" aria-selected="false">
+      <i class="bi bi-box-fill"></i> NFT's you have bought ({{ user_nft_collection|length }})
     </button>
   </li>
 
@@ -175,8 +175,8 @@
 
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
-            <!-- TODO: align to right and go from there -->
-            <div class="fw-bold" style="font-size: 19px;" style="display: flex; ">
+
+            <div class="fw-bold" style="font-size: 19px;" >
                 {{ log.log_title }} | 
               
                
@@ -193,8 +193,6 @@
             
             {{ log.log_description }}
           </div>
-          
-          
 
         </li>
 
@@ -247,7 +245,35 @@
 
     <ul class="list-group list-group-flush">
 
-      <!-- TODO: add default if no project-log; else, show all the project-log -->
+
+      {% for nft_obj in user_nft_collection %}
+
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">
+              <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
+              <a href="https://etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">NFT Purchased</a>
+              | <span style="color: darkgray;">{{ nft_obj.nft_transaction_history_obj.transaction_created_date  }}</span>
+            </div>
+
+            <span style="color: gray;">
+              <i class="bi bi-hash"></i>{{ nft_obj.nft_transaction_history_obj.transaction_hash }}
+            </span>
+            
+          </div>
+
+          <span>
+            <strong>
+              {{ nft_obj.nft_transaction_history_obj.nft_obj.nft_price }} ETH
+            </strong>
+          </span>
+
+        </li>
+
+      {% endfor %}
+
+      
+      {% if user_nft_collection|length == 0 %}
 
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
@@ -256,18 +282,10 @@
             </div>
           </div>
         </li>
-  
-        <!-- <li class="list-group-item d-flex justify-content-between align-items-start">
-          <div class="ms-2 me-auto">
-            <div class="fw-bold">Update One</div>          
-            This is the launch of Writing about something, even something you know well, usually shows you that you didn't know it as well as you thought. 
-            Putting ideas into words is a severe test. The first words you choose are usually wrong; you have to rewrite sentences over and over to 
-            get them exactly right. And your ideas won't just be imprecise, but incomplete too. Half the ideas that end up in an essay will be ones 
-            you thought of while you were writing it. Indeed, that's why I write them. 
-            Now, how did I come to do this study? At Los Alamos I was brought in to run the computing machines which other people had 
-            got going, so those scientists and physicists could get back to business.
-          </div>
-        </li> -->
+
+      {% endif %}
+
+
   
       </ul>
 

@@ -100,13 +100,22 @@ class UserNft(models.Model):
 
 # All purchases will be recorded here
   # after, can add transfers, etc. as well 
-# TODO: delete this table as it is not secure approach 
+# TODO: update this table with etherscan api
 class UserNftTransactionHistory(models.Model):
   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
   transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
   transaction_created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
 
 
+# Displays the nft's user bought
+# TODO: update this table with etherscan api
+class UserNftCollection(models.Model):
+  creator_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
+  # nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
+  nft_transaction_history_obj = models.ForeignKey(UserNftTransactionHistory, on_delete=models.CASCADE, blank=True, null=True)
+  transaction_created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
+
+ 
 # class UserNftTotalSupply(models.Model):
 #   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
 #   total_sold = models.IntegerField()
