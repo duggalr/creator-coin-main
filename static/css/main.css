@@ -528,4 +528,13 @@ a.link{
 }
 
 
+#project_log_trash{
+  color: inherit;
+}
+
+
+#project_log_trash:hover{
+  color: red;
+}
+
 

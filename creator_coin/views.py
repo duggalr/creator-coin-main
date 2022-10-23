@@ -165,8 +165,7 @@ def user_token_page(request, profile_id):
       return redirect('user_token_page', profile_id=profile_id)
 
 
-  nft_transaction_history = UserNftTransactionHistory.objects.filter(nft_obj=user_nft_obj)
-
+  nft_transaction_history = UserNftTransactionHistory.objects.filter(nft_obj=user_nft_obj).order_by('-transaction_created_date')
   
   project_log_list = CreatorProjectLog.objects.filter(creator_obj=creator_profile_obj).order_by('-log_created_date')
 
@@ -183,6 +182,19 @@ def user_token_page(request, profile_id):
 
  
 
+def delete_project_log(request, project_log_id):
+  user_pk_address = request.user
+  user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+
+  project_log_obj = get_object_or_404(CreatorProjectLog, id=project_log_id)
+  if user_obj == project_log_obj.creator_obj.user_obj:
+    project_log_obj.delete()
+    return redirect('user_token_page', profile_id=project_log_obj.creator_obj.id)
+
+  # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+  
+  # CreatorProjectLog.objects.filter(id=project_log_id).delete()
+  # return redirect('user_token_page', profile_id=profile_id)
 
 
   

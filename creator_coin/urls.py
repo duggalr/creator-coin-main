@@ -21,6 +21,8 @@ urlpatterns = [
   path('update-nft/', views.update_token_form, name='update_token_form'), 
   path('delete-nft/', views.delete_non_minted_nft, name='delete_non_minted_nft'),
 
+  path('delete-project-log/<int:project_log_id>/', views.delete_project_log, name='delete_project_log'),
+
   # ajax-calls
   path('fetch-nft-main-data/<int:profile_id>/', views.fetch_nft_main_data, name='fetch_nft_main_data'),
   path('get-nft-metadata/', views.get_minted_nft_metadata, name='get_minted_nft_metadata'),
