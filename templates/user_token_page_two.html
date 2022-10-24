@@ -62,7 +62,6 @@
                 {{ user_nft_obj.nft_name }}
               </p>
 
-              {% if same_user is True %}
 
                 <span style="font-size: 19px;">
                   | <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
@@ -82,7 +81,6 @@
                 &nbsp;
                 <a href="{% url 'update_token_form' %}">Edit Token Settings</a> -->
                   
-              {% endif %}
 
               <div style="padding-top: 3px;"></div>
 
@@ -95,8 +93,8 @@
             <div style="padding-top: 10px;">
 
               <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                  0%
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: {{ nft_transaction_history|length }}%;" aria-valuenow="{{ nft_transaction_history|length }}" aria-valuemin="0" aria-valuemax="100">
+                  {{ nft_transaction_history|length }}%
                 </div>
               </div>
 
@@ -110,7 +108,7 @@
               {% if user_nft_obj.nft_deployed is False %}
                 <strong style="color: gray;">Total Sold: 0</strong>
               {% else %}
-                <strong>Total Sold:</strong> 0 
+                <strong>Total Sold:</strong> {{ nft_transaction_history|length }}
               {% endif %}
 
               |
@@ -257,7 +255,7 @@
 
                   {% if user_nft_obj.nft_deployed is False %}
                     
-                    <button class="btn btn-info btn-lg rounded-pill" id="launch-nft-button" style="font-size: 18px; color: white;">Launch your NFT</button>
+                    <button class="btn btn-info btn-lg rounded-pill" id="launch-nft-button" style="font-size: 18px; color: white;">Mint your NFT</button>
 
                   {% else %}
 

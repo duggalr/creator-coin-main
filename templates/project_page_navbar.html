@@ -26,9 +26,16 @@
   {% endif %}
 
 
+  <!-- TODO: should only show if same user! -->
   <li class="nav-item" role="presentation">
     <button class="nav-link" id="user-nft-tab" data-bs-toggle="tab" data-bs-target="#user-nft-collection" type="button" role="tab" aria-controls="user-nft-collection" aria-selected="false">
-      <i class="bi bi-box-fill"></i> NFT's you have bought ({{ user_nft_collection|length }})
+
+      {% if same_user is True %}
+        <i class="bi bi-box-fill"></i> NFT's you have bought ({{ user_nft_collection|length }})
+      {% else %}
+        <i class="bi bi-box-fill"></i> NFT's this person has bought ({{ user_nft_collection|length }})
+      {% endif %}
+      
     </button>
   </li>
 
@@ -251,7 +258,7 @@
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
             <div class="fw-bold">
-              <a href="">NFT Bought</a>
+              <a href="{% url 'user_token_page' profile_id=nft_obj.nft_transaction_history_obj.nft_obj.creator_obj.id %}">NFT Bought</a>
               |
               <a href="https://etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">Etherscan Transaction</a>
               | 
