@@ -188,7 +188,7 @@ def store_file_in_ipfs(obj):
       print('api-res', api_response)
       if api_response['ok'] is True:
         uploaded_data = api_response['value']
-        ipfs_cid = uploaded_data['cid']
+        ipfs_cid = uploaded_data['cid'] 
         return True, ipfs_cid
       else:
         return False, None
