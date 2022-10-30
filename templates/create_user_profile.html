@@ -114,9 +114,9 @@
 
               <div class="col-sm-7">
                 {% if creator_profile.creator_personal_website is not None %}
-                  <input type="url" class="form-control" id="project_website" name="project_website" placeholder="your amazing personal website..." value="{{ creator_profile.creator_personal_website }}">
+                  <input type="url" class="form-control" id="project_website" name="project_website" placeholder="your amazing personal website (leave blank if none)..." value="{{ creator_profile.creator_personal_website }}">
                 {% else %}
-                  <input type="url" class="form-control" id="project_website" name="project_website" placeholder="your amazing personal website...">
+                  <input type="url" class="form-control" id="project_website" name="project_website" placeholder="your amazing personal website (leave blank if none)...">
                 {% endif %}
                 
               </div>
@@ -133,9 +133,9 @@
               <div class="col-sm-7">
 
                 {% if creator_profile.creator_discord_website is not None %}
-                  <input type="url" class="form-control" id="project_discord_website" name="project_discord_website" placeholder="gotta love a fancier IRC..." value="{{ creator_profile.creator_discord_website }}">
+                  <input type="url" class="form-control" id="project_discord_website" name="project_discord_website" placeholder="gotta love a fancier IRC (leave blank if none)..." value="{{ creator_profile.creator_discord_website }}">
                 {% else %}
-                  <input type="url" class="form-control" id="project_discord_website" name="project_discord_website" placeholder="gotta love a fancier IRC...">
+                  <input type="url" class="form-control" id="project_discord_website" name="project_discord_website" placeholder="gotta love a fancier IRC (leave blank if none)...">
                 {% endif %}
                 
               </div>
@@ -154,9 +154,9 @@
               <!-- TODO:  -->
               <div class="col-sm-7">
                 {% if creator_profile.creator_description is not None %}
-                  <textarea class="form-control" placeholder="No markdown...maybe you can help add it?" id="project_description" name="project_description" rows="8">{{ creator_profile.creator_description }}</textarea>
+                  <textarea class="form-control" placeholder="Give us a little detail on what your working on... (No markdown supported, maybe you can help add it?)" id="project_description" name="project_description" rows="8">{{ creator_profile.creator_description }}</textarea>
                 {% else %}
-                  <textarea class="form-control" placeholder="No markdown...maybe you can help add it?" id="project_description" name="project_description" rows="8"></textarea>
+                  <textarea class="form-control" placeholder="Give us a little detail on what your working on... (No markdown supported, maybe you can help add it?)" id="project_description" name="project_description" rows="8"></textarea>
                 {% endif %}
                 
               </div>
@@ -169,7 +169,7 @@
 
             <!-- <button class="ui button" type="submit">Submit</button> -->
             <!-- <div style="text-align: center; margin-right: 6em;"> -->
-            <div style="margin-left: 21.5em; padding-top: 0.5em;">
+            <div style="margin-left: 21em; padding-top: 0.5em;">
               <button type="submit" class="btn btn-outline-info">Submit</button>
             </div>
                       

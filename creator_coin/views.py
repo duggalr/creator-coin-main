@@ -153,7 +153,7 @@ def user_token_page(request, profile_id):
 
   user_nft_collection =  UserNftCollection.objects.filter(creator_obj=creator_profile_obj)
 
-  return render(request, 'user_token_page_two.html', {
+  return render(request, 'user_profile_page.html', {
     'anon_user': request.user.is_anonymous,
     'creator_profile': creator_profile_obj,
     'same_user': same_user,
@@ -355,7 +355,7 @@ def edit_user_profile(request, profile_id):
     #   user_project_obj.save()
       
   else:
-    return render(request, 'create_project.html', {'creator_profile': creator_profile_obj})
+    return render(request, 'create_user_profile.html', {'creator_profile': creator_profile_obj})
 
   # # user_project_obj = UserProject.objects.get_object_or_404(id=project_id)
   # user_project_obj = get_object_or_404(UserProject, id=project_id)

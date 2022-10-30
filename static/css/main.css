@@ -560,11 +560,12 @@ a.link{
 
 #project_log_trash{
   color: inherit;
-}
-
-
-#project_log_trash:hover{
   color: red;
 }
+
+
+/* #project_log_trash:hover{
+  color: black;
+} */
 
 

@@ -313,18 +313,13 @@
 
             {% else %}
 
-              <!-- <span style="padding-left: 12px;">
-                <i class="bi bi-link"></i> <a href="">
-                  add a personal website
-                </a>
-              </span> -->
 
               {% if same_user is True %}
 
                 <span>
                   <i class="bi bi-github"></i> 
                   <a href="{% url 'github_login' %}" >
-                    add your github
+                    add your github (required)
                   </a>
                 </span>
               
@@ -424,7 +419,7 @@
 
       <br/>
 
-      {% include 'project_page_navbar.html' %}
+      {% include 'user_profile_navbar.html' %}
 
 
 
