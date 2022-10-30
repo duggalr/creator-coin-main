@@ -5,6 +5,7 @@ let loginErrorModal;
 let loginErrorTwoModal;
 let loginErrorThreeModel;
 let projectLogModal;
+let chainIdErrorModal;
 
 
 
@@ -28,6 +29,14 @@ var projectLogModalExists = document.getElementById("projectLogModal");
 if (projectLogModalExists != null){
   projectLogModal = new bootstrap.Modal('#projectLogModal');
 }
+
+
+var chainIdModalExists = document.getElementById("chainIDErrorModal");
+if (chainIdModalExists != null){
+  chainIdErrorModal = new bootstrap.Modal('#chainIDErrorModal');
+}
+
+
 
 
 
@@ -270,100 +279,101 @@ const mainTestThree = async (bytecode, abi) => {
 
   if (chainId != 1337){  // display error modal
 
+    chainIdErrorModal.show();
 
   } else {
 
     const accounts = await provider.listAccounts();
     console.log('network-accounts:', accounts);
   
-    // // console.log('ets-provider:', ethersProvider)
+    // console.log('ets-provider:', ethersProvider)
   
-    // let collectiblesFactory = new ethers.ContractFactory(
-    //   abi,
-    //   bytecode,
-    //   provider.getSigner(accounts[0])
-    // ); 
+    let collectiblesFactory = new ethers.ContractFactory(
+      abi,
+      bytecode,
+      provider.getSigner(accounts[0])
+    ); 
     
-    // document.getElementById("overlay").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
   
   
-    // let nftSaveResp;
-    // try {
-    //   nftSaveResp = await saveNFTData();
-    //   // userNonceRes = await requestNonce(user_account_pk_address);
-    //   // console.log('user-nonce-res:', userNonceRes)
-    // } catch(error){  // user-nonce-request with response != 200 (rare situation)
-    //   // loginErrorThreeModel.show();
-    //   console.log('error:', error)
-    // }
+    let nftSaveResp;
+    try {
+      nftSaveResp = await saveNFTData();
+      // userNonceRes = await requestNonce(user_account_pk_address);
+      // console.log('user-nonce-res:', userNonceRes)
+    } catch(error){  // user-nonce-request with response != 200 (rare situation)
+      // loginErrorThreeModel.show();
+      console.log('error:', error)
+    }
   
-    // // const nftSaveResp = await saveNFTData();
+    // const nftSaveResp = await saveNFTData();
   
-    // document.getElementById("overlay").style.display = "none";;
+    document.getElementById("overlay").style.display = "none";;
   
-    // console.log('nft-save-resp:', nftSaveResp);
+    console.log('nft-save-resp:', nftSaveResp);
   
-    // if (nftSaveResp['success'] === true){  // deploy the token
+    if (nftSaveResp['success'] === true){  // deploy the token
   
-    //   let nftMetaData;
-    //   try {
-    //     nftMetaData = await getNFTData();
-    //   } catch(error){
-    //     console.log('error:', error)
-    //   }
+      let nftMetaData;
+      try {
+        nftMetaData = await getNFTData();
+      } catch(error){
+        console.log('error:', error)
+      }
   
-    //   // Load a metamask signature
-    //   let collectiblesContract = await collectiblesFactory.deploy( 
-    //     nftMetaData['nft_name'],
-    //     nftMetaData['nft_symbol'],
-    //     nftMetaData['nft_total_supply'],
-    //     20, // max-token-sale-per-purchase
-    //     Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
-    //     nftMetaData['nft_ipfs_url']
-    //   )
+      // Load a metamask signature
+      let collectiblesContract = await collectiblesFactory.deploy( 
+        nftMetaData['nft_name'],
+        nftMetaData['nft_symbol'],
+        nftMetaData['nft_total_supply'],
+        20, // max-token-sale-per-purchase
+        Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
+        nftMetaData['nft_ipfs_url']
+      )
   
-    //   // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
-    //   // // 0x68Ea1a2504a4287900E51Db51658F21704F09720
-    //   saveNFTLaunchedData(collectiblesContract.deployTransaction, collectiblesContract.address);
+      // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+      // // 0x68Ea1a2504a4287900E51Db51658F21704F09720
+      saveNFTLaunchedData(collectiblesContract.deployTransaction, collectiblesContract.address);
   
-    // // let transHash = await collectiblesContract.getDeployTransaction();
-    // // console.log('trans-hash:', transHash);
-    // // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+    // let transHash = await collectiblesContract.getDeployTransaction();
+    // console.log('trans-hash:', transHash);
+    // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
   
-    //   // if user signs above, send request to verify the launched-nft
-    //     // refresh page with views fetching associated etherscan data and buy-button being shown
+      // if user signs above, send request to verify the launched-nft
+        // refresh page with views fetching associated etherscan data and buy-button being shown
   
   
-    // } else { // TODO: need to display error explaining what happened
+    } else { // TODO: need to display error explaining what happened
   
-    // }  
+    }  
    
   
-    // // TODO: AJAX request to upload the metadata to IPFS, save URL, send as response to here and go from there
+    // TODO: AJAX request to upload the metadata to IPFS, save URL, send as response to here and go from there
    
-    // // TODO: below after the IPFS-URL is retrieved and saved in DB, under nft 
-    // // await collectiblesFactory.deploy(
-    // //   nftMetaData['nft_name'],
-    // //   nftMetaData['nft_symbol'],
-    // //   nftMetaData['nft_total_supply'],
-    // //   20, // max-token-sale-per-purchase
-    // //   Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
+    // TODO: below after the IPFS-URL is retrieved and saved in DB, under nft 
+    // await collectiblesFactory.deploy(
+    //   nftMetaData['nft_name'],
+    //   nftMetaData['nft_symbol'],
+    //   nftMetaData['nft_total_supply'],
+    //   20, // max-token-sale-per-purchase
+    //   Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
   
-    // // )
+    // )
   
-    // // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
+    // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
   
       
-    // // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
-    // // // let transHash = await collectiblesContract.getDeployTransaction();
-    // // // console.log('trans-hash:', transHash);
-    // // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+    // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
+    // // let transHash = await collectiblesContract.getDeployTransaction();
+    // // console.log('trans-hash:', transHash);
+    // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
   
-    // // await collectiblesContract.deployTransaction.wait();
+    // await collectiblesContract.deployTransaction.wait();
     
-    // // // console.log(
-    // // //   `Contract mined! address: ${collectiblesContract.address} transactionHash: ${collectiblesContract.deployTransaction.hash}`,
-    // // // );
+    // // console.log(
+    // //   `Contract mined! address: ${collectiblesContract.address} transactionHash: ${collectiblesContract.deployTransaction.hash}`,
+    // // );
 
 
   }
@@ -453,12 +463,10 @@ function get_nft_bytecode_abi(){
 
 
 const buyNFTMain = async () => {
-
-  // Determine if user is logged in or not
-
+  
   console.log('anon-user:', anonUser)
 
-  if (anonUser === 'True'){
+  if (anonUser === 'True'){ // Determine if user is logged in or not
     
     handleSignupButtonClick(creatorProfileID)
 
@@ -470,67 +478,77 @@ const buyNFTMain = async () => {
     
     console.log('network:', network);
     console.log('chain-id:', chainId);
-  
-    const accounts = await provider.listAccounts();
-    // console.log('network-accounts:', accounts);
-  
-    let bytecodeDict;
-    try{
-      bytecodeDict = await get_nft_bytecode_abi();
-    } catch(error){
-      console.log(error)
-    }
+
+
+    if (chainId != 1337){  // display error modal
+
+      chainIdErrorModal.show();
+
+    } else {
+
+      const accounts = await provider.listAccounts();
+      // console.log('network-accounts:', accounts);
     
-    if (typeof bytecodeDict !== undefined){
-  
-      var contractABI = bytecodeDict['abi']
-  
-      let contractData;
+      let bytecodeDict;
       try{
-        contractData = await get_nft_contract_address(creatorProfileID);
-      } catch(error) {
+        bytecodeDict = await get_nft_bytecode_abi();
+      } catch(error){
         console.log(error)
       }
-  
-      if (typeof contractData !== undefined){
-  
-        // console.log('ct-data:', contractData);
-        var mainContractAddress = contractData['nft_contract_address'];
-        var tokenPrice = contractData['nft_token_price'];
-        // var tokenSupply = contractData['nft_token_supply'];
-  
-        console.log('main-contract-addr:', mainContractAddress, contractABI, contractData)
-  
-        console.log('accounts:', accounts[0])
-        var existingContract = new ethers.Contract(
-          mainContractAddress,
-          contractABI,
-          provider.getSigner(accounts[0])
-        ); 
-  
-        // console.log('existing-contract:', existingContract);
-  
-        // console.log('ct-data:', contractData)
-        // var tokPriceStr = (tokenPrice * (10**18)).toString();
-        // console.log('tok-price-str:', tokPriceStr, tokenPrice);
-        
-        // var numTokens = 1;
-        var tokPriceStr = (tokenPrice * (10**18)).toString();
-        try {
-          let result = await existingContract.safeMint(1, {'value': tokPriceStr});
-          // // result = await existingContract.wait();
-          console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
+      
+      if (typeof bytecodeDict !== undefined){
+    
+        var contractABI = bytecodeDict['abi']
+    
+        let contractData;
+        try{
+          contractData = await get_nft_contract_address(creatorProfileID);
+        } catch(error) {
+          console.log(error)
+        }
+    
+        if (typeof contractData !== undefined){
+    
+          // console.log('ct-data:', contractData);
+          var mainContractAddress = contractData['nft_contract_address'];
+          var tokenPrice = contractData['nft_token_price'];
+          // var tokenSupply = contractData['nft_token_supply'];
+    
+          console.log('main-contract-addr:', mainContractAddress, contractABI, contractData)
+    
+          console.log('accounts:', accounts[0])
+          var existingContract = new ethers.Contract(
+            mainContractAddress,
+            contractABI,
+            provider.getSigner(accounts[0])
+          ); 
+    
+          // console.log('existing-contract:', existingContract);
+    
+          // console.log('ct-data:', contractData)
+          // var tokPriceStr = (tokenPrice * (10**18)).toString();
+          // console.log('tok-price-str:', tokPriceStr, tokenPrice);
           
-          saveTransactionData(result)
-  
-        } catch(error){
-  
+          // var numTokens = 1;
+          var tokPriceStr = (tokenPrice * (10**18)).toString();
+          try {
+            let result = await existingContract.safeMint(1, {'value': tokPriceStr});
+            // // result = await existingContract.wait();
+            console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
+            
+            saveTransactionData(result)
+    
+          } catch(error){
+    
+          }
+          
+    
         }
         
-  
       }
-      
+
     }
+
 
   }
 
@@ -693,11 +711,15 @@ var userBuyNFTClicked;
 $( "#buy-nft-buttton" ).click(async () => {
 
   if (userBuyNFTClicked){
+    
     return false;
+
   } else {
+
     userBuyNFTClicked = true;
-    // TODO:
+
     buyNFTMain()
+
   }
 
 

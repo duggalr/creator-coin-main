@@ -22,7 +22,8 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv( os.path.join(BASE_DIR, 'creator_coin_new/.env') )
 
-from .main_contracts import main_utils
+# from .main_contracts import main_utils
+from . import utils
 
 
 
@@ -439,7 +440,7 @@ class UserNonceView(APIView):
     
     UserNonce.objects.filter(user=web_three_user_obj).delete()
 
-    nonce = main_utils.generate_nonce()
+    nonce = utils.generate_nonce()
     user_nonce_obj = UserNonce.objects.create(
       nonce=nonce,
       user=web_three_user_obj
@@ -793,8 +794,11 @@ def delete_non_minted_nft(request):
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
   creator_profile = CreatorProfile.objects.get(user_obj=user_object)
   # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
-  UserNft.objects.filter(creator_obj=creator_profile).delete()
-  
+  # UserNft.objects.filter(creator_obj=creator_profile).delete()
+  user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile)
+  if user_nft_obj.nft_deployed is False:
+    UserNft.objects.filter(creator_obj=creator_profile).delete()
+
   return redirect('user_token_page', profile_id=creator_profile.id)
 
 
@@ -821,7 +825,7 @@ def save_nft_metadata(request):
   creator_profile = CreatorProfile.objects.get(user_obj=user_object)
   user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
 
-  ipfs_uploaded, ipfs_cid = main_utils.store_file_in_ipfs(user_nft_obj)
+  ipfs_uploaded, ipfs_cid = utils.store_file_in_ipfs(user_nft_obj)
   print('ipfs-res:', ipfs_uploaded, ipfs_cid)
 
   if ipfs_uploaded:
