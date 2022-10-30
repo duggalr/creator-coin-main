@@ -1,22 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-# from django.urls import reverse
 
 from rest_framework.views import APIView 
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-# from rest_framework.authtoken.models import Token
 
 from .models import UserNonce, Web3User, CreatorProfile, GithubProfile, UserNft, UserBetaEmails, UserNftTransactionHistory, CreatorProjectLog, UserNftCollection
-# from .serializers import Web3UserSerializer
 
 from requests_oauthlib import OAuth2Session
 
 from eth_account.messages import encode_defunct
-# import web3
 from web3.auto import w3
 import os
 import magic
@@ -30,12 +26,6 @@ from .main_contracts import main_utils
 
 
 
-# TODO:
-  # add good logging for debugging later on...
-  # review security/permissions of each view function
-  # update 3D models 
-  # record video 
-  # proceed to next-steps
 
 
 
