@@ -16,7 +16,7 @@ if (loginModalExists != null){  // on homepage
 }
 
 
-let nftVerificationModal;
+let nftVerificationModal; 
 
 var nftVerificationModalExists = document.getElementById('nftVerificationModal');
 if (nftVerificationModalExists != null){
@@ -718,7 +718,6 @@ $( "#post-update-button" ).click(async () => {
   
 
 // // Homepage DOM
-// TODO: finish this and go from there
 $('#join_beta_form').submit(function(e){
 
   e.preventDefault();

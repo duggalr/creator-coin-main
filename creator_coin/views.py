@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv( os.path.join(BASE_DIR, 'creator_coin_new/.env') )
 
-from . import main_utils
+from .main_contracts import main_utils
 
 
 
