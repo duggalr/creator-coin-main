@@ -7,131 +7,364 @@
   {% include 'navbar.html' %}
 
  
-  <div class="animate__animated animate__fadeIn container" id="home-container">
-
-    <div class="row">
-
-      <div class="col-7">
-
-        <p class="home-header">
-          <!-- A place for hackers to mint NFT's for their side projects, research, or explorations. -->
-          A place for hackers to mint NFT's for their side projects, or themselves...
-        </p>
-
-        <!-- TODO: every word in this and the about-page needs to be good. -->
-        <p class="home-description"> 
-          CreatorCoin serves as a medium to help hackers fund their personal 
-          side projects or individual research. 
-          It is intended to help support the 'research & exploratory' phases 
-          of projects, while at the same time, benefiting the backers through NFT ownership. 
-          <a class="home-manifesto" href="">
-            Learn More
-          </a>
-          
-        </p>
-        
-
-        <!-- <br/> -->
-
-        <div class="home-buttons">
-
-          <a href="{% url 'explore_project' %}" class="btn btn-outline-secondary btn-lg" role="button">
-            Explore Projects
-          </a>
-
-            {% if user.is_authenticated %}
-
-              <a href="{% url 'create_project' %}" class="btn btn-outline-info btn-lg" role="button">
-                Create
-              </a>
-
-            {% else %}
-
-              <a class="btn btn-outline-info btn-lg" role="button" href="#" onclick="onConnect(event)">
-                Create
-              </a>
-
-            {% endif %}
-
-          
-          
-          <!-- <a href="" class="btn btn-outline-info btn-lg" role="button">
-            Create
-          </a> -->
-
-          <!-- <button type="button" class="btn btn-outline-info" onclick="onConnect()"> -->
-          <!-- <button type="button" class="btn btn-outline-info">
-            Create
-          </button> -->
-
-
-          <!-- <button type="button" class="btn btn-outline-secondary">
-            Explore Projects
-          </button> -->
-
-          <!-- <button type="button" class="btn btn-outline-dark">
-            Mint your Project
-          </button> -->
-
-          <!-- <button type="button" class="btn btn-outline-info">
-            Create
-          </button> -->
-
-          <!-- <a class="home-manifesto" href="">
-            Read the "manifesto" 
-          </a> -->
- 
+  <!-- Modal Error for: User did not install metamask -->
+  <div class="modal" tabindex="-1" id="loginErrorOne">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Does Metamask exist &#10067;</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Metamask is not installed! Please install the metamask extension and try again! Only Metamask wallet supported. Thank you.</p>
         </div>
 
-        
-        <div style="padding-top: 1em; font-weight: 900;">
-          <i>
-            Only 
-            <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
-            Supported.
-          </i>
-
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
-        
-
       </div>
-
-      <div class="col-5" id="home-right-column">
-        
-        <h4 style="font-weight: bolder; ">
-          Featured:
-        </h4>
-        
-        <a href="{% url 'project_page' project_id=3 %}">
-          <img id="home_page_featured_image" src="{% static 'images/image_one.png' %}" class="rounded" width="400" height="400">
-        </a>
-         
-        <div style="padding-top: 10px;">
-          <h5 style="font-weight: 400;">Price: $50 | Backers: 31 | Time Remaining: 19 days</h5>
-          <!-- <h5></h5> -->
-        </div>
- 
-        <p>
-          <strong>
-            <!-- Price: $50 -->
-            <!-- TODO: Price: $50 / Left: 51 / Sold: 49  -->
-          </strong>
-        </p>
-         
-
-      </div>
-
     </div>
-
-
   </div>
 
 
-{% endblock %}  
+  <!-- User has metamask but wallet is locked; prompt user to login to wallet and try again -->
+  <div class="modal" tabindex="-1" id="loginErrorTwo">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Login to your beloved wallet! &#10084;</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            It seems like your Metamask wallet is locked. Please login to your Metamask wallet and try again.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+    <!-- More generic error message; when the user-nonce-request is rejected -->
+    <div class="modal" tabindex="-1" id="loginErrorThree">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Unknown &#10084;</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              <!-- TODO: update error message -->
+              Something weird is happening...
+            </p>
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+
+
+
+
+  <main class="animate__animated animate__fadeIn main-body">
+
+    <section class="divider py-5 ">
+
+      <div class="container-fluid">
+        
+        <div class="row justify-content-center align-items-center">          
+          
+          <div class="col-7" style="margin-top: -4em;">
+
+            <p class="home-header" >
+              A place for <span class="word-changer">Engineers</span> to mint an ERC-721 token of themselves...
+            </p>
+
+            <p class="home-description"> 
+              CreatorCoin serves as a medium to help individual's fund their personal 
+              side projects. Creators can easily launch a NFT of themselves on the platform.
+              Supporters can purchase the NFT, and benefit through NFT ownership. 
+              If your interested in joining as a creator, enter your email and I will reach out.              
+              <!-- <b>Currently in <strong>private beta.</strong></b> -->
+              <a href="#about">Watch the demo to learn how it works!</a>
+
+              <div class="col-sm-9 col-sm-offset-9">
+
+                {% if anon_user is True %}
+
+                  <form method="post" id="join_beta_form">{% csrf_token %}
+                    <div class="input-group input-group-lg" style="padding-top: 10px;">
+                      <input id="user_email_value" type="text" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="creator email" aria-describedby="emailHelp" required>
+                      <button type="submit" id="join_beta_button" class="btn btn-dark" style="color: white;">Join as a Creator!</button>
+                    </div>
+                  </form>
+
+                  <div id="success_message" style="color: limegreen; display: none;">
+                    Thank you. We have got your email.
+                  </div>
+                  
+                  <!-- TODO: change the email primary contact -->
+                  <div id="duplicate_message" style="color: limegreen; display: none;">
+                    Your email is already registered. 
+                    If you haven't received an email from us, send an email to creatorcoin42@gmail.com
+                  </div>
+
+                  <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
+                    <!-- <i>
+                      Only 
+                      <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
+                      Supported.
+                    </i> -->
+                    <!-- <i>After entering your email, we will reach out. Currently in Beta!</i> -->
+                    We will NEVER spam you.
+                  </div>
+
+                {% else %}
+
+                <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
+                  <i>
+                    Only 
+                    <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
+                    Supported.
+                  </i>                  
+                </div>
+
+                {% endif %}
+
+
+              </div>
+
+              <!-- <br/>
+              <a href="{% url 'explore_project' %}" class="btn btn-outline-secondary btn-lg" role="button">
+                View CreatorCoin's NFT 
+              </a> -->
+
+              <!-- <ul class="home-description">
+                <li>A Creator can launch a NFT for themselves, to help fund their ongoing project(s).</li>
+                <li>Supporters can buy the NFT, and benefit through NFT ownership.</li>
+                <li><a class="home-manifesto" href="">Watch video to see how it works.</a></li>
+              </ul> -->
+    
+              <!-- A creator can launch a NFT for themselves, to help fund their ongoing project(s).
+              Supporters of the creator can buy the NFT, and benefit through NFT ownership. -->
+              <!-- Early backers benefit, through NFT ownership.
+              Creator's launch a token, of themselves, to help fund their ongoing project(s).
+              Early backers benefit, through token ownership.
+              <s>
+                It is intended to help support the 'research & exploratory' phases 
+                of projects, while at the same time, benefiting the early backers through token ownership. 
+              </s> -->
+              <!-- <a class="home-manifesto" href="">
+                View Video
+              </a> -->
+
+            </p>
+
+          </div>
+
+
+          <div class="col-4">
+
+            <h2 class="homepage-nft-title">CreatorCoin's First NFT</h2>
+
+            <model-viewer 
+            src="{% static '3d_model/new_three.glb' %}"  
+            ar ar-modes="webxr scene-viewer quick-look" 
+            camera-controls
+            camera-orbit="280deg 85deg 125%"
+            shadow-intensity="1"
+            auto-rotate
+            rotation-per-second="200%"
+            style="width: 400px; height: 400px;" 
+            ></model-viewer>
+          
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                25%
+              </div>
+            </div>
+            <p id="home_page_nft">
+              <!-- TODO: Link CreatorCoin's NFT on homepage -->
+              <a href="{% url 'user_token_page' profile_id=1 %}">View NFT</a> | Price: 0.1 <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: 978 left
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+    
+    <!-- <section class="divider py-5 ">
+
+      <div class="row justify-content-center align-items-center">
+
+        <div class="col-md-8"  align="center">
+
+          <i class="bi bi-arrow-down-short" style="font-size: 3em;"></i>
+
+        </div>        
+
+      </div>      
+ 
+    </section> -->
+
+    <!-- <section class="divider py-5 "></section> -->
+    <!-- <br/><br/><br/><br/><br/> -->
+ 
+    <div class="container-fluid" >
+
+      <section id="about" class="text-center">
+
+        <h2 class="my-4 homepage-video-title">
+          <strong>
+            Watch how it works:
+          </strong>
+        </h2>
+               
+        <div class="row justify-content-center align-items-center">
+
+          <div class="col-md-12 text-right" style="color: black;">
+
+            <div class="embed-responsive embed-responsive-21by9" >
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/UBEnxe-oZ20" width="800" height="460" allowfullscreen></iframe>
+            </div>
+          
+          </div>
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+ 
+<!-- TODO: Add the icons rather than numbers and go from there; ensure padding top/down and left/right is perfect -->
+    <!-- **proceed a bit faster from here; UI looks okay, and would look ideal with gradients so good to move on -->
+ 
+    <section id="team" class="text-center" style="padding-top: 1em;">
+
+      <div class="container-fluid">
+
+        <br/>
+
+        <div class="row justify-content-center">
+          
+          <div class="col-md-4" style="padding-left: 50px;">
+
+            <h3>
+              <i class="bi bi-1-square" ></i>
+            </h3>
+            <p class="homepage-helper-text">
+              <!-- A creator can signup on the platform and create a user profile.  -->
+              A creator signup's on the platform and create's a user profile.
+            </p>
+            
+          </div>
+
+
+          <div class="col-md-4" style="padding-left: 50px;">
+
+            <h3>
+              <i class="bi bi-2-square"></i>
+            </h3>
+            <p class="homepage-helper-text">
+              After <strong><a href="https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps" target="_blank" rel="noopener noreferrer">verifying</a> their Github,</strong> 
+              the creator can launch their NFT. Everyday, several new NFT's will be shown on the homepage.            
+            </p>
+
+          </div>
+
+
+          <div class="col-md-4" style="padding-left: 50px;">
+
+            <h3>
+              <!-- <i class="bi bi-3-circle"></i> -->
+              &#127881;
+            </h3>
+            <p class="homepage-helper-text">
+              Supporters can explore different NFT's on the platform,
+              and buy ones they like.
+            </p>
+            
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  
+  <br/>
+  <br/>
 
 
 
 
 
 
+
+
+<script>
+
+
+  var homepageCSRFTok = '{{ csrf_token }}'
+
+
+  var currentCount = 0;
+  var changeWordList = [
+    "Engineers", "Researchers", "Hackers", "Builders"
+  ]
+
+  function _changeText() {
+    let el = document.getElementsByClassName('word-changer')[0];
+    let totalListCount = changeWordList.length;
+
+    currentCount += 1
+
+    if (currentCount <= totalListCount-1){
+      let word = changeWordList[currentCount]
+      el.innerHTML = word
+      
+    } else {
+      currentCount = 0
+      let word = changeWordList[currentCount]
+      el.innerHTML = word
+
+    }    
+
+  }
+
+  setInterval(_changeText, 2000);
+  
+
+</script>
+
+
+
+{% endblock %}
+
+
+
+
+ 
+ 
 

@@ -28,16 +28,6 @@ from .main_contracts import main_utils
 
 
 
-
-
-# def home_two(request):
-#   return render(request, 'home_three.html')
-
-
-# def home_original(request):
-#   return render(request, 'home_one.html')
-
-
 def home(request):  
 
   if request.method == "POST":
@@ -53,7 +43,7 @@ def home(request):
       else: 
         return JsonResponse({'duplicate': True})
     
-  return render(request, 'home_two.html', {
+  return render(request, 'home.html', {
     'anon_user': request.user.is_anonymous
   })
 
