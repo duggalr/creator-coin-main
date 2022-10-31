@@ -148,9 +148,37 @@
 
               {% if user_nft_obj.nft_deployed is True %}
 
+                <div class="row g-1 align-items-center">
+                  
+                  <div class="col-auto">
+                    <label for="num_token_to_buy" class="col-form-label">
+                      <strong>
+                        Number of Tokens to buy (<=20):
+                      </strong>
+                    </label>
+                  </div>
+
+                  <div class="col-auto" style="width: 4em;">
+                    <input type="number" id="num_token_to_buy" max="20" min="1" value="1" class="form-control">
+                  </div>
+
+                  <!-- <div class="col-auto">
+                    <span id="passwordHelpInline" class="form-text">
+                    </span>
+                  </div> -->
+
+                  <div class="col-auto">
+                    <button id="buy-nft-buttton" type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
+                  </div>
+
+                  
+                  
+                </div>  
                 
-                <button id="buy-nft-buttton" type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
-                
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">@</span>
+                  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
 
               {% else %}
 
@@ -181,7 +209,33 @@
             
             {% if user_nft_obj is not None %}
               
-              <button id="buy-nft-buttton" type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
+              <div class="row g-1 align-items-center">
+                
+                <div class="col-auto">
+                  <label for="num_token_to_buy" class="col-form-label">
+                    <strong>
+                      Number of Tokens to buy (<=20):
+                    </strong>
+                  </label>
+                </div>
+
+                <div class="col-auto" style="width: 4em;">
+                  <input type="number" id="num_token_to_buy" max="20" min="1" value="1" class="form-control">
+                </div>
+
+                <!-- <div class="col-auto">
+                  <span id="passwordHelpInline" class="form-text">
+                  </span>
+                </div> -->
+
+                <div class="col-auto">
+                  <button id="buy-nft-buttton" type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
+                  <span style="color: gray; font-weight: 900;">Total Cost:<span id="buy_total_cost" > {{ user_nft_obj.nft_price }}</span> ETH</span>
+                </div>
+                
+
+              </div>
+              
 
             {% else %}
 
@@ -427,6 +481,30 @@
 
 
 
+
+  <!-- Number of Tokens to Buy Modal Error -->
+  <div class="modal" tabindex="-1" id="numTokensErrorModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"> &#129488; Huh? </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            The total number of tokens you can buy in one sale is 20 or less!
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+
+
   <!-- Chain-ID Modal Error -->
   <div class="modal" tabindex="-1" id="chainIDErrorModal">
     <div class="modal-dialog">
@@ -448,8 +526,6 @@
       </div>
     </div>
   </div>
-
-
 
 
   <!-- Nft Verification Modal: when user doesn't complete all their profile information -->
@@ -564,6 +640,7 @@
     const csrfToken = '{{ csrf_token }}';
     const mainContractAddress = '{{ user_nft_obj.nft_deployed_contract_address }}'
     const creatorProfileID = '{{ creator_profile.id }}'
+    const nftMainPrice = '{{ user_nft_obj.nft_price }}'
 
     // var url_string = "http://www.example.com/t.html?a=1&b=3&c=m2-m3-m4-m5"; 
 

@@ -5,7 +5,9 @@ let loginErrorModal;
 let loginErrorTwoModal;
 let loginErrorThreeModel;
 let projectLogModal;
+let nftVerificationModal;
 let chainIdErrorModal;
+let numTokensErrorModal;
 
 
 
@@ -16,8 +18,6 @@ if (loginModalExists != null){  // on homepage
   loginErrorThreeModel = new bootstrap.Modal('#loginErrorThree');
 }
 
-
-let nftVerificationModal; 
 
 var nftVerificationModalExists = document.getElementById('nftVerificationModal');
 if (nftVerificationModalExists != null){
@@ -34,6 +34,12 @@ if (projectLogModalExists != null){
 var chainIdModalExists = document.getElementById("chainIDErrorModal");
 if (chainIdModalExists != null){
   chainIdErrorModal = new bootstrap.Modal('#chainIDErrorModal');
+}
+
+
+var numTokensModalExists = document.getElementById("numTokensErrorModal");
+if (numTokensModalExists != null){
+  numTokensErrorModal = new bootstrap.Modal('#numTokensErrorModal');
 }
 
 
@@ -277,7 +283,7 @@ const mainTestThree = async (bytecode, abi) => {
   console.log('network:', network);
   console.log('chain-id:', chainId);
 
-  if (chainId != 1337){  // display error modal
+  if (chainId != 5){  // display error modal
 
     chainIdErrorModal.show();
 
@@ -480,7 +486,7 @@ const buyNFTMain = async () => {
     console.log('chain-id:', chainId);
 
 
-    if (chainId != 1337){  // display error modal
+    if (chainId != 5){  // display error modal
 
       chainIdErrorModal.show();
 
@@ -530,16 +536,31 @@ const buyNFTMain = async () => {
           // console.log('tok-price-str:', tokPriceStr, tokenPrice);
           
           // var numTokens = 1;
-          var tokPriceStr = (tokenPrice * (10**18)).toString();
-          try {
-            let result = await existingContract.safeMint(1, {'value': tokPriceStr});
-            // // result = await existingContract.wait();
-            console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
-            
-            saveTransactionData(result)
-    
-          } catch(error){
-    
+          var numTokens = parseInt( $('#num_token_to_buy').val() )
+          console.log('num-tokens-to-buy:', numTokens)
+          if (numTokens <= 20){
+
+            var tokPriceStr = (numTokens * tokenPrice * (10**18)).toString();            
+
+            try {            
+  
+              let result = await existingContract.safeMint(numTokens, {'value': tokPriceStr});
+              // // result = await existingContract.wait();
+              console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
+              
+              saveTransactionData(result)
+      
+            } catch(error){
+      
+              userBuyNFTClicked = false;
+
+            }
+
+          } else {
+
+            numTokensErrorModal.show();
+            userBuyNFTClicked = false;
+
           }
           
     
@@ -783,6 +804,17 @@ $('#join_beta_form').submit(function(e){
   })
 
 })
+
+
+
+$('#num_token_to_buy').on('input',function(e){
+  
+  console.log('asdkja')
+  var numTokenToBuy = $('#num_token_to_buy').val();
+  // TODO: 
+  $('#buy_total_cost').text( ' ' + ( numTokenToBuy * nftMainPrice ) );
+
+});
 
 
 
