@@ -337,8 +337,15 @@ const mainTestThree = async (bytecode, abi) => {
         Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
         nftMetaData['nft_ipfs_url']
       )
-  
-      // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+
+      console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+      https://api-goerli.etherscan.io/api?module=account&action=balance&address=0xf9f72f5289c622e9e87308c9258ab98df1575bcc9ebd798f53ab6762748fe699&tag=latest&apikey=FPBBQN6698WE8EXS86BA7D72XN3CZWJPGB
+      https://api-goerli.etherscan.io/api?module=account&action=balance&address=0xf06CEEEb31a39EA5B22a0d0AdffD2a2CD80CEc0F&tag=latest&apikey=FPBBQN6698WE8EXS86BA7D72XN3CZWJPGB
+      
+      // https://api-goerli.etherscan.io/api?module=account&action=balance&address=0xa65760c16a47bb1c7d5373d9d18736084e2d3f66&tag=latest&apikey=FPBBQN6698WE8EXS86BA7D72XN3CZWJPGB  
+      let transaction_hash = collectiblesContract.deployTransaction['hash'];
+      let deployed_contract_address = collectiblesContract.address;
+      
       // // 0x68Ea1a2504a4287900E51Db51658F21704F09720
       saveNFTLaunchedData(collectiblesContract.deployTransaction, collectiblesContract.address);
   

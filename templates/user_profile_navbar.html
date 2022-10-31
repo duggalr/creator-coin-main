@@ -94,11 +94,13 @@
             <div class="ms-2 me-auto">
               <div class="fw-bold">
                 <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
-                <a href="https://etherscan.io/tx/{{ user_nft_obj.nft_deployed_transaction_hash }}">Deployed Contract</a>                
+                <a href="https://etherscan.io/address/{{ user_nft_obj.nft_deployed_contract_address }}">Deployed Contract</a>
               </div>
 
               <span style="color: gray;">
-                <i class="bi bi-hash"></i>{{ user_nft_obj.nft_deployed_transaction_hash }}
+                <a href="https://etherscan.io/tx/{{ user_nft_obj.nft_deployed_transaction_hash }}">
+                  <i class="bi bi-hash"></i>{{ user_nft_obj.nft_deployed_transaction_hash }}
+                </a>
               </span>
               
             </div>
