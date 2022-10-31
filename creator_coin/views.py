@@ -154,6 +154,14 @@ def user_token_page(request, profile_id):
 
   user_nft_collection =  UserNftCollection.objects.filter(creator_obj=creator_profile_obj)
 
+  # https://goerli.etherscan.io/address/0xf06ceeeb31a39ea5b22a0d0adffd2a2cd80cec0f
+  nft_total_token_supply = None
+  if user_nft_obj is not None:
+    current_token_id = utils.get_current_token_id(user_nft_obj.nft_deployed_contract_address)
+    nft_total_token_supply = user_nft_obj.nft_total_supply - current_token_id
+
+  # TODO: Get reliable NFT total supply and go from there
+
   return render(request, 'user_profile_page.html', {
     'anon_user': request.user.is_anonymous,
     'creator_profile': creator_profile_obj,
@@ -164,7 +172,8 @@ def user_token_page(request, profile_id):
     'user_three_dim_upload': user_three_dim_upload,
     'nft_transaction_history': nft_transaction_history,
     'project_log_list': project_log_list,
-    'user_nft_collection': user_nft_collection
+    'user_nft_collection': user_nft_collection,
+    'nft_total_token_supply': nft_total_token_supply
   })
 
  
@@ -952,6 +961,5 @@ def save_nft_transaction_data(request):
 
   else:
     return JsonResponse({'success': False})
-
 
 
