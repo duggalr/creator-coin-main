@@ -61,9 +61,21 @@ def explore_project(request):
   # all_profiles = CreatorProfile.objects.all()
   # show all profiles which have a deployed NFT first, then all profiles with NFT, then all other profiles 
   
+  three_dim_file_types = [
+    '.glb', '.gltf', '.obj', '.ply', '.fbx' '.svg'
+  ]
+
   deployed_creator_profile_objects = []
   deployed_nfts = UserNft.objects.all().order_by('-nft_updated_at')
+  deployed_nft_list = []
   for obj in deployed_nfts:
+    fn, file_extension = os.path.splitext(obj.nft_media_file.url)
+    if file_extension in three_dim_file_types:
+      user_three_dim_upload = True
+    else:
+      user_three_dim_upload = False
+
+    deployed_nft_list.append({'nft_obj': obj, 'user_three_dim_upload': user_three_dim_upload})
     deployed_creator_profile_objects.append(obj.creator_obj)
 
   final_profile_rv = []
@@ -72,28 +84,10 @@ def explore_project(request):
     if obj not in deployed_creator_profile_objects:
       final_profile_rv.append(obj)
   
-
   return render(request, 'explore_project.html', {
-    'deployed_nft_objects': deployed_nfts,
+    'deployed_nft_objects': deployed_nft_list,
     'all_other_profiles': final_profile_rv
   })
-
-
-  # all_projects = UserProject.objects.all()
-  # # nft_images = ProjectNftImage.objects.all()
-
-  # rv = []
-  # for obj in all_projects:
-  #   nft_image_obj = ProjectNftImage.objects.filter(project_obj=obj)
-  #   rv.append({
-  #     'nft_image_object': nft_image_obj
-  #   })
-  #   # rv.append({
-  #   #   'nft_project_image:' nft_image_obj,
-  #   #   'project_object': obj
-  #   # })
-  
-  # return render(request, 'explore_project.html', {'all_projects': all_projects})
 
 
 

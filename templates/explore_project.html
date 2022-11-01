@@ -48,8 +48,8 @@
     <hr>
 
     <br/>
-
     
+
     {% for obj in deployed_nft_objects %}
 
       <div class="row">
@@ -60,10 +60,27 @@
             
             <div class="row no-gutters">
               
-              <!-- TODO: media file -->
-              <div class="col-md-4">
-                <img src="{% static 'images/image_one.png' %}" class="card-img" alt="..." width="220" height="220">
-              </div>
+              
+              {% if obj.user_three_dim_upload is False %}
+
+                <div class="col-md-4">
+                  <img src="{{ obj.nft_obj.nft_media_file.url }}" class="card-img" alt="..." width="220" height="220">
+                </div>
+              
+              {% else %}
+
+                <model-viewer 
+                  src="{{ obj.nft_obj.nft_media_file.url }}"
+                  ar ar-modes="webxr scene-viewer quick-look" 
+                  camera-controls
+                  camera-orbit="250deg 85deg 125%"
+                  shadow-intensity="1"
+                  auto-rotate
+                  rotation-per-second="250%"
+                ></model-viewer>
+
+              {% endif %}
+
 
               <div class="col-md-8">
               
@@ -72,14 +89,13 @@
                   <div class="card-header-div">
   
                     <h4 class="card-title">
-                      {{ obj.nft_name }}
+                      {{ obj.nft_obj.nft_name }}
                     </h4>
                     <span class="badge rounded-pill bg-info text-dark">NFT Available</span>
                       
                   </div>
                 
-                  <a class="stretched-link" href="{% url 'user_token_page' profile_id=obj.creator_obj.id %}"></a>
-  
+                  <a class="stretched-link" href="{% url 'user_token_page' profile_id=obj.nft_obj.creator_obj.id %}"></a>
 
                   <i class="bi bi-github">
                     
@@ -94,11 +110,11 @@
                   </span> -->
   
                   <p class="card-text" style="padding-top: 8px;">
-                    {{ obj.creator_obj.creator_description|safe|truncatechars:150 }}
+                    {{ obj.nft_obj.creator_obj.creator_description|safe|truncatechars:150 }}
                   </p>
                   <p class="card-text" >
                     <small class="text-muted">
-                      Last updated: {{ obj.nft_updated_at }}
+                      Last updated: {{ obj.nft_obj.nft_updated_at }}
                     </small>
                   </p>
   
@@ -222,9 +238,6 @@
       </div> -->
 
 
-
-
-      
 
     <!-- </div> -->
 
