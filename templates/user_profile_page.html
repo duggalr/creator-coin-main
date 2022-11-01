@@ -94,11 +94,23 @@
             
             <div style="padding-top: 10px;">
 
-              <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: {{ nft_total_sold }}%;" aria-valuenow="{{ nft_total_sold }}" aria-valuemin="0" aria-valuemax="100">
-                  {{ nft_total_sold }}%
+              {% if nft_total_sold is not None %}
+
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: {{ nft_total_sold }}%;" aria-valuenow="{{ nft_total_sold }}" aria-valuemin="0" aria-valuemax="100">
+                    {{ nft_total_sold }}%
+                  </div>
                 </div>
-              </div>
+              
+              {% else %}
+
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: 0%;" aria-valuenow="{{ nft_total_sold }}" aria-valuemin="0" aria-valuemax="100">
+                    {{ nft_total_sold }}%
+                  </div>
+                </div>
+
+              {% endif %}
 
             </div> 
 
