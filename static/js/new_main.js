@@ -428,7 +428,8 @@ function saveTransactionData(result, tokensBought){
         csrfmiddlewaretoken: csrfToken,
         'profile_id': creatorProfileID,
         'nft_transaction_hash': result['hash'],
-        'number_of_tokens_bought': tokensBought
+        'number_of_tokens_bought': tokensBought,
+        // 'buyer_pk_address': buyer_pk_address
       },
       success: function (response) {
         console.log('res:', response);
@@ -533,16 +534,11 @@ const buyNFTMain = async () => {
             provider.getSigner(accounts[0])
           ); 
     
-          // console.log('existing-contract:', existingContract);
-    
-          // console.log('ct-data:', contractData)
-          // var tokPriceStr = (tokenPrice * (10**18)).toString();
-          // console.log('tok-price-str:', tokPriceStr, tokenPrice);
-          
+
           // var numTokens = 1;
           var numTokens = parseInt( $('#num_token_to_buy').val() )
           console.log('num-tokens-to-buy:', numTokens)
-          if (numTokens <= 20){
+          if (numTokens > 0 && numTokens <= 20){
 
             var tokPriceStr = (numTokens * tokenPrice * (10**18)).toString();            
 
@@ -552,7 +548,7 @@ const buyNFTMain = async () => {
               // // result = await existingContract.wait();
               console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
               
-              saveTransactionData(result, numTokens)
+              saveTransactionData(result, numTokens);
       
             } catch(error){
       
@@ -816,7 +812,7 @@ $('#num_token_to_buy').on('input',function(e){
   console.log('asdkja')
   var numTokenToBuy = $('#num_token_to_buy').val();
 
-  $('#buy_total_cost').text( ' ' + +(numTokenToBuy * nftMainPrice).toFixed(2) ) ;
+  $('#buy_total_cost').text( ' ' + (numTokenToBuy * nftMainPrice).toFixed(2) ) ;
 
 });
 

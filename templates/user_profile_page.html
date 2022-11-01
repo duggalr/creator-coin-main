@@ -60,7 +60,9 @@
             <div style="padding-top: 14px;">
 
               <p style="display: inline; font-weight: 900; font-size: 22px; ">
-                {{ user_nft_obj.nft_name }}
+                <a id="user_nft_name_link" href="https://goerli.etherscan.io/token/{{ user_nft_obj.nft_deployed_contract_address }}" target="_blank" rel="noopener noreferrer">
+                  {{ user_nft_obj.nft_name }}  
+                </a>
               </p>              
 
                 <span style="font-size: 19px;">
@@ -93,12 +95,12 @@
             <div style="padding-top: 10px;">
 
               <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: {{ nft_transaction_history|length }}%;" aria-valuenow="{{ nft_transaction_history|length }}" aria-valuemin="0" aria-valuemax="100">
-                  {{ nft_transaction_history|length }}%
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: {{ nft_total_sold }}%;" aria-valuenow="{{ nft_total_sold }}" aria-valuemin="0" aria-valuemax="100">
+                  {{ nft_total_sold }}%
                 </div>
               </div>
 
-            </div>
+            </div> 
 
             <p style="font-size: 18px;">
 
@@ -108,11 +110,11 @@
               {% if user_nft_obj.nft_deployed is False %}
                 <strong style="color: gray;">Total Sold: 0</strong>
               {% else %}
-                <strong>Total Sold:</strong> {{ nft_transaction_history|length }}
+                <strong>Total Sold:</strong> {{ nft_total_sold }}
               {% endif %}
 
               |
-              <strong>Total Supply:</strong> {{ nft_total_token_supply }} 
+              <strong>Total Remaining:</strong> {{ nft_total_token_supply }} 
             
             </p>
 
@@ -165,6 +167,7 @@
 
                   <div class="col-auto">
                     <button id="buy-nft-buttton" type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
+                    <span style="color: gray; font-weight: 900;">Total Cost:<span id="buy_total_cost" > {{ user_nft_obj.nft_price }}</span> ETH</span>
                   </div>
                 
                 </div>  
@@ -212,11 +215,6 @@
                 <div class="col-auto" style="width: 4em;">
                   <input type="number" id="num_token_to_buy" max="20" min="1" value="1" class="form-control">
                 </div>
-
-                <!-- <div class="col-auto">
-                  <span id="passwordHelpInline" class="form-text">
-                  </span>
-                </div> -->
 
                 <div class="col-auto">
                   <button id="buy-nft-buttton" type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>

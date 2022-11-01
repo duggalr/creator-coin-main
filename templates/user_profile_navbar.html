@@ -66,7 +66,7 @@
             <div class="ms-2 me-auto">
               <div class="fw-bold">
                 <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
-                <a href="https://goerli.etherscan.io/tx/{{ n_obj.transaction_hash }}">NFT Purchased</a>
+                <a href="https://goerli.etherscan.io/tx/{{ n_obj.transaction_hash }}"> {{ n_obj.purchase_amount }} NFT Purchased</a> by <a href="{% url 'user_token_page' profile_id=n_obj.purchaser_user_obj.id %}">{{ n_obj.purchaser_user_obj.creator_name }}</a>
                 | <span style="color: darkgray;">{{ n_obj.transaction_created_date  }}</span>
               </div>
 
@@ -76,10 +76,33 @@
               
             </div>
 
+
+            <!-- TODO: add transaction-status here on buy -->
             <span>
               <strong>
                 {{ n_obj.nft_obj.nft_price }} ETH
               </strong>
+
+              {% if n_obj.transaction_status == 1 %}
+            
+                <!-- <span style="color: gray; padding-right: 4px;">
+                  {{ user_nft_obj.nft_deployed_date|date:"Y-m-d" }}
+                </span> -->
+                
+                <span class="badge rounded-pill text-bg-success" id="deployed_transaction_status">
+                  Successful
+                </span>
+                
+              {% elif n_obj.transaction_status == 0 %}
+
+                <span class="badge rounded-pill text-bg-danger" id="deployed_transaction_status">
+                  Failure
+                </span>
+                
+              {% endif %}
+              
+
+
             </span>
 
           </li>
@@ -95,6 +118,7 @@
               <div class="fw-bold">
                 <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
                 <a href="https://goerli.etherscan.io/address/{{ user_nft_obj.nft_deployed_contract_address }}">Deployed Contract</a>
+                | <span style="color: darkgray;">{{ user_nft_obj.nft_deployed_date  }}</span>
               </div>
               
               <span style="color: gray;">
@@ -108,9 +132,7 @@
 
             {% if user_nft_obj.nft_deployed_transaction_status == 1 %}
             
-              <span style="color: gray; padding-right: 4px;">
-                {{ user_nft_obj.nft_deployed_date|date:"Y-m-d" }}
-              </span>
+
               
               <span class="badge rounded-pill text-bg-success" id="deployed_transaction_status">
                 NFT Deployed Successfully
@@ -259,7 +281,7 @@
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
             <div class="fw-bold">
-              <a href="{% url 'user_token_page' profile_id=nft_obj.nft_transaction_history_obj.nft_obj.creator_obj.id %}">NFT Bought</a>
+              <a href="{% url 'user_token_page' profile_id=nft_obj.nft_transaction_history_obj.nft_obj.creator_obj.id %}">{{ nft_obj.nft_transaction_history_obj.purchase_amount }} NFT Bought</a>
               |
               <a href="https://goerli.etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">Etherscan Transaction</a>
               | 
