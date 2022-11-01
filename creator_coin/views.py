@@ -58,6 +58,27 @@ def about_page(request):
   # then, fetch all others
     # filter for both in the dropdown
 def explore_project(request):
+  # all_profiles = CreatorProfile.objects.all()
+  # show all profiles which have a deployed NFT first, then all profiles with NFT, then all other profiles 
+  
+  deployed_creator_profile_objects = []
+  deployed_nfts = UserNft.objects.all().order_by('-nft_updated_at')
+  for obj in deployed_nfts:
+    deployed_creator_profile_objects.append(obj.creator_obj)
+
+  final_profile_rv = []
+  creator_profile_objects = CreatorProfile.objects.all()
+  for obj in creator_profile_objects:
+    if obj not in deployed_creator_profile_objects:
+      final_profile_rv.append(obj)
+  
+
+  return render(request, 'explore_project.html', {
+    'deployed_nft_objects': deployed_nfts,
+    'all_other_profiles': final_profile_rv
+  })
+
+
   # all_projects = UserProject.objects.all()
   # # nft_images = ProjectNftImage.objects.all()
 
@@ -73,8 +94,6 @@ def explore_project(request):
   #   # })
   
   # return render(request, 'explore_project.html', {'all_projects': all_projects})
-
-  return render(request, 'explore_project.html')
 
 
 

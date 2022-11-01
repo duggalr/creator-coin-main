@@ -23,7 +23,7 @@
           Discover projects created by others.
         </p>
         
-        <span style="float: right;">
+        <!-- <span style="float: right;">
 
           <label class="custom-control-label" for="nft-project-select" style="font-weight: bolder;">
             View By:
@@ -34,7 +34,7 @@
             <option value="2">Most Active</option>
           </select>
           
-        </span>
+        </span> -->
         
 
       </div>
@@ -44,14 +44,15 @@
     <!-- <div style="border-bottom: 1px solid grey;"></div> -->
 
     <!-- <div class="dropdown-divider"></div> -->
-    <hr class="dropdown-divider" >
+    <!-- <hr class="dropdown-divider" > -->
+    <hr>
 
     <br/>
 
-    <div class="row" >
+    
+    {% for obj in deployed_nft_objects %}
 
-
-      {% for obj in all_projects %}
+      <div class="row">
 
         <div class="col-md-8 offset-md-2 " id="main-card-div">
           
@@ -59,8 +60,51 @@
             
             <div class="row no-gutters">
               
+              <!-- TODO: media file -->
               <div class="col-md-4">
                 <img src="{% static 'images/image_one.png' %}" class="card-img" alt="..." width="220" height="220">
+              </div>
+
+              <div class="col-md-8">
+              
+                <div class="card-body">
+  
+                  <div class="card-header-div">
+  
+                    <h4 class="card-title">
+                      {{ obj.nft_name }}
+                    </h4>
+                    <span class="badge rounded-pill bg-info text-dark">NFT Available</span>
+                      
+                  </div>
+                
+                  <a class="stretched-link" href="{% url 'user_token_page' profile_id=obj.creator_obj.id %}"></a>
+  
+
+                  <i class="bi bi-github">
+                    
+                  </i>
+                  <!-- <i class="bi bi-link"></i> -->
+                  <!-- <a href="https://github.com/">Github</a> -->
+                  <!-- <span>
+                    <i class="bi bi-github"></i> <a href="">Github</a>
+                  </span>
+                  <span>
+                    <i class="bi bi-link"></i> <a href="">Project Website</a>
+                  </span> -->
+  
+                  <p class="card-text" style="padding-top: 8px;">
+                    {{ obj.creator_obj.creator_description|safe|truncatechars:150 }}
+                  </p>
+                  <p class="card-text" >
+                    <small class="text-muted">
+                      Last updated: {{ obj.nft_updated_at }}
+                    </small>
+                  </p>
+  
+                  
+                </div>
+
               </div>
 
             </div>
@@ -69,13 +113,16 @@
 
         </div>
 
-      {% endfor %}
+      </div>
+  
+
+    {% endfor %}
 
 
 
-      <div class="col-md-8 offset-md-2 " id="main-card-div">
 
-        <!-- <div class="card mb-3" style="max-width: 55%;"> -->
+      <!-- <div class="col-md-8 offset-md-2 " id="main-card-div">
+
         <div class="card mb-3 " style="max-width: 100%;">
 
           <div class="row no-gutters">
@@ -100,14 +147,6 @@
                 <a class="stretched-link" href="#"></a>
 
                 <i class="bi bi-github"></i>
-                <!-- <i class="bi bi-link"></i> -->
-                <!-- <a href="https://github.com/">Github</a> -->
-                <!-- <span>
-                  <i class="bi bi-github"></i> <a href="">Github</a>
-                </span>
-                <span>
-                  <i class="bi bi-link"></i> <a href="">Project Website</a>
-                </span> -->
 
                 <p class="card-text" style="padding-top: 8px;">
                   This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
@@ -180,17 +219,20 @@
     
         </div>
 
-      </div>
+      </div> -->
 
 
 
 
-    </div>
+      
 
+    <!-- </div> -->
 
 
   </div>
   
+  <br/>
+  <br/>
   
 
 
