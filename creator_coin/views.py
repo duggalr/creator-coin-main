@@ -167,10 +167,12 @@ def user_token_page(request, profile_id):
       transaction_dict = utils.get_transaction_status(user_nft_obj.nft_deployed_transaction_hash)
       if transaction_dict is not None:
         transaction_status = transaction_dict['result']['status']
-        print(transaction_dict)
-        if transaction_status != '':
+        print('transaction-dict:', transaction_dict)
+        try:
           user_nft_obj.nft_deployed_transaction_status = transaction_status
           user_nft_obj.save()
+        except:
+          pass
 
   return render(request, 'user_profile_page.html', {
     'anon_user': request.user.is_anonymous,

@@ -43,8 +43,6 @@ def store_file_in_ipfs(obj):
     obj_fp = BASE_DIR + obj.nft_media_file.url
     contents = open(obj_fp, 'rb')
 
-    # body = open('/Users/rahul/Desktop/Screen Shot 2022-10-16 at 11.47.51 AM.png', 'rb') # file_type | 
-
     # example passing only required values which don't have defaults set
     try:
       # Store a file
@@ -103,5 +101,3 @@ def get_current_token_id(contract_address):
  
 
  
-
-  
