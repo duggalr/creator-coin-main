@@ -92,7 +92,6 @@ def user_token_page(request, profile_id):
 
   user_nft_obj = None
   user_nft_objects = UserNft.objects.filter(creator_obj=creator_profile_obj)
-  # print('user-nft-objs:', user_nft_objects)
 
   if len(user_nft_objects) == 1:  # TODO: enforce to only ensure it's one
     user_nft_obj = user_nft_objects[0]
@@ -124,13 +123,8 @@ def user_token_page(request, profile_id):
     if file_extension in three_dim_file_types:
       user_three_dim_upload = True
 
-  # nft_currently_deployed = True
-  # if user_nft_obj is not None:
-    
 
-  if request.method == 'POST':
-
-    print('post-data:', request.POST)
+  if request.method == 'POST':  # saving project-log inputs
 
     creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
   
@@ -149,18 +143,20 @@ def user_token_page(request, profile_id):
 
 
   nft_transaction_history = UserNftTransactionHistory.objects.filter(nft_obj=user_nft_obj).order_by('-transaction_created_date')
-  
   project_log_list = CreatorProjectLog.objects.filter(creator_obj=creator_profile_obj).order_by('-log_created_date')
-
   user_nft_collection =  UserNftCollection.objects.filter(creator_obj=creator_profile_obj)
 
   # https://goerli.etherscan.io/address/0xf06ceeeb31a39ea5b22a0d0adffd2a2cd80cec0f
-  nft_total_token_supply = None
-  if user_nft_obj is not None:
+  nft_total_token_supply = None  
+  if user_nft_obj is not None and user_nft_obj.nft_deployed:
     current_token_id = utils.get_current_token_id(user_nft_obj.nft_deployed_contract_address)
     nft_total_token_supply = user_nft_obj.nft_total_supply - current_token_id
 
-  # TODO: Get reliable NFT total supply and go from there
+    if user_nft_obj.nft_deployed_transaction_status is None:  # if 0/1, it is updated
+      transaction_dict = utils.get_transaction_status(user_nft_obj.nft_deployed_transaction_hash)
+      transaction_status = transaction_dict['result']['status']
+      user_nft_obj.nft_deployed_transaction_status = transaction_status
+      user_nft_obj.save()
 
   return render(request, 'user_profile_page.html', {
     'anon_user': request.user.is_anonymous,
@@ -176,7 +172,7 @@ def user_token_page(request, profile_id):
     'nft_total_token_supply': nft_total_token_supply
   })
 
- 
+
 
 def delete_project_log(request, project_log_id):
   user_pk_address = request.user
@@ -657,9 +653,12 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
         'nft_total_supply': request.POST['nft_total_supply']
       })
 
+
+  # current_ether_price = utils.get_ether_price()
   
   return render(request, 'launch_token_form.html', {
-    'user_object': user_object
+    'user_object': user_object,
+    # 'current_ether_price': current_ether_price
   })
 
 
@@ -927,39 +926,37 @@ def save_nft_transaction_data(request):
   print('save-nft-post:', request.POST)
   
   if request.user.is_anonymous is False:
-
+    
+    print('post-data:', request.POST)
+  
     profile_id = request.POST['profile_id']
     creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-    # UserNft.objects.get()
     user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
-
-    # Save the bought transaction 
-      # keep a running count of the supply in new model? 
-    print('post-data:', request.POST)
-
-
-    # TODO: needs etherscan confirmation 
-      # split into rejected/pending/success
-    nft_history_obj = UserNftTransactionHistory.objects.create(
-      nft_obj = user_nft_obj, 
-      transaction_hash = request.POST['nft_transaction_hash']
-    )
-    nft_history_obj.save()
+  
+    number_of_tokens_bought = request.POST['number_of_tokens_bought']
+    transaction_hash = request.POST['nft_transaction_hash']
 
 
-    web_three_user_obj = Web3User.objects.get(user_pk_address=request.user)
-    buyer_cp_obj = CreatorProfile.objects.get(user_obj=web_three_user_obj)
+  #   nft_history_obj = UserNftTransactionHistory.objects.create(
+  #     nft_obj = user_nft_obj, 
+  #     transaction_hash = request.POST['nft_transaction_hash']
+  #   )
+  #   nft_history_obj.save()
 
-    buyer_nft_collect_obj = UserNftCollection.objects.create(
-      creator_obj = buyer_cp_obj,
-      nft_transaction_history_obj = nft_history_obj
-      # nft_obj = user_nft_obj      
-    )
-    buyer_nft_collect_obj.save()
 
-    return JsonResponse({'success': True, 'redirect_profile_id': buyer_cp_obj.id})
+  #   web_three_user_obj = Web3User.objects.get(user_pk_address=request.user)
+  #   buyer_cp_obj = CreatorProfile.objects.get(user_obj=web_three_user_obj)
 
-  else:
-    return JsonResponse({'success': False})
+  #   buyer_nft_collect_obj = UserNftCollection.objects.create(
+  #     creator_obj = buyer_cp_obj,
+  #     nft_transaction_history_obj = nft_history_obj
+  #     # nft_obj = user_nft_obj      
+  #   )
+  #   buyer_nft_collect_obj.save()
+
+  #   return JsonResponse({'success': True, 'redirect_profile_id': buyer_cp_obj.id})
+
+  # else:
+  #   return JsonResponse({'success': False})
 
 

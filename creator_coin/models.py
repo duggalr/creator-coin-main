@@ -90,21 +90,23 @@ class UserNft(models.Model):
   nft_ipfs_url = models.CharField(max_length=2000, blank=True, null=True)
   
   nft_deployed_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
-  nft_deployed = models.BooleanField(default=False)
+  nft_deployed = models.BooleanField(default=False)  
   nft_deployed_contract_address = models.CharField(max_length=2000, blank=True, null=True)
   nft_deployed_transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
+  nft_deployed_transaction_status = models.IntegerField(blank=True, null=True)
   nft_deployed_contract_data = models.CharField(max_length=2000, blank=True, null=True)
   nft_deployed_nonce = models.IntegerField(default=-1)
   nft_deployed_chain_id = models.IntegerField(default=-1)
 
 
-# All purchases will be recorded here
-  # after, can add transfers, etc. as well 
-# TODO: update this table with etherscan api
-class UserNftTransactionHistory(models.Model):
+# TODO: 
+  # TODO: remove the null/blank=True after reseting DB
+class UserNftTransactionHistory(models.Model):  
   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
+  purchaser_user_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
   transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
-  transaction_created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
+  transaction_created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+  transaction_status = models.IntegerField(blank=True, null=True) 
 
 
 # Displays the nft's user bought

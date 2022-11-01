@@ -296,7 +296,8 @@
 
   <script>
   
-  
+
+    var current_ether_usd_conversion_rate = 1571.76
 
     $('#token_price_field').on('input',function(e){
       
@@ -314,8 +315,8 @@
       var valid_input = validatePrice(field_val);
       if (valid_input === true){
 
-        var usd_conversion_rate = 1301.91
-        var usd_price = usd_conversion_rate * parseFloat(field_val)
+        // var usd_conversion_rate = 1301.91
+        var usd_price = current_ether_usd_conversion_rate * parseFloat(field_val)
         console.log('usd-price:', usd_price, parseFloat(field_val))
 
         var rounded_usd_price = Number((usd_price).toFixed(3));
