@@ -66,7 +66,7 @@ def explore_project(request):
   ]
 
   deployed_creator_profile_objects = []
-  deployed_nfts = UserNft.objects.all().order_by('-nft_updated_at')
+  deployed_nfts = UserNft.objects.filter(nft_deployed=True).order_by('-nft_updated_at')
   deployed_nft_list = []
   for obj in deployed_nfts:
     fn, file_extension = os.path.splitext(obj.nft_media_file.url)
@@ -78,6 +78,20 @@ def explore_project(request):
     deployed_nft_list.append({'nft_obj': obj, 'user_three_dim_upload': user_three_dim_upload})
     deployed_creator_profile_objects.append(obj.creator_obj)
 
+
+  other_profiles_with_nfts = UserNft.objects.filter(nft_deployed=False).order_by('-nft_updated_at')
+  non_deployed_nft_list = []
+  for obj in other_profiles_with_nfts:
+    fn, file_extension = os.path.splitext(obj.nft_media_file.url)
+    if file_extension in three_dim_file_types:
+      user_three_dim_upload = True
+    else:
+      user_three_dim_upload = False
+
+    non_deployed_nft_list.append({'nft_obj': obj, 'user_three_dim_upload': user_three_dim_upload})
+    deployed_creator_profile_objects.append(obj.creator_obj)
+
+
   final_profile_rv = []
   creator_profile_objects = CreatorProfile.objects.all()
   for obj in creator_profile_objects:
@@ -86,6 +100,7 @@ def explore_project(request):
   
   return render(request, 'explore_project.html', {
     'deployed_nft_objects': deployed_nft_list,
+    'non_deployed_nft_objects': non_deployed_nft_list,
     'all_other_profiles': final_profile_rv
   })
 

@@ -126,7 +126,11 @@
               {% endif %}
 
               |
-              <strong>Total Remaining:</strong> {{ nft_total_token_supply }} 
+              {% if nft_total_token_supply is None %}
+                <strong>Total Remaining:</strong> {{ user_nft_obj.nft_total_supply }}
+              {% else %}
+                <strong>Total Remaining:</strong> {{ nft_total_token_supply }} 
+              {% endif %}
             
             </p>
 
@@ -212,7 +216,7 @@
 
           {% else %}
             
-            {% if user_nft_obj is not None %}
+            {% if user_nft_obj is not None and user_nft_obj.nft_deployed is True %}
               
               <div class="row g-1 align-items-center">
                 
@@ -240,7 +244,7 @@
             {% else %}
 
               <span class="badge rounded-pill text-bg-secondary" style="font-size: 15px;">
-                User does not have a NFT for sale at the moment.
+                The creator has not made their NFT live at the moment.
               </span>
 
             {% endif %}
@@ -379,7 +383,7 @@
 
                 <span>
                   <i class="bi bi-github"></i>
-                  User did not link his github.
+                  The creator did not link his github.
                 </span>
 
               {% endif %}
