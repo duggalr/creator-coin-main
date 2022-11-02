@@ -22,7 +22,6 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv( os.path.join(BASE_DIR, 'creator_coin_new/.env') )
 
-# from .main_contracts import main_utils
 from . import utils
 
 
@@ -53,10 +52,6 @@ def about_page(request):
   return render(request, 'manifesto.html')
 
 
-# TODO:
-  # fetch all profiles with a NFT MINTED**
-  # then, fetch all others
-    # filter for both in the dropdown
 def explore_project(request):
   # all_profiles = CreatorProfile.objects.all()
   # show all profiles which have a deployed NFT first, then all profiles with NFT, then all other profiles 

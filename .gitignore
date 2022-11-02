@@ -55,7 +55,6 @@ media/
 scripts/
 db.sqlite3
 migrations/
-creator_coin_new/settings.py
 creator_coin/main_contracts
 creator_coin_new/.env
 creator_coin/contracts
@@ -67,3 +66,8 @@ templates/old_templates
 todo.txt
 
 
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
