@@ -2,15 +2,8 @@
 {% load static %}
 
 
-<!-- 
-  TODO: 
-  - correct 3D model settings
-  - add the remaining creator-profiles 
-    - placeholder when no nft available
-  - footer marign error**
--->
 
-
+ 
 {% block content %}
 
   {% include 'navbar.html' %}
@@ -18,10 +11,6 @@
   
   <div class="animate__animated animate__fadeIn container" id="explore-container-main">
 
-    <!-- <h3>Explore</h3> -->
-    <!-- <p>
-      Discover projects created by others.
-    </p> -->
 
     <div class="row" style="padding-top: 2%;">
 
@@ -29,7 +18,7 @@
 
         <h3 id="explore-header">Explore</h3>
         <p id="explore-paragraph">
-          Discover projects created by others.
+          Discover other amazing creators.
         </p>
         
         <!-- <span style="float: right;">
@@ -104,7 +93,7 @@
                     <!-- <span class="badge rounded-pill bg-info text-dark">NFT Available</span> -->
                     
                     {% if obj.nft_obj.nft_deployed is True %}
-                      <span class="badge rounded-pill bg-primary" >NFT is live!</span>
+                      <span class="badge rounded-pill bg-primary">NFT is live!</span>
                     {% endif %}
                       
                   </div>
@@ -177,7 +166,7 @@
                 src="{{ obj.nft_obj.nft_media_file.url }}"
                 camera-orbit="270deg 85deg 100%"
                 shadow-intensity="1"
-                auto-rotate
+                camera-controls
                 rotation-per-second="220%"
               ></model-viewer>
 
@@ -193,10 +182,11 @@
                   <div class="card-header-div">
   
                     <h4 class="card-title">
-                      {{ obj.nft_obj.nft_name }}
+                      <!-- {{ obj.nft_obj.nft_name }} -->
+                      {{ obj.nft_obj.creator_obj.creator_name }}
                     </h4>
 
-                    <span class="badge rounded-pill bg-success">Creator has created an NFT, but it is not minted yet.</span>                    
+                    <span class="badge rounded-pill bg-success" >Creator has created an NFT, but it is not minted yet.</span>                    
                       
                   </div>
                 
@@ -238,6 +228,85 @@
   
 
     {% endfor %}
+
+
+
+
+    {% for obj in all_other_profiles %}
+      
+    <div class="row">
+
+      <div class="col-md-8 offset-md-2 " id="main-card-div">
+        
+        <div class="card mb-3 " style="max-width: 100%;">
+
+          <div class="row no-gutters">
+  
+            <div class="col-md-4">
+              
+              <model-viewer 
+                style="padding-top: 10px; padding-right: 10px; height: 200px;"
+                src="{% static '3d_model/placeholder_new.glb' %}"
+                camera-orbit="270deg 85deg 100%"
+                shadow-intensity="1"
+                rotation-per-second="220%"
+                camera-controls
+              ></model-viewer>
+
+            </div>
+
+
+            <div class="col-md-8">
+            
+              <div class="card-body">
+
+                <div class="card-header-div">
+
+                  <h4 class="card-title">
+                    {% if obj.creator_name is None %}
+                      Creator has not entered a name yet &#128533;
+                    {% else %}
+                      {{ obj.creator_name }}
+                    {% endif %}
+                    
+                  </h4>
+
+                  <span class="badge rounded-pill bg-light text-black">Creator has not created an NFT yet.</span>                    
+                    
+                </div>
+              
+                <a class="stretched-link" href="{% url 'user_token_page' profile_id=obj.id %}"></a>
+
+                <p class="card-text" style="padding-top: 8px;">
+                  {% if obj.creator_description is None %}
+                    Creator has not made a description yet...
+                  {% else %}
+                    {{ obj.creator_description|safe|truncatechars:150 }}
+                  {% endif %}
+                  
+                </p>
+                <p class="card-text" >
+                  <small class="text-muted">
+                    Last updated: {{ obj.updated_at }}
+                  </small>
+                </p>
+                
+              </div>
+
+            </div>
+            
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    
+
+    {% endfor %}
+
+
 
 
 

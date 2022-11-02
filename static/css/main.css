@@ -327,7 +327,8 @@ a.link{
 }
 
 #explore-paragraph{
-  font-size: 20px; 
+  font-size: 20px;
+  color: gray; 
   /* font-weight: bolder; */
 }
 
