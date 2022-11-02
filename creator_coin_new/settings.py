@@ -29,7 +29,7 @@ SECRET_KEY = 'xel#f$gd8wtjy)zu6(#=liq1y(0nu*57yh4#kh^ddi(x8ildih'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-env.eba-mprpedn5.ca-central-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['django-env.eba-mprpedn5.ca-central-1.elasticbeanstalk.com', '127.0.0.1']
 
 
 # Application definition
@@ -159,8 +159,8 @@ AUTH_USER_MODEL = 'creator_coin.Web3User'
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
 # )
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 
 # Media Files
 MEDIA_URL = '/media/'
