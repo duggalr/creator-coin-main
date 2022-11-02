@@ -99,7 +99,7 @@ class UserNft(models.Model):
   nft_deployed_chain_id = models.IntegerField(default=-1)
 
 
-# TODO: 
+# TODO:  
   # TODO: remove the null/blank=True after reseting DB
 class UserNftTransactionHistory(models.Model):  
   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)

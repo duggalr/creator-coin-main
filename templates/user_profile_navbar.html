@@ -153,7 +153,7 @@
           <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
               <div class="fw-bold" style="font-size: 17px;">
-                All transactions linked to your NFT will be shown here...
+                All transactions linked to the NFT will be shown here...
               </div>
               <!-- N/A -->
             </div>
@@ -197,11 +197,10 @@
         <!-- <button id="post-update-button">Post Update</button> -->
         <button id="post-update-button" type="button" class="btn btn-outline-dark btn-lg rounded-pill" style="font-size: 18px;">Post Update</button>
       </div>
-      
+    
+      <br/>
 
     {% endif %}
-
-    <br/>
 
 
     <ul class="list-group list-group-flush">
@@ -241,14 +240,19 @@
       {% endfor %}
 
 
-      <!-- TODO: add default if no project-log; else, show all the project-log -->
 
       {% if project_log_list|length == 0 %}
 
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
             <div class="fw-bold" style="font-size: 17px;">
-              This will be a place for you to provide updates on your projects... (can be used in parallel with Github) 
+
+              {% if same_user is True %}
+                This will be a place for you to provide updates on your projects... (can be used in parallel with Github) 
+              {% else %}
+                No project updates logged by creator yet... &#128564;
+              {% endif %}
+              
             </div>
           </div>
         </li>
@@ -312,7 +316,12 @@
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
             <div class="fw-bold" >
-              All NFT's you buy on this platform will show up here. Your collection is a bit dry right now... &#128564;
+              {% if same_user is True %}
+                All NFT's you buy on this platform will show up here. Your collection is a bit dry right now... &#128564;
+              {% else %}
+                Creator has not collected any NFT's yet... &#128564;
+              {% endif %}
+              
             </div>
           </div>
         </li>

@@ -176,8 +176,11 @@ def user_token_page(request, profile_id):
       transaction_dict = utils.get_transaction_status(nft_transaction_obj.transaction_hash)
       if transaction_dict is not None:
         transaction_status = transaction_dict['result']['status']
-        nft_transaction_obj.transaction_status = transaction_status
-        nft_transaction_obj.save()
+        try: 
+          nft_transaction_obj.transaction_status = transaction_status
+          nft_transaction_obj.save()
+        except: # this is likely due to transaction not being executed and thus, transaction-status will be null
+          pass
 
 
   project_log_list = CreatorProjectLog.objects.filter(creator_obj=creator_profile_obj).order_by('-log_created_date')
