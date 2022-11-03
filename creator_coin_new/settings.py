@@ -94,7 +94,6 @@ WSGI_APPLICATION = 'creator_coin_new.wsgi.application'
 #     }
 # }
 
-print(os.environ)
 
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
@@ -158,17 +157,22 @@ USE_TZ = True
 AUTH_USER_MODEL = 'creator_coin.Web3User'
 
 # STATIC_URL = '/static/'
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
+
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+if 'RDS_DB_NAME' in os.environ:
+    STATIC_ROOT = 'static'
+else:
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
+
 
 # Media Files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
+# for auto-created primary keys
+DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
 
 
 

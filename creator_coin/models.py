@@ -50,7 +50,6 @@ class UserNonce(models.Model):
 
 
 class CreatorProfile(models.Model):
-  # user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
   user_obj = models.OneToOneField(Web3User, on_delete=models.CASCADE)
   creator_name = models.CharField(max_length=2000, blank=True, null=True)
   creator_email = models.CharField(max_length=255, blank=True, null=True)
@@ -58,7 +57,6 @@ class CreatorProfile(models.Model):
   creator_github_website = models.URLField(blank=True, null=True)
   creator_discord_website = models.URLField(blank=True, null=True)
   creator_description = models.TextField(blank=True, null=True)
-  # creator_contact_info = models.CharField(max_length=2000, blank=True, null=True)
   updated_at = models.DateTimeField(auto_now=True)
 
 
@@ -68,15 +66,6 @@ class CreatorProjectLog(models.Model):
   log_description = models.TextField(blank=True, null=True)
   log_created_date = models.DateTimeField(auto_now_add=True)
 
-
-
-# class UserToken(models.Model):
-#   user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
-#   token_name = models.CharField(max_length=2000, blank=True, null=True)
-#   token_symbol = models.CharField(max_length=100, blank=True, null=True)
-#   token_image = models.ImageField(upload_to='token_images/', verbose_name='Image')
-#   created_at = models.DateTimeField(auto_now_add=True)
-#   # updated_at = models.DateTimeField(auto_now=True)
 
 class UserNft(models.Model):
   creator_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
@@ -89,7 +78,7 @@ class UserNft(models.Model):
   nft_updated_at = models.DateTimeField(auto_now=True)
   nft_ipfs_url = models.CharField(max_length=2000, blank=True, null=True)
   
-  nft_deployed_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
+  nft_deployed_date = models.DateTimeField(auto_now_add=True)
   nft_deployed = models.BooleanField(default=False)  
   nft_deployed_contract_address = models.CharField(max_length=2000, blank=True, null=True)
   nft_deployed_transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
@@ -99,29 +88,20 @@ class UserNft(models.Model):
   nft_deployed_chain_id = models.IntegerField(default=-1)
 
 
-# TODO:  
-  # TODO: remove the null/blank=True after reseting DB
 class UserNftTransactionHistory(models.Model):  
   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
   purchaser_user_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
-  purchase_amount = models.IntegerField(blank=True, null=True)
-  transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
-  transaction_created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-  transaction_status = models.IntegerField(blank=True, null=True) 
+  purchase_amount = models.IntegerField()
+  transaction_hash = models.CharField(max_length=2000)
+  transaction_created_date = models.DateTimeField(auto_now_add=True)
+  transaction_status = models.IntegerField()
 
 
-# Displays the nft's user bought
-# TODO: update this table with etherscan api
 class UserNftCollection(models.Model):
   creator_obj = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
   # nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
-  nft_transaction_history_obj = models.ForeignKey(UserNftTransactionHistory, on_delete=models.CASCADE, blank=True, null=True)
-  transaction_created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True) # TODO: remove the null/blank=True after reseting DB
-
- 
-# class UserNftTotalSupply(models.Model):
-#   nft_obj = models.ForeignKey(UserNft, on_delete=models.CASCADE)
-#   total_sold = models.IntegerField()
+  nft_transaction_history_obj = models.ForeignKey(UserNftTransactionHistory, on_delete=models.CASCADE)
+  transaction_created_date = models.DateTimeField(auto_now_add=True)
 
 
 class GithubProfile(models.Model):
@@ -129,24 +109,7 @@ class GithubProfile(models.Model):
   github_username = models.CharField(max_length=2000)
   github_profile_url = models.URLField() 
   github_avatar_url = models.URLField()
-  # verified_date = models.DateTimeField(auto_now_add=True)  # TODO: add
-
-
-# class UserProject(models.Model):
-#   creator_profile = models.ForeignKey(CreatorProfile, on_delete=models.CASCADE)
-#   title = models.CharField(max_length=2000)
-#   description = models.TextField()
-#   project_website = models.URLField(blank=True, null=True)
-#   github_webite = models.URLField(blank=True, null=True)
-#   discord_website = models.URLField(blank=True, null=True)
-#   created_at = models.DateTimeField(auto_now_add=True)
-#   updated_at = models.DateTimeField(auto_now=True)
-
-
-# class ProjectNftImage(models.Model):
-#   project_obj = models.ForeignKey(UserProject, on_delete=models.CASCADE)
-#   nft_image = models.ImageField(upload_to='nft_images/', verbose_name='Image')
-
+  verified_date = models.DateTimeField(auto_now_add=True)
 
 
 class UserBetaEmails(models.Model):
