@@ -54,7 +54,6 @@ docs/_build/
 media/
 scripts/
 db.sqlite3
-migrations/
 creator_coin/main_contracts
 creator_coin_new/.env
 creator_coin/contracts
