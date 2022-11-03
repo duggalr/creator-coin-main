@@ -58,8 +58,6 @@ migrations/
 creator_coin/main_contracts
 creator_coin_new/.env
 creator_coin/contracts
-static/3d_model
-static/images
 creator_coin/contract_utils.py
 templates/old_templates
 
