@@ -25,8 +25,13 @@ class UserManager(BaseUserManager):
     user.save()
 
     return user
+ 
+# psql 
 
-
+# TODO: **get databases running for local/prod** 
+  # delete local tables and all migration files (including init) <-- test in pgadmin and ensure it's deleted
+    # re-run migrate in prod and go from there
+ 
 class Web3User(AbstractBaseUser):
   user_pk_address = models.CharField(max_length=100, unique=True)
   is_superuser = models.BooleanField(default=False)

@@ -123,14 +123,14 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'creator_coin_test_db',
+            'NAME': 'creator_coin_db',
             'USER': 'rahul_creator_coin',
             'PASSWORD': os.getenv("test_db_password"),
             'HOST': 'localhost',
             'PORT': '5432',
         }
     }
-
+ 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
