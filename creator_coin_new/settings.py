@@ -94,6 +94,7 @@ WSGI_APPLICATION = 'creator_coin_new.wsgi.application'
 #     }
 # }
 
+print(os.environ)
 
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
