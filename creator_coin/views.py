@@ -28,8 +28,7 @@ from . import utils
 
 
 
-def home(request):  
-
+def home(request):
   if request.method == "POST":
     user_email = request.POST['user_email']
     if user_email != '':
@@ -459,8 +458,6 @@ def logout_view(request):
 # Much of the web3 login is based from (credits go to author):
   # https://github.com/ManaanAnsari/MetaMask-Login-Python/blob/8f15caa1a374660629fe199ef55cb8458cde86d1/backend/user_management/views.py
 
-# TODO: **review vulnb's here as super important** / mitm can help
-# def metamask_login(request):
 class UserNonceView(APIView):
   """
   Generate user nonce given pk_address
@@ -468,40 +465,48 @@ class UserNonceView(APIView):
   """
   def get(self, request):
     pk_address = request.GET.get('web3_address')
-    # print('pk-address:', pk_address)
   
     web_three_users = Web3User.objects.filter(user_pk_address=pk_address)
     web_three_user_obj = None
+  
+    return_nonce = False
     if len(web_three_users) == 1:  # should never be >1 as pk_address is unique
+      return_nonce = True
       web_three_user_obj = web_three_users[0]
-    else:
-      web_three_user_obj = Web3User.objects.create(
-        user_pk_address=pk_address
+      
+    elif len(web_three_users) == 0:
+      return_nonce = True
+      web_three_user_obj = Web3User.objects.create(  # create the user, but set active to False
+        user_pk_address=pk_address,
+        is_active=False        
       )
       web_three_user_obj.save()
 
-      creator_profile = CreatorProfile.objects.create(
-        user_obj=web_three_user_obj
+    else:  # should never be the case, but putting here for safety measures
+      return_nonce = False
+
+
+    if return_nonce and web_three_user_obj is not None:
+
+      UserNonce.objects.filter(user=web_three_user_obj).delete()
+
+      nonce = utils.generate_nonce()
+      user_nonce_obj = UserNonce.objects.create(
+        nonce=nonce,
+        user=web_three_user_obj
       )
-      creator_profile.save()
+      user_nonce_obj.save()
 
-    
-    UserNonce.objects.filter(user=web_three_user_obj).delete()
+      rv = {}
+      rv['success'] = True
+      rv['data'] = {'nonce': nonce}
+      rv['message'] = 'user nonce created'
 
-    nonce = utils.generate_nonce()
-    user_nonce_obj = UserNonce.objects.create(
-      nonce=nonce,
-      user=web_three_user_obj
-    )
-    user_nonce_obj.save()
-
-    rv = {}
-    rv['success'] = True
-    rv['data'] = {'nonce': nonce}
-    rv['message'] = 'user nonce created'
+    else:
+      rv = {}
+      rv['success'] = False
 
     return JsonResponse(rv)
-    # return Response(rv, status = status.HTTP_200_OK)
 
 
 
@@ -511,7 +516,6 @@ class LoginView(APIView):
   """
   def post(self, request):
     data = request.data
-    # print('data:', data)
 
     if 'nonce_signature' in data and 'pk_address' in data:
       user_pk_address = data["pk_address"]
@@ -521,38 +525,68 @@ class LoginView(APIView):
         user_obj = Web3User.objects.get(user_pk_address=user_pk_address)
 
         if UserNonce.objects.filter(user=user_obj).exists():
-            saved_nonce_obj = UserNonce.objects.get(user=user_obj)
-            saved_nonce = saved_nonce_obj.nonce
+          saved_nonce_obj = UserNonce.objects.get(user=user_obj)
+          saved_nonce = saved_nonce_obj.nonce
 
-            message = "\nBy signing this message, you will sign the randomly generated nonce.  \n\nNonce: " + saved_nonce + " \n\nWallet Address: " + user_pk_address
-            encode_msg = encode_defunct(text=message)
+          message = "\nBy signing this message, you will sign the randomly generated nonce.  \n\nNonce: " + saved_nonce + " \n\nWallet Address: " + user_pk_address
+          encode_msg = encode_defunct(text=message)
 
-            recovered_signed_address = ( w3.eth.account.recover_message(encode_msg, signature=user_nonce_signature) )
+          recovered_signed_address = ( w3.eth.account.recover_message(encode_msg, signature=user_nonce_signature) )
 
-            # print(f"original-addr: {user_pk_address} / signed-addr: {signed_address}")
+          # print(f"original-addr: {user_pk_address} / signed-addr: {signed_address}")
 
-            # # hash_msg = web3.Web3.sha3(text=saved_nonce)
-            # hash_msg = web3.Web3.sha3(text=message)
-            # # pk2 = w3.eth.account.recover_message(hash_msg, signature=user_nonce_signature)
-            # recovered_public_key = w3.eth.account.recoverHash(hash_msg, signature=user_nonce_signature) 
-            # print(f"recovered-has: {recovered_public_key} / user-sig: {user_nonce_signature} / user-pk-add: {user_pk_address}")
+          # # hash_msg = web3.Web3.sha3(text=saved_nonce)
+          # hash_msg = web3.Web3.sha3(text=message)
+          # # pk2 = w3.eth.account.recover_message(hash_msg, signature=user_nonce_signature)
+          # recovered_public_key = w3.eth.account.recoverHash(hash_msg, signature=user_nonce_signature) 
+          # print(f"recovered-has: {recovered_public_key} / user-sig: {user_nonce_signature} / user-pk-add: {user_pk_address}")
 
-            if recovered_signed_address == user_obj.user_pk_address:
-              UserNonce.objects.filter(user=user_obj).delete()
-              login(request, user_obj)
-              
-              creator_profile_obj = CreatorProfile.objects.get(user_obj=user_obj)
-              print('creator-profile:', creator_profile_obj)
+          if recovered_signed_address == user_obj.user_pk_address:
+            UserNonce.objects.filter(user=user_obj).delete()
+            login(request, user_obj)
 
-              return Response({
-                'success': True, 
-                'message': 'user successfully logged in.', 
-                'url': 'profile',
-                'profile_id': creator_profile_obj.id
-              })
+            user_obj.is_active = True
+            user_obj.save()
+
+            # Create the Creator Profile and redirect to this page
+            creator_profile_obj = CreatorProfile.objects.create( 
+              user_obj=user_obj
+            )
+            creator_profile_obj.save()
+
+            # creator_profile_obj = CreatorProfile.objects.get(user_obj=user_obj)
+            # print('creator-profile:', creator_profile_obj)
+
+            return Response({
+              'success': True, 
+              'message': 'user successfully logged in.', 
+              'url': 'profile',
+              'profile_id': creator_profile_obj.id
+            })
+            
+          else:
+            Web3User.objects.get(user_pk_address=user_pk_address).delete()
+            return Response({
+              'success': False
+            })
+
+        else:
+          Web3User.objects.get(user_pk_address=user_pk_address).delete()
+          return Response({
+            'success': False
+          })
+
+      else:
+        Web3User.objects.get(user_pk_address=user_pk_address).delete()
+        return Response({
+          'success': False
+        })
 
     else:
-      pass
+      Web3User.objects.get(user_pk_address=user_pk_address).delete()
+      return Response({
+        'success': False
+      })
  
 
 

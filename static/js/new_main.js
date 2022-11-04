@@ -95,19 +95,18 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
   if (window.ethereum && window.ethereum.isMetaMask) {
 
     const walletUnlocked =  await window.ethereum._metamask.isUnlocked();  // need to access 'experimental'-api
-    if (walletUnlocked === true){
+
+    if (walletUnlocked === true) {
 
       // TODO: specifying 'any' due to any blockchain allowed; change to only main-net? 
       ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
 
       // MetaMask requires requesting permission to connect users accounts
       await ethersProvider.send("eth_requestAccounts", []);
-
+ 
       const signer = ethersProvider.getSigner();
-      // console.log('signer:', signer)
       
       const userAccounts = await ethersProvider.listAccounts();
-      // console.log('user-accounts:', userAccounts);
 
       const user_account_pk_address = userAccounts[0];
 
@@ -115,11 +114,11 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
       // console.log('user-nonce:', userNonceJson);
 
       let userNonceRes;
-      try{
+      try {
         userNonceRes = await requestNonce(user_account_pk_address);
-        // console.log('user-nonce-res:', userNonceRes)
-      } catch(error){  // user-nonce-request with response != 200 (rare situation)
+      } catch(error) {  // user-nonce-request with response != 200 (rare situation)
         loginErrorThreeModel.show();
+        signupLinkClicked = false;
       }
 
       if (userNonceRes['success'] === true){
@@ -129,10 +128,11 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
         var message = "\nBy signing this message, you will sign the randomly generated nonce.  \n\nNonce: " + userNonce + " \n\nWallet Address: " + user_account_pk_address
         
         let userSignature;
-        try{
+        try {
           userSignature = await signer.signMessage(message);
         } catch(error) {
           console.log(error);
+          signupLinkClicked = false;
         }
 
         if (userSignature){
@@ -145,39 +145,52 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
           try{
             let userLoginInfoRes = await completeLogin(data);
             if (userLoginInfoRes['success'] === true){
+
               if (redirect_profile_id !== undefined) {
                 window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id + '?click=buy-button'
-                // buyNFTMain()
+                
               } else {
                 window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];
               }
 
-              
+            } else {
+              loginErrorThreeModel.show();
+              signupLinkClicked = false;
             }
+
           } catch(error) {  // user login request failed
-            console.log(error)
+            // console.log(error);
+            loginErrorThreeModel.show();
+            signupLinkClicked = false;
           }
-          
 
         } else { // signature denied.
 
           // alert("MetaMask Signature Denied.")
+          signupLinkClicked = false;
 
         }
 
+      } else {
+
+        loginErrorThreeModel.show();
+        signupLinkClicked = false;
+        
       }
 
 
     } else { // wallet is not unlocked
 
       loginErrorTwoModal.show();
-      
+      signupLinkClicked = false;
+
     }
 
 
   } else {
 
     loginErrorModal.show();
+    signupLinkClicked = false;
 
   }
 
@@ -630,6 +643,8 @@ if (window.ethereum){
 var signupLinkClicked;
 $('#main-signup-login-button').on('click', function(){
 
+  console.log('signup-button:', signupLinkClicked)
+
   if (signupLinkClicked){ // prevent multiple clicks
     return false;
   } else {
@@ -702,7 +717,9 @@ $( "#launch-nft-button" ).click(async () => {
 
   if (launchNFTClicked){
     return false;
+
   } else {
+
     launchNFTClicked = true;
 
     fetch("http://127.0.0.1:7500/static/json_files/nft_main_new_compiled_code.json")
@@ -719,9 +736,6 @@ $( "#launch-nft-button" ).click(async () => {
     })
 
   }
-
-  
-
   
 });
 
@@ -738,11 +752,9 @@ $( "#buy-nft-buttton" ).click(async () => {
   } else {
 
     userBuyNFTClicked = true;
-
     buyNFTMain()
 
   }
-
 
 })
 
@@ -818,6 +830,7 @@ $('#num_token_to_buy').on('input',function(e){
 
 
 
+  
 
 
 

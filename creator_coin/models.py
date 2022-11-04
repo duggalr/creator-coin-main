@@ -53,7 +53,7 @@ class UserNonce(models.Model):
   nonce = models.CharField(max_length=100)
   user = models.ForeignKey(Web3User, on_delete=models.CASCADE)
 
-
+ 
 class CreatorProfile(models.Model):
   user_obj = models.OneToOneField(Web3User, on_delete=models.CASCADE)
   creator_name = models.CharField(max_length=2000, blank=True, null=True)

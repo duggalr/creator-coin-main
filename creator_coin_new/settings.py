@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 load_dotenv( os.path.join(BASE_DIR, '.env') )
 
 
@@ -27,13 +26,16 @@ load_dotenv( os.path.join(BASE_DIR, '.env') )
 SECRET_KEY = 'xel#f$gd8wtjy)zu6(#=liq1y(0nu*57yh4#kh^ddi(x8ildih'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if 'RDS_DB_NAME' in os.environ:
+    DEBUG = False
+else:
+    DEBUG = True
+
 
 ALLOWED_HOSTS = ['django-env.eba-mprpedn5.ca-central-1.elasticbeanstalk.com', '127.0.0.1']
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -94,19 +96,6 @@ WSGI_APPLICATION = 'creator_coin_new.wsgi.application'
 #     }
 # }
 
-# print(os.environ)
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.getenv('rds_db_name'),
-#         'USER': os.getenv('rds_username'),
-#         'PASSWORD': os.getenv('rds_password'),
-#         'HOST': os.getenv('rds_hostname'),
-#         'PORT': os.getenv('rds_port'),
-#     }
-# }
 
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
