@@ -1,4 +1,5 @@
-const API_HOST = 'http://127.0.0.1:7500/'
+// const API_HOST = 'http://127.0.0.1:7500/'
+const API_HOST = window.location.hostname;
 
 let ethersProvider;
 let loginErrorModal;
@@ -53,7 +54,7 @@ function requestNonce(user_account_pk_address){
     var apiURL = new URL(API_HOST + 'generate_nonce?');
     apiURL.searchParams.append('web3_address', user_account_pk_address);
     // const user_nonce_res = await axios.get(apiURL.href)
-  
+    
     fetch(apiURL)
     .then(response => response.json())
     .then(json => {
