@@ -99,14 +99,14 @@ def explore_project(request):
   })
 
 
-
 def my_profile(request):
-  user_pk_address = request.user
-  user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-
-  creator_profile_obj = CreatorProfile.objects.get(user_obj=user_obj)
-  return redirect('user_token_page', profile_id=creator_profile_obj.id)
-
+  if request.user.is_anonymous:
+    return redirect('home')
+  else:
+    user_pk_address = request.user
+    user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+    creator_profile_obj = get_object_or_404(CreatorProfile, user_obj=user_obj)
+    return redirect('user_token_page', profile_id=creator_profile_obj.id)
 
 
 def user_token_page(request, profile_id):
@@ -426,10 +426,6 @@ def edit_user_profile(request, profile_id):
 
 
 
-# def nft_page_example(request):
-#   return render(request, 'nft_page_example.html')
-
-
 # TODO: ensure only the person who is 'owner' of the profile can see stuff; not everyone
 @login_required(login_url='/')
 def user_profile(request):
@@ -450,9 +446,6 @@ def logout_view(request):
 
 
 
-
-
-
 ## API   
 
 # Much of the web3 login is based from (credits go to author):
@@ -465,42 +458,46 @@ class UserNonceView(APIView):
   """
   def get(self, request):
     pk_address = request.GET.get('web3_address')
-  
-    web_three_users = Web3User.objects.filter(user_pk_address=pk_address)
-    web_three_user_obj = None
-  
-    return_nonce = False
-    if len(web_three_users) == 1:  # should never be >1 as pk_address is unique
-      return_nonce = True
-      web_three_user_obj = web_three_users[0]
-      
-    elif len(web_three_users) == 0:
-      return_nonce = True
-      web_three_user_obj = Web3User.objects.create(  # create the user, but set active to False
-        user_pk_address=pk_address,
-        is_active=False        
-      )
-      web_three_user_obj.save()
 
-    else:  # should never be the case, but putting here for safety measures
+    if pk_address is not None:
+      web_three_users = Web3User.objects.filter(user_pk_address=pk_address)
+      web_three_user_obj = None
+    
       return_nonce = False
+      if len(web_three_users) == 1:  # should never be >1 as pk_address is unique
+        return_nonce = True
+        web_three_user_obj = web_three_users[0]
+        
+      elif len(web_three_users) == 0:
+        return_nonce = True
+        web_three_user_obj = Web3User.objects.create(  # create the user, but set active=False
+          user_pk_address=pk_address,
+          is_active=False        
+        )
+        web_three_user_obj.save()
 
+      else:  # should never be the case, but putting here for safety measures
+        return_nonce = False
 
-    if return_nonce and web_three_user_obj is not None:
+      if return_nonce is True and web_three_user_obj is not None:
 
-      UserNonce.objects.filter(user=web_three_user_obj).delete()
+        UserNonce.objects.filter(user=web_three_user_obj).delete()
 
-      nonce = utils.generate_nonce()
-      user_nonce_obj = UserNonce.objects.create(
-        nonce=nonce,
-        user=web_three_user_obj
-      )
-      user_nonce_obj.save()
+        nonce = utils.generate_nonce()
+        user_nonce_obj = UserNonce.objects.create(
+          nonce=nonce,
+          user=web_three_user_obj
+        )
+        user_nonce_obj.save()
 
-      rv = {}
-      rv['success'] = True
-      rv['data'] = {'nonce': nonce}
-      rv['message'] = 'user nonce created'
+        rv = {}
+        rv['success'] = True
+        rv['data'] = {'nonce': nonce}
+        rv['message'] = 'user nonce created'
+
+      else:
+        rv = {}
+        rv['success'] = False
 
     else:
       rv = {}
@@ -542,28 +539,39 @@ class LoginView(APIView):
           # print(f"recovered-has: {recovered_public_key} / user-sig: {user_nonce_signature} / user-pk-add: {user_pk_address}")
 
           if recovered_signed_address == user_obj.user_pk_address:
-            UserNonce.objects.filter(user=user_obj).delete()
+            UserNonce.objects.filter(user=user_obj).delete()            
+
+            # Nonce is verified; ensure web3user_obj is True
+            if user_obj.is_active is False:
+              user_obj.is_active = True
+              user_obj.save()
+
             login(request, user_obj)
 
-            user_obj.is_active = True
-            user_obj.save()
+            creator_profile_objects = CreatorProfile.objects.filter(user_obj=user_obj)
 
-            # Create the Creator Profile and redirect to this page
-            creator_profile_obj = CreatorProfile.objects.create( 
-              user_obj=user_obj
-            )
-            creator_profile_obj.save()
+            if len(creator_profile_objects) == 1:  # existing profile login; since OnetoOneField, will always be 1
+              return Response({
+                'success': True, 
+                'message': 'user successfully logged in.', 
+                'url': 'profile',
+                'profile_id': creator_profile_objects[0].id
+              })
 
-            # creator_profile_obj = CreatorProfile.objects.get(user_obj=user_obj)
-            # print('creator-profile:', creator_profile_obj)
+            else:
+              # New User; Create the Creator Profile and redirect to this page
+              creator_profile_obj = CreatorProfile.objects.create( 
+                user_obj=user_obj
+              )
+              creator_profile_obj.save()
 
-            return Response({
-              'success': True, 
-              'message': 'user successfully logged in.', 
-              'url': 'profile',
-              'profile_id': creator_profile_obj.id
-            })
-            
+              return Response({
+                'success': True, 
+                'message': 'user successfully logged in.', 
+                'url': 'profile',
+                'profile_id': creator_profile_obj.id
+              })
+
           else:
             Web3User.objects.get(user_pk_address=user_pk_address).delete()
             return Response({
@@ -577,13 +585,11 @@ class LoginView(APIView):
           })
 
       else:
-        Web3User.objects.get(user_pk_address=user_pk_address).delete()
         return Response({
           'success': False
         })
 
     else:
-      Web3User.objects.get(user_pk_address=user_pk_address).delete()
       return Response({
         'success': False
       })
@@ -600,7 +606,6 @@ def github_login(request):
   authorization_url, state = github.authorization_url(authorization_base_url)
   request.session['oauth_state'] = state
   return redirect(authorization_url)
-
 
 
 @login_required(login_url='/')
@@ -637,7 +642,6 @@ def github_callback(request):
   gp.save()
 
   return redirect('user_token_page', profile_id=web3_user.id)
-
 
 
 @login_required(login_url='/')
@@ -731,13 +735,9 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
       })
 
 
-  # current_ether_price = utils.get_ether_price()
-  
   return render(request, 'launch_token_form.html', {
     'user_object': user_object,
-    # 'current_ether_price': current_ether_price
   })
-
 
 
 @login_required(login_url='/')
@@ -746,6 +746,7 @@ def update_token_form(request):
   # user_object = Web3User.objects.get(user_pk_address=current_user_pk_address)
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
   creator_profile = CreatorProfile.objects.get(user_obj=user_object)
+  
   user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
   
   # TODO:          
@@ -934,8 +935,6 @@ def handle_account_change(request):
   
 
 
-
-
 @require_http_methods(["POST"])
 def nft_launch_final(request):
   current_user_pk_address = request.user.user_pk_address
@@ -992,7 +991,7 @@ def fetch_nft_main_data(request, profile_id):
 
 
 # TODO: 
-  # is this not a secure way to 'save' an executed buy-transaction 
+  # this is not a secure way to 'save' an executed buy-transaction 
   # rather, use etherscan api to fetch token-transactions
     # use contract-function-call to fetch total-supply  
 @require_http_methods(["POST"])
@@ -1037,5 +1036,7 @@ def save_nft_transaction_data(request):
 
   else:
     return JsonResponse({'success': False})
+
+
 
 
