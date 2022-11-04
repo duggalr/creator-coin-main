@@ -426,18 +426,16 @@ def edit_user_profile(request, profile_id):
 
 
 
-# TODO: ensure only the person who is 'owner' of the profile can see stuff; not everyone
-@login_required(login_url='/')
-def user_profile(request):
-  user_pk_address = request.user
-  user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-  print('user-obj:', user_obj)
-  creator_profile = get_object_or_404(CreatorProfile, user_obj=user_obj)
-  # TODO: 
-    # show user's purchased and created <-- after this has been created (create basic UI for this already though)
-
-  return render(request, 'user_profile.html', {'creator_profile': creator_profile})
+# # TODO: ensure only the person who is 'owner' of the profile can see stuff; not everyone
+# @login_required(login_url='/')
+# def user_profile(request):
+#   user_pk_address = request.user
+#   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+#   print('user-obj:', user_obj)
+#   creator_profile = get_object_or_404(CreatorProfile, user_obj=user_obj)  
+#   return render(request, 'user_profile.html', {'creator_profile': creator_profile})
  
+
 
 @login_required(login_url='/')
 def logout_view(request):
@@ -472,7 +470,7 @@ class UserNonceView(APIView):
         return_nonce = True
         web_three_user_obj = Web3User.objects.create(  # create the user, but set active=False
           user_pk_address=pk_address,
-          is_active=False        
+          is_active=False
         )
         web_three_user_obj.save()
 

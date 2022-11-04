@@ -97,6 +97,13 @@ WSGI_APPLICATION = 'creator_coin_new.wsgi.application'
 # }
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+         'rest_framework.renderers.JSONRenderer',
+     )
+}
+
+
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
         'default': {
@@ -175,6 +182,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # for auto-created primary keys
 DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
+
 
 
 
