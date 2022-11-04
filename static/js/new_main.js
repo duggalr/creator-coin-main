@@ -1,5 +1,5 @@
 // const API_HOST = 'http://127.0.0.1:7500/'
-const API_HOST = window.location.hostname;
+const API_HOST = location.protocol + '//' + location.host + '/';
 
 let ethersProvider;
 let loginErrorModal;
@@ -114,6 +114,10 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
       // const userNonceJson = await getNonce(user_account_pk_address);
       // console.log('user-nonce:', userNonceJson);
 
+      // console.log('api-host:', API_HOST)
+      // var apiURL = new URL(API_HOST + 'generate_nonce?');
+      // console.log('api-url:', apiURL);
+
       let userNonceRes;
       try {
         userNonceRes = await requestNonce(user_account_pk_address);
@@ -121,6 +125,7 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
         loginErrorThreeModel.show();
         signupLinkClicked = false;
       }
+
 
       if (userNonceRes['success'] === true){
 
