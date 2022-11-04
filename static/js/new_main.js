@@ -153,10 +153,12 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
             if (userLoginInfoRes['success'] === true){
 
               if (redirect_profile_id !== undefined) {
-                window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id + '?click=buy-button'
+                // window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id + '?click=buy-button'
+                window.location.href = API_HOST + 'profile/' + redirect_profile_id + '?click=buy-button';
                 
               } else {
-                window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];
+                // window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];
+                window.location.href = API_HOST + 'profile/' + userLoginInfoRes['profile_id'];
               }
 
             } else {
@@ -649,7 +651,7 @@ if (window.ethereum){
 var signupLinkClicked;
 $('#main-signup-login-button').on('click', function(){
 
-  console.log('signup-button:', signupLinkClicked)
+  // console.log('signup-button:', signupLinkClicked)
 
   if (signupLinkClicked){ // prevent multiple clicks
     return false;
