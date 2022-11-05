@@ -102,7 +102,15 @@
 
               <div class="col-sm-9 col-sm-offset-9">
 
-                {% if anon_user is True %}
+                <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
+                  <i>
+                    Only 
+                    <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
+                    Supported.
+                  </i>                  
+                </div>
+
+                <!-- {% if anon_user is True %}
 
                   <form method="post" id="join_beta_form">{% csrf_token %}
                     <div class="input-group input-group-lg" style="padding-top: 10px;">
@@ -115,19 +123,12 @@
                     Thank you. We have got your email.
                   </div>
                   
-                  <!-- TODO: change the email primary contact -->
                   <div id="duplicate_message" style="color: limegreen; display: none;">
                     Your email is already registered. 
                     If you haven't received an email from us, send an email to creatorcoin42@gmail.com
                   </div>
 
                   <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
-                    <!-- <i>
-                      Only 
-                      <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
-                      Supported.
-                    </i> -->
-                    <!-- <i>After entering your email, we will reach out. Currently in Beta!</i> -->
                     We will NEVER spam you.
                   </div>
 
@@ -141,8 +142,7 @@
                   </i>                  
                 </div>
 
-                {% endif %}
-
+                {% endif %} -->
 
               </div>
 
