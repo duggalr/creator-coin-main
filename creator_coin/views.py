@@ -593,18 +593,20 @@ class LoginView(APIView):
       })
  
 
-
-
-
+ 
+# TODO: fix the github auth verification and go from there
+ 
 @login_required(login_url='/')
 def github_login(request):
   client_id = os.getenv("github_client_id")
   authorization_base_url = 'https://github.com/login/oauth/authorize'
   github = OAuth2Session(client_id)
   authorization_url, state = github.authorization_url(authorization_base_url)
+  print('auth-url:', authorization_url)
   request.session['oauth_state'] = state
   return redirect(authorization_url)
-
+ 
+ 
 
 @login_required(login_url='/')
 def github_callback(request):
@@ -639,7 +641,9 @@ def github_callback(request):
   )
   gp.save()
 
-  return redirect('user_token_page', profile_id=web3_user.id)
+  creator_profile = CreatorProfile.objects.get(user_obj=web3_user)
+  return redirect('user_token_page', profile_id=creator_profile.id)
+
 
 
 @login_required(login_url='/')
