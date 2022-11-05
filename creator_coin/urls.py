@@ -34,7 +34,7 @@ urlpatterns = [
 
   # # TODO: correct once this functionality is added... 
   # path('deploy_new_nft/', views.deploy_new_nft, name='deploy_new_nft'),  
-  # path('mint_new_nft_token/<int:profile_id>/', views.mint_new_nft_token, name='mint_new_nft_token'),
+  path('mint_new_nft_token/<int:profile_id>/', views.mint_new_nft_token, name='mint_new_nft_token'),
 
   path('logout/', views.logout_view, name='logout'),
 

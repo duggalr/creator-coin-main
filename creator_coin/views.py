@@ -652,6 +652,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   
   current_user_pk_address = request.user.user_pk_address
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
+  print('user-object:', user_object)
   #  Web3User.objects.get(user_pk_address=current_user_pk_address)
 
   creator_obj = CreatorProfile.objects.get(user_obj=user_object)
@@ -667,7 +668,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   ]
 
   if request.method == 'POST':
-    # print(request.POST, request.FILES)
+    print('post-data:', request.POST, request.FILES)
 
     form_validation_error = False
 
