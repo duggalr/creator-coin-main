@@ -685,7 +685,7 @@ function verifyProfileDetails(){
         } else if (response['success'] === true){
 
           // window.location.href = 'http://127.0.0.1:7500/create-nft'
-          window.location.href = API_HOST + 'create-nft';
+          window.location.href = API_HOST + 'create-nft/';
 
         }
 
