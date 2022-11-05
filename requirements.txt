@@ -9,7 +9,7 @@ base58==2.1.1
 bcrypt==4.0.1
 bitarray==2.6.0
 blessed==1.19.1
-botocore==1.29.3
+botocore==1.23.54
 cached-property==1.5.2
 cement==2.8.2
 certifi==2022.9.24
