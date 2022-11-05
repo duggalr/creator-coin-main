@@ -192,7 +192,7 @@ def user_token_page(request, profile_id):
       transaction_dict = utils.get_transaction_status(user_nft_obj.nft_deployed_transaction_hash)
       if transaction_dict is not None:
         transaction_status = transaction_dict['result']['status']
-        print('transaction-dict:', transaction_dict)
+        # print('transaction-dict:', transaction_dict)
         try:
           user_nft_obj.nft_deployed_transaction_status = transaction_status
           user_nft_obj.save()
@@ -236,7 +236,7 @@ def delete_project_log(request, project_log_id):
 def mint_new_nft_token(request, profile_id):
   user_pk_address = request.user
   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-  print('user-obj:', user_obj)
+  # print('user-obj:', user_obj)
 
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
   if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
@@ -602,7 +602,7 @@ def github_login(request):
   authorization_base_url = 'https://github.com/login/oauth/authorize'
   github = OAuth2Session(client_id)
   authorization_url, state = github.authorization_url(authorization_base_url)
-  print('auth-url:', authorization_url)
+  # print('auth-url:', authorization_url)
   request.session['oauth_state'] = state
   return redirect(authorization_url)
  
@@ -652,7 +652,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   
   current_user_pk_address = request.user.user_pk_address
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
-  print('user-object:', user_object)
+  # print('user-object:', user_object)
   #  Web3User.objects.get(user_pk_address=current_user_pk_address)
 
   creator_obj = CreatorProfile.objects.get(user_obj=user_object)
@@ -668,7 +668,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   ]
 
   if request.method == 'POST':
-    print('post-data:', request.POST, request.FILES)
+    # print('post-data:', request.POST, request.FILES)
 
     form_validation_error = False
 
@@ -701,7 +701,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
           # print('uploaded-file:', uploaded_file)
           
           user_pk_address = request.POST['user_obj']
-          print('user-obj:', user_pk_address)
+          # print('user-obj:', user_pk_address)
           
           # TODO: can this user_pk_address return not found or invalid value?
           user_object = Web3User.objects.get(user_pk_address=user_pk_address)
@@ -916,7 +916,7 @@ def save_nft_metadata(request):
   user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
 
   ipfs_uploaded, ipfs_cid = utils.store_file_in_ipfs(user_nft_obj)
-  print('ipfs-res:', ipfs_uploaded, ipfs_cid)
+  # print('ipfs-res:', ipfs_uploaded, ipfs_cid)
 
   if ipfs_uploaded:
     user_nft_obj.nft_ipfs_url = "ipfs://" + ipfs_cid
@@ -1003,11 +1003,11 @@ def save_nft_transaction_data(request):
   """
   Save a buy transaction that just occured for a specific NFT
   """
-  print('save-nft-post:', request.POST)
+  # print('save-nft-post:', request.POST)
   
   if request.user.is_anonymous is False:
     
-    print('post-data:', request.POST)
+    # print('post-data:', request.POST)
   
     profile_id = request.POST['profile_id']
     creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)

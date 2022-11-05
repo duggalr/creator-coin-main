@@ -38,7 +38,7 @@ else:
     DEBUG = True
 
 
-ALLOWED_HOSTS = ['django-env.eba-mprpedn5.ca-central-1.elasticbeanstalk.com', '127.0.0.1', 'creatorcoin.app']
+ALLOWED_HOSTS = ['django-env.eba-mprpedn5.ca-central-1.elasticbeanstalk.com', '127.0.0.1', 'creatorcoin.app', 'www.creatorcoin.app']
 
 
 # Application definition
