@@ -642,6 +642,7 @@ def github_callback(request):
   gp.save()
 
   creator_profile = CreatorProfile.objects.get(user_obj=web3_user)
+  
   return redirect('user_token_page', profile_id=creator_profile.id)
 
 
