@@ -40,6 +40,10 @@ else:
 
 ALLOWED_HOSTS = ['django-env.eba-mprpedn5.ca-central-1.elasticbeanstalk.com', '127.0.0.1', 'creatorcoin.app', 'www.creatorcoin.app']
 
+# TODO: 
+    # record demo with goerli testnet <-- plan out first
+        # then, push new changes to prod (gray out mint and disable views) <-- everything else is good 
+
 
 # Application definition
 INSTALLED_APPS = [

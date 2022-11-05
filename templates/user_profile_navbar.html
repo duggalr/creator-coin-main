@@ -30,9 +30,9 @@
     <button class="nav-link" id="user-nft-tab" data-bs-toggle="tab" data-bs-target="#user-nft-collection" type="button" role="tab" aria-controls="user-nft-collection" aria-selected="false">
 
       {% if same_user is True %}
-        <i class="bi bi-box-fill"></i> NFT's you have bought ({{ user_nft_collection|length }})
+        <i class="bi bi-box-fill"></i> Owned NFT's ({{ user_nft_collection|length }})
       {% else %}
-        <i class="bi bi-box-fill"></i> NFT's this person has bought ({{ user_nft_collection|length }})
+        <i class="bi bi-box-fill"></i> Owned NFT's ({{ user_nft_collection|length }})
       {% endif %}
       
     </button>
@@ -43,8 +43,6 @@
       <i class="bi bi-code-slash"></i> Github Repo Commits (soon...)
     </button>
   </li>
-
-
   
 
 </ul>
@@ -264,17 +262,7 @@
 
   </div>
 
-
-
-  <!-- <div class="tab-pane fade" id="developer-contact" role="tabpanel" aria-labelledby="developer-contact-tab">
-    <p>
-      Feel free to shoot me an email asking any questions on the project! 
-      Email: duggalr42@gmail.com
-    </p>
-
-  </div> -->
-
-
+  
   <div class="tab-pane fade" id="user-nft-collection" role="user-nft-collection" aria-labelledby="user-nft-tab">
 
     <ul class="list-group list-group-flush">
