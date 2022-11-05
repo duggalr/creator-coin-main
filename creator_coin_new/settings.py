@@ -25,7 +25,11 @@ load_dotenv( os.path.join(env_dir, '.env') )
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xel#f$gd8wtjy)zu6(#=liq1y(0nu*57yh4#kh^ddi(x8ildih'
+if 'SECRET_KEY' in os.environ:
+    SECRET_KEY = os.environ['SECRET_KEY']
+else:
+    SECRET_KEY = 'xel#f$gd8wtjy)zu6(#=liq1y(0nu*57yh4#kh^ddi(x8ildih'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if 'RDS_DB_NAME' in os.environ:
@@ -34,7 +38,7 @@ else:
     DEBUG = True
 
 
-ALLOWED_HOSTS = ['django-env.eba-mprpedn5.ca-central-1.elasticbeanstalk.com', '127.0.0.1']
+ALLOWED_HOSTS = ['django-env.eba-mprpedn5.ca-central-1.elasticbeanstalk.com', '127.0.0.1', 'creatorcoin.app']
 
 
 # Application definition
