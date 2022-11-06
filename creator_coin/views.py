@@ -17,6 +17,11 @@ from web3.auto import w3
 import os
 import magic
 
+# import the logging library
+import logging
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
 from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,20 +33,24 @@ from . import utils
 
 
 
+
+
 def home(request):
-  if request.method == "POST":
-    user_email = request.POST['user_email']
-    if user_email != '':
-      email_objects = UserBetaEmails.objects.filter(user_email=user_email)
-      if len(email_objects) == 0:
-        b = UserBetaEmails.objects.create(
-          user_email=user_email
-        )
-        b.save()
-        return JsonResponse({'success': True})
-      else: 
-        return JsonResponse({'duplicate': True})
+  ## TODO: don't need user_email for homepage at the moment..
+  # if request.method == "POST":
+  #   user_email = request.POST['user_email']
+  #   if user_email != '':
+  #     email_objects = UserBetaEmails.objects.filter(user_email=user_email)
+  #     if len(email_objects) == 0:
+  #       b = UserBetaEmails.objects.create(
+  #         user_email=user_email
+  #       )
+  #       b.save()
+  #       return JsonResponse({'success': True})
+  #     else: 
+  #       return JsonResponse({'duplicate': True})
     
+  logging.warning('asdlakjd')
   return render(request, 'home.html', {
     'anon_user': request.user.is_anonymous
   })
@@ -658,7 +667,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   creator_obj = CreatorProfile.objects.get(user_obj=user_object)
   user_nft_objects = UserNft.objects.filter(creator_obj=creator_obj)
   if len(user_nft_objects) != 0:
-    return redirect('user_token_page', profile_id=user_object.id)
+    return redirect('user_token_page', profile_id=creator_obj.id)
 
   # TODO:
     # create-nft <-- fix this (production not working)
@@ -768,22 +777,6 @@ def update_token_form(request):
   
   user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
   
-  # TODO:          
-    # NFT-View for Owner and Public** 
-
-    # **if user has already created NFT, at the moment, they cannot create and launch another one <-- prevent this**
-      # think about other, similar cases to this
- 
-    # once launched, NFT-metadata can not be updated
-      # can the total-supply change? <-- not initially (after, yes)
- 
-    # **finalize all auth/user-settings in profile-page, etc.
-    # actually use it to launch an NFT 
-      # **(Optional): do project-log, desc-markdown, share before NFT launch & etherscan
-  
-    # **ensure the placeholder and coin object look really good <-- first thing the user will see
- 
-
   max_file_size = 100
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
@@ -809,6 +802,8 @@ def update_token_form(request):
       uploaded_file = request.FILES['nft_image_upload']   
       content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
       upload_file_mb_size = uploaded_file.size / 1024 / 1024
+
+      logger.warning(f'Update-File Content Type: {content_type} / Upload File MB Size: {upload_file_mb_size}')
 
       if content_type in accepted_content_types and upload_file_mb_size <= max_file_size:
         
