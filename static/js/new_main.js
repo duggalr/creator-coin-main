@@ -390,7 +390,7 @@ const mainTestThree = async (bytecode, abi) => {
   
       launchNFTClicked = false;
 
-    }  
+    }
 
 
   }
