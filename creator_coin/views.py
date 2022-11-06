@@ -626,6 +626,8 @@ def github_callback(request):
 
   github_request_url = request.build_absolute_uri()
   github_request_url = github_request_url.replace('http', 'https')
+  logging.warning(f'github-request-url: {github_request_url}')
+
   github = OAuth2Session(client_id, state=request.session['oauth_state'])
   token = github.fetch_token(
     token_url, 
