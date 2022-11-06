@@ -108,14 +108,18 @@ def get_current_token_id(contract_address):
 
   compiled_sol = json.load(f)
 
-  bytecode = compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["evm"]["bytecode"]["object"]
+  # bytecode = compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["evm"]["bytecode"]["object"]
   abi = json.loads(compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["metadata"])["output"]["abi"]
 
   w3 = Web3(Web3.HTTPProvider(f"https://goerli.infura.io/v3/{os.getenv('goerli_api_key')}"))
 
   CreatorContract = w3.eth.contract(address=Web3.toChecksumAddress(contract_address), abi=abi)
-  current_token_id = CreatorContract.functions.getCurrentTokenID().call()
-  return current_token_id
+  try:
+    current_token_id = CreatorContract.functions.getCurrentTokenID().call()
+    return current_token_id
+  except:
+    return None
+  
 
 
 
