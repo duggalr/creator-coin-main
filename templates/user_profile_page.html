@@ -54,9 +54,21 @@
             <div style="padding-top: 14px;">
 
               <p style="display: inline; font-weight: 900; font-size: 22px; ">
-                <a id="user_nft_name_link" href="https://goerli.etherscan.io/token/{{ user_nft_obj.nft_deployed_contract_address }}" target="_blank" rel="noopener noreferrer">
-                  {{ user_nft_obj.nft_name }}  
-                </a>
+
+                {% if user_nft_obj.nft_deployed is False %}
+
+                  <a id="user_nft_name_link" href="">
+                    {{ user_nft_obj.nft_name }}  
+                  </a>
+
+                {% else %}
+
+                  <a id="user_nft_name_link" href="https://goerli.etherscan.io/token/{{ user_nft_obj.nft_deployed_contract_address }}" target="_blank" rel="noopener noreferrer">
+                    {{ user_nft_obj.nft_name }}  
+                  </a>
+
+                {% endif %}
+
               </p>              
 
 

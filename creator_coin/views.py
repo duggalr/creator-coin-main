@@ -697,11 +697,20 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
           form_validation_error = True
           form_validation_error_message = "Your NFT symbol must be less than or equal to 3 characters."
 
+        try: # sanity checks as you never know the data that can come from JS...
+          nft_total_supply = int(nft_total_supply)
+        except:
+          form_validation_error = True
+          form_validation_error_message = "Your NFT symbol must be less than or equal to 3 characters."
+
+        if nft_total_supply > 1000:
+          form_validation_error = True
+          form_validation_error_message = "Total NFT supply must be <= 1000."
+
+
         if form_validation_error is False:
-          # print('uploaded-file:', uploaded_file)
           
           user_pk_address = request.POST['user_obj']
-          # print('user-obj:', user_pk_address)
           
           # TODO: can this user_pk_address return not found or invalid value?
           user_object = Web3User.objects.get(user_pk_address=user_pk_address)
