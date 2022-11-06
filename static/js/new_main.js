@@ -216,7 +216,9 @@ function handleAccountChange(){
     .then(json => {
 
       if (json['redirect'] === true){
-        window.location.href = 'http://127.0.0.1:7500/logout'
+        // window.location.href = 'http://127.0.0.1:7500/logout'
+        window.location.href = API_HOST + 'logout';
+
       }
 
     })
@@ -283,7 +285,8 @@ function saveNFTLaunchedData(contractData, contractAddress){
         console.log('res:', response);
         // TODO: refresh page?
   
-        window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
+        // window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
+        window.location.href = API_HOST + 'profile/' + creatorProfileID;
 
       }
   
@@ -437,10 +440,11 @@ function saveTransactionData(result, tokensBought){
       },
       success: function (response) {
         console.log('res:', response);
-        // TODO: refresh page?
-        // window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
+
         if (response['success'] === true){
-          window.location.href = 'http://127.0.0.1:7500/profile/' + response['redirect_profile_id']
+          // window.location.href = 'http://127.0.0.1:7500/profile/' + response['redirect_profile_id']
+          window.location.href = API_HOST + 'profile/' + response['redirect_profile_id'];
+
         } else { // TODO: display error message in modal
           console.log('you must be logged in...')
         }
