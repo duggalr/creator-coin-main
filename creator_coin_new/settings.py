@@ -273,7 +273,7 @@ if 'RDS_DB_NAME' in os.environ:
             'file': {
                 'level': 'WARNING',
                 'class': 'logging.FileHandler',
-                "filename": "/opt/python/log/analyzer.log",
+                "filename": "/var/app/current/analyzer.log",
                 "formatter": "verbose",
             },
         },
