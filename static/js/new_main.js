@@ -283,10 +283,11 @@ function saveNFTLaunchedData(contractData, contractAddress){
       },
       success: function (response) {
         console.log('res:', response);
-        // TODO: refresh page?
-  
-        // window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
-        window.location.href = API_HOST + 'profile/' + creatorProfileID;
+        
+        if (response['success'] === true){
+          // window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
+          window.location.href = API_HOST + 'profile/' + creatorProfileID;
+        }
 
       }
   

@@ -50,7 +50,6 @@ def home(request):
   #     else: 
   #       return JsonResponse({'duplicate': True})
     
-  logging.warning('asdlakjd')
   return render(request, 'home.html', {
     'anon_user': request.user.is_anonymous
   })
@@ -611,7 +610,9 @@ def github_login(request):
   authorization_base_url = 'https://github.com/login/oauth/authorize'
   github = OAuth2Session(client_id)
   authorization_url, state = github.authorization_url(authorization_base_url)
-  # print('auth-url:', authorization_url)
+  
+  logging.warning(f'auth-url: {authorization_url}')
+
   request.session['oauth_state'] = state
   return redirect(authorization_url)
  
@@ -633,7 +634,7 @@ def github_callback(request):
   )
   
   user_data = github.get('https://api.github.com/user').json()
-  # print(f'user-data: {user_data} / token: {token}')
+  print(f'user-data: {user_data} / token: {token}')
 
   web3_user = Web3User.objects.get(user_pk_address=request.user)
   web3_user.github_verified = True
