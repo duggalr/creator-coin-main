@@ -126,14 +126,14 @@ def user_token_page(request, profile_id):
   if len(user_nft_objects) == 1:  # TODO: enforce to only ensure it's one
     user_nft_obj = user_nft_objects[0]
 
+  logging.warning(f'user-nft-obj: {user_nft_obj}')
+
   same_user = False
   if request.user.is_anonymous is False:
     current_user_pk_address = request.user.user_pk_address
     if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
       same_user = True
 
-  # saved_user_objects = Web3User.objects.filter(current_user)
-  # print(saved_user_objects)
 
   github_profile = None
   if creator_profile_obj.user_obj.github_verified is True:
@@ -193,11 +193,15 @@ def user_token_page(request, profile_id):
   nft_total_sold = None
   if user_nft_obj is not None and user_nft_obj.nft_deployed:
     current_token_id = utils.get_current_token_id(user_nft_obj.nft_deployed_contract_address)
+    logging.warning(f'current-token-id: {current_token_id}')
+
     nft_total_token_supply = user_nft_obj.nft_total_supply - current_token_id
     nft_total_sold = current_token_id
 
     if user_nft_obj.nft_deployed_transaction_status is None:  # if 0/1, it is updated
       transaction_dict = utils.get_transaction_status(user_nft_obj.nft_deployed_transaction_hash)
+      logging.warning(f'transaction-dict: {transaction_dict}')
+      
       if transaction_dict is not None:
         transaction_status = transaction_dict['result']['status']
         # print('transaction-dict:', transaction_dict)
