@@ -104,7 +104,8 @@ def get_transaction_status(tx_hash):
 
 
 def get_current_token_id(contract_address):
-  f = open("/Users/rahul/Documents/main/personal_learning_projects/creator_coin_new/creator_coin/deployed_contracts/nft_main_new_compiled_code.json")
+  f = open("nft_main_new_compiled_code.json")
+
   compiled_sol = json.load(f)
 
   bytecode = compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["evm"]["bytecode"]["object"]

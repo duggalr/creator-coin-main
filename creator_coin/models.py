@@ -85,10 +85,12 @@ class UserNft(models.Model):
   
   nft_deployed_date = models.DateTimeField(auto_now_add=True)
   nft_deployed = models.BooleanField(default=False)  
-  nft_deployed_contract_address = models.CharField(max_length=2000, blank=True, null=True)
+  # nft_deployed_contract_address = models.CharField(max_length=2000, blank=True, null=True)
+  nft_deployed_contract_address = models.TextField(blank=True, null=True)
   nft_deployed_transaction_hash = models.CharField(max_length=2000, blank=True, null=True)
   nft_deployed_transaction_status = models.IntegerField(blank=True, null=True)
-  nft_deployed_contract_data = models.CharField(max_length=2000, blank=True, null=True)
+  # nft_deployed_contract_data = models.CharField(max_length=2000, blank=True, null=True)
+  nft_deployed_contract_data = models.TextField(blank=True, null=True)
   nft_deployed_nonce = models.IntegerField(default=-1)
   nft_deployed_chain_id = models.IntegerField(default=-1)
 
@@ -99,7 +101,7 @@ class UserNftTransactionHistory(models.Model):
   purchase_amount = models.IntegerField()
   transaction_hash = models.CharField(max_length=2000)
   transaction_created_date = models.DateTimeField(auto_now_add=True)
-  transaction_status = models.IntegerField()
+  transaction_status = models.IntegerField(blank=True, null=True)
 
 
 class UserNftCollection(models.Model):
