@@ -463,7 +463,8 @@ function get_nft_bytecode_abi(){
 
   return new Promise(function(resolve, reject){
 
-    fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
+    // fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
+    fetch("https://creator-coin-main.s3.ca-central-1.amazonaws.com/static/json_files/nft_main_new_compiled_code.json")
     .then(response => response.json())
     .then(json => {
       var bytecode = json["contracts"]["NFTMain.sol"]["CreatorNFT"]["evm"]["bytecode"]["object"];
