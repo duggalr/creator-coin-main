@@ -842,7 +842,7 @@ def update_token_form(request):
         user_nft_object.nft_media_file = uploaded_file
       user_nft_object.save()
 
-      return redirect('user_token_page', profile_id=user_object.id)
+      return redirect('user_token_page', profile_id=creator_profile.id)
 
     else:
       return render(request, 'launch_token_form.html', {
