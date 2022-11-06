@@ -2,7 +2,12 @@ import os
 import json
 import secrets
 import requests
+import urllib.request
 from web3 import Web3
+
+import io
+import urllib3
+from urllib.request import urlopen
 
 import nft_storage
 from nft_storage.api import nft_storage_api
@@ -40,14 +45,30 @@ def store_file_in_ipfs(obj):
   with nft_storage.ApiClient(configuration) as api_client:
     api_instance = nft_storage_api.NFTStorageAPI(api_client)
 
-    obj_fp = BASE_DIR + obj.nft_media_file.url
-    contents = open(obj_fp, 'rb')
+    # obj_fp = BASE_DIR + obj.nft_media_file.url
+    print('nft-url:', obj.nft_media_file.url, obj.nft_media_file)
+    # contents = open(obj.nft_media_file.url, 'rb')
+    # with urllib.request.urlopen(obj.nft_media_file.url) as response:
+    #   contents = response.read()
+
+    # with urllib.request.urlopen(obj.nft_media_file.url) as f:
+    #   contents = f.read()
+    
+    # urllib.request.urlretrieve(obj.nft_media_file.url, str(obj.nft_media_file))
+    # local_contents = open(str(obj.nft_media_file), 'rb')
+    # contents = urllib.request.urlopen(obj.nft_media_file.url).read()
+    # print(contents == local_contents )
+
+    # http = urllib3.PoolManager()
+    # contents = http.request('GET', obj.nft_media_file.url)
+
+    contents = io.BytesIO( urlopen(obj.nft_media_file.url).read() )
 
     # example passing only required values which don't have defaults set
     try:
       # Store a file
       api_response = api_instance.store(body=contents, _check_return_type=False)
-      print('api-res', api_response)
+      # print('api-res', api_response)
       if api_response['ok'] is True:
         uploaded_data = api_response['value']
         ipfs_cid = uploaded_data['cid'] 
