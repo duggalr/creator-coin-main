@@ -707,7 +707,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
           nft_total_supply = int(nft_total_supply)
         except:
           form_validation_error = True
-          form_validation_error_message = "Your NFT symbol must be less than or equal to 3 characters."
+          form_validation_error_message = "Total NFT supply must be an integer"
 
         if nft_total_supply > 1000:
           form_validation_error = True
@@ -797,43 +797,69 @@ def update_token_form(request):
     nft_total_supply = request.POST['nft_total_supply']
     
     nft_name = request.POST['token_name']
+    nft_symbol = request.POST['token_symbol']
     nft_price = request.POST['token_price_field']
     nft_total_supply = request.POST['nft_total_supply']
 
+
     form_validation_error = False
-    try:
-      nft_float_price = float(nft_price)
-      if nft_float_price <= 0 :
-        form_validation_error = True
-    except:
-      form_validation_error = True
-    
-    if nft_name == '':
-      form_validation_error = True
-
-
-    # print('POST-method:', request.POST, request.FILES)
     uploaded_file = None
     upload_file_mb_size = 0
     if 'nft_image_upload' in request.FILES:
-    # nft_image_upload = request.POST['nft_image_upload']
-    # uploaded_file = None
-    # upload_file_mb_size = 0
-    # if nft_image_upload != '' and form_validation_error is False:
       uploaded_file = request.FILES['nft_image_upload']   
-      
       content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
       upload_file_mb_size = uploaded_file.size / 1024 / 1024
 
       if content_type in accepted_content_types and upload_file_mb_size <= max_file_size:
-        # user_nft_object.nft_media_file = uploaded_file
-        pass
+        
+        if nft_name == '':
+          form_validation_error = True
+          form_validation_error_message = "You must name your NFT..."
+
+        try:
+          nft_float_price = float(nft_price)
+          if nft_float_price <= 0 :
+            form_validation_error = True
+            form_validation_error_message = "Really? NFT Price obviously must be greater than 0!"
+        except:
+          form_validation_error = True
+          form_validation_error_message = "Nice Try... NFT Price must be a number."
+        
+        # reinforce token-symbol is 3 letters or less
+        if len(nft_symbol) > 3:
+          form_validation_error = True
+          form_validation_error_message = "Your NFT symbol must be less than or equal to 3 characters."
+
+        try: # sanity checks as you never know the data that can come from JS...
+          nft_total_supply = int(nft_total_supply)
+        except:
+          form_validation_error = True
+          form_validation_error_message = "Total NFT supply must be an integer."
+
+        if nft_total_supply > 1000:
+          form_validation_error = True
+          form_validation_error_message = "Total NFT supply must be <= 1000."
       
       else:
         form_validation_error = True
+        form_validation_error_message = "Invalid file submitted for NFT."
+      
+    else:
+      form_validation_error = True
+      form_validation_error_message = "No File submitted for NFT..."
 
 
-    if form_validation_error is False:
+    if form_validation_error:
+      return render(request, 'launch_token_form.html', {
+        'form_validation_error': form_validation_error,
+        'form_validation_error_message': form_validation_error_message,
+        'nft_name': request.POST['token_name'],
+        'nft_symbol': request.POST['token_symbol'],
+        'nft_price': request.POST['token_price_field'],
+        'nft_total_supply': request.POST['nft_total_supply']
+      })
+    else:
+    # if form_validation_error is False:
       user_nft_object = get_object_or_404(UserNft, id=user_nft)
       user_nft_object.nft_name = nft_name
       user_nft_object.nft_price = nft_price
@@ -844,13 +870,13 @@ def update_token_form(request):
 
       return redirect('user_token_page', profile_id=creator_profile.id)
 
-    else:
-      return render(request, 'launch_token_form.html', {
-        'form_validation_error': form_validation_error,
-        'nft_name': request.POST['token_name'],
-        'nft_price': request.POST['token_price_field'],
-        'nft_total_supply': request.POST['nft_total_supply']
-      })
+    # else:
+    #   return render(request, 'launch_token_form.html', {
+    #     'form_validation_error': form_validation_error,
+    #     'nft_name': request.POST['token_name'],
+    #     'nft_price': request.POST['token_price_field'],
+    #     'nft_total_supply': request.POST['nft_total_supply']
+    #   })
 
 
   three_dim_file_types = [
