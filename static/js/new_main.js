@@ -712,7 +712,7 @@ $( "#launch-nft-button" ).click(async () => {
 
   } else {
 
-    launchNFTClicked = true;
+    launchNFTClicked = true; 
 
     fetch("https://creator-coin-main.s3.ca-central-1.amazonaws.com/static/json_files/nft_main_new_compiled_code.json")
     .then(response => response.json())
