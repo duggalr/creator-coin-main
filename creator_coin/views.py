@@ -673,7 +673,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
     # create-nft <-- fix this (production not working)
       # where are production-logs?
 
-  max_file_size = 100 
+  max_file_size = 25
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
     'image/svg+xml', 'image/webp'
@@ -777,7 +777,7 @@ def update_token_form(request):
   
   user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
   
-  max_file_size = 100
+  max_file_size = 25
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
     'image/svg+xml', 'image/webp', 'model/gltf-binary'
