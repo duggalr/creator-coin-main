@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Hubballi
+- Font Author: Copyright 2016 The Hubballi Project Authors (https://github.com/erinmclaughlin/Hubballi)
+- Font Source: http://fonts.gstatic.com/s/hubballi/v4/o-0JIpUj3WIZ1RFN56B7yBBNYuSF.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
