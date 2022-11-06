@@ -660,11 +660,14 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   if len(user_nft_objects) != 0:
     return redirect('user_token_page', profile_id=user_object.id)
 
+  # TODO:
+    # create-nft <-- fix this (production not working)
+      # where are production-logs?
 
-  max_file_size = 100
+  max_file_size = 100 
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
-    'image/svg+xml', 'image/webp', 'model/gltf-binary'
+    'image/svg+xml', 'image/webp'
   ]
 
   if request.method == 'POST':
@@ -676,6 +679,9 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
       uploaded_file = request.FILES['nft_image_upload']
       upload_file_mb_size = uploaded_file.size / 1024 / 1024
       content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
+
+      print('content-type:', content_type)
+      print('file-upload-size:', upload_file_mb_size)
 
       if content_type in accepted_content_types and upload_file_mb_size <= max_file_size and form_validation_error is False:
         nft_name = request.POST['token_name']
