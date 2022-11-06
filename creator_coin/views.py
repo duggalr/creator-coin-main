@@ -669,9 +669,6 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   if len(user_nft_objects) != 0:
     return redirect('user_token_page', profile_id=creator_obj.id)
 
-  # TODO:
-    # create-nft <-- fix this (production not working)
-      # where are production-logs?
 
   max_file_size = 25
   accepted_content_types = [
