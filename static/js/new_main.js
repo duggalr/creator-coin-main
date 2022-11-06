@@ -295,6 +295,7 @@ function saveNFTLaunchedData(contractData, contractAddress){
 
 
 
+
 const mainTestThree = async (bytecode, abi) => {
 
   const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -304,8 +305,9 @@ const mainTestThree = async (bytecode, abi) => {
   console.log('network:', network);
   console.log('chain-id:', chainId);
 
-  if (chainId != 5){  // display error modal
+  if (chainId != 5){  // Chain-ID check; display error modal
 
+    launchNFTClicked = false;
     chainIdErrorModal.show();
 
   } else {
@@ -332,6 +334,7 @@ const mainTestThree = async (bytecode, abi) => {
     } catch(error){  // user-nonce-request with response != 200 (rare situation)
       // loginErrorThreeModel.show();
       console.log('error:', error)
+      launchNFTClicked = false;
     }
   
     // const nftSaveResp = await saveNFTData();
@@ -346,73 +349,53 @@ const mainTestThree = async (bytecode, abi) => {
       try {
         nftMetaData = await getNFTData();
       } catch(error){
-        console.log('error:', error)
+        console.log('error:', error);
+        launchNFTClicked = false;
       }
   
-      // Load a metamask signature
-      let collectiblesContract = await collectiblesFactory.deploy( 
-        nftMetaData['nft_name'],
-        nftMetaData['nft_symbol'],
-        nftMetaData['nft_total_supply'],
-        20, // max-token-sale-per-purchase
-        Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
-        nftMetaData['nft_ipfs_url']
-      )
 
-      console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
-        
+      try {
+
+        // Load a metamask signature
+        let collectiblesContract = await collectiblesFactory.deploy( 
+          nftMetaData['nft_name'],
+          nftMetaData['nft_symbol'],
+          nftMetaData['nft_total_supply'],
+          20, // max-token-sale-per-purchase
+          Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
+          nftMetaData['nft_ipfs_url']
+        )
+
+        console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+                
+        saveNFTLaunchedData(collectiblesContract.deployTransaction, collectiblesContract.address);
+
+      } catch(error) {
+        console.log('error:', error);
+        launchNFTClicked = false;
+      }
+      
       // let transaction_hash = collectiblesContract.deployTransaction['hash'];
       // let deployed_contract_address = collectiblesContract.address;
       
       // // 0x68Ea1a2504a4287900E51Db51658F21704F09720
-      saveNFTLaunchedData(collectiblesContract.deployTransaction, collectiblesContract.address);
-  
-    // let transHash = await collectiblesContract.getDeployTransaction();
-    // console.log('trans-hash:', transHash);
-    // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
-  
+      // let transHash = await collectiblesContract.getDeployTransaction();
+      // console.log('trans-hash:', transHash);
+      // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+    
       // if user signs above, send request to verify the launched-nft
         // refresh page with views fetching associated etherscan data and buy-button being shown
   
-  
     } else { // TODO: need to display error explaining what happened
   
+      launchNFTClicked = false;
+
     }  
-   
-  
-    // TODO: AJAX request to upload the metadata to IPFS, save URL, send as response to here and go from there
-   
-    // TODO: below after the IPFS-URL is retrieved and saved in DB, under nft 
-    // await collectiblesFactory.deploy(
-    //   nftMetaData['nft_name'],
-    //   nftMetaData['nft_symbol'],
-    //   nftMetaData['nft_total_supply'],
-    //   20, // max-token-sale-per-purchase
-    //   Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
-  
-    // )
-  
-    // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
-  
-      
-    // collectiblesContract = await collectiblesFactory.deploy('testing-one', 'tt', 500, 20, Number(Web3.utils.toWei("0.1", "ether")).toString(), 'https://docs.metamask.io/guide/sending-transactions.html');
-    // // let transHash = await collectiblesContract.getDeployTransaction();
-    // // console.log('trans-hash:', transHash);
-    // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
-  
-    // await collectiblesContract.deployTransaction.wait();
-    
-    // // console.log(
-    // //   `Contract mined! address: ${collectiblesContract.address} transactionHash: ${collectiblesContract.deployTransaction.hash}`,
-    // // );
 
 
   }
 
-
 }
-
-
 
 
 
