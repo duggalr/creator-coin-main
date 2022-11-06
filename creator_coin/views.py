@@ -799,7 +799,9 @@ def update_token_form(request):
     uploaded_file = None
     upload_file_mb_size = 0
     if 'nft_image_upload' in request.FILES:
-      uploaded_file = request.FILES['nft_image_upload']   
+      uploaded_file = request.FILES['nft_image_upload']
+      logger.warning(f'upload-file: {uploaded_file}')
+
       content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
       upload_file_mb_size = uploaded_file.size / 1024 / 1024
 
