@@ -673,7 +673,7 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
   max_file_size = 25
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
-    'image/svg+xml', 'image/webp'
+    'image/svg+xml', 'image/webp', 'application/octet-stream'
   ]
 
   if request.method == 'POST':
@@ -777,7 +777,7 @@ def update_token_form(request):
   max_file_size = 25
   accepted_content_types = [
     'model/gltf-binary', 'image/gif', 'image/jpeg', 'image/png',
-    'image/svg+xml', 'image/webp', 'model/gltf-binary'
+    'image/svg+xml', 'image/webp', 'model/gltf-binary', 'application/octet-stream'
   ]
  
   if request.method == 'POST': # TODO: do we need to do any user-auth-verification here?
