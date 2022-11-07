@@ -14,7 +14,7 @@ urlpatterns = [
   path('explore/', views.explore_project, name='explore_project'),
 
   path('my-profile', views.my_profile, name='my_profile'),
-  path('create-profile/', views.create_profile, name='create_profile'),  
+  # path('create-profile/', views.create_profile, name='create_profile'),  
   path('profile/<int:profile_id>/', views.user_token_page, name='user_token_page'),  
   path('edit-user-profile/<int:profile_id>/', views.edit_user_profile, name='edit_user_profile'),
   path('create-nft/', views.create_token_form, name='create_token_form'),

@@ -60,7 +60,6 @@ def about_page(request):
 
 
 def explore_project(request):
-  # all_profiles = CreatorProfile.objects.all()
   # show all profiles which have a deployed NFT first, then all profiles with NFT, then all other profiles 
   
   three_dim_file_types = [
@@ -113,13 +112,7 @@ def my_profile(request):
   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
   creator_profile_obj = get_object_or_404(CreatorProfile, user_obj=user_obj)
   return redirect('user_token_page', profile_id=creator_profile_obj.id)
-  # if request.user.is_anonymous:
-  #   return redirect('home')
-  # else:
-  #   user_pk_address = request.user
-  #   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-  #   creator_profile_obj = get_object_or_404(CreatorProfile, user_obj=user_obj)
-  #   return redirect('user_token_page', profile_id=creator_profile_obj.id)
+
 
 
 def user_token_page(request, profile_id):
@@ -251,7 +244,7 @@ def user_token_page(request, profile_id):
   })
 
 
-
+@login_required(login_url='/')
 def delete_project_log(request, project_log_id):
   user_pk_address = request.user
   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
@@ -260,132 +253,6 @@ def delete_project_log(request, project_log_id):
   if user_obj == project_log_obj.creator_obj.user_obj:
     project_log_obj.delete()
     return redirect('user_token_page', profile_id=project_log_obj.creator_obj.id)
-
-
-  
-# # TODO: authenticate request (request user is same as owner of NFT and go from there) 
-# def mint_new_nft_token(request, profile_id):
-#   user_pk_address = request.user
-#   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-
-#   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-#   if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
-#     return redirect('user_token_page', profile_id=profile_id)
-
-#   # # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
-#   # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-
-#   # user_nft_obj = None
-#   # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile_obj)
-#   # # print('user-nft-objs:', user_nft_objects)
-#   # # if len(user_nft_objects) == 1:
-#   # #   user_nft_obj = user_nft_objects[0]
-
-#   # same_user = False
-#   # if request.user.is_anonymous is False:
-#   #   current_user_pk_address = request.user.user_pk_address
-#   #   if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
-#   #     same_user = True
-
-#   # user_pk_address = request.user
-#   # user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-#   # print('user-obj:', user_obj)
-
-#   # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-#   # if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
-#   #   return redirect('user_token_page', profile_id=profile_id)
-
-
-
-# # TODO: delete
-# def project_page(request, project_id):
-#   print('project-id:', project_id)
-#   return render(request, 'project_page_new.html')
-#   # # user_project_list = UserProject.objects.filter(id=project_id)
-#   # # if len(user_project_list) > 0:
-#   # #   user_project = user_project_list[0]
-#   # user_project_obj = get_object_or_404(UserProject, id=project_id)
-#   # # nft_image = ProjectNftImage.objects.get(project_obj=user_project_obj)
-
-#   # # profile_objects = CreatorProfile.objects.filter(user_obj=user_project_obj)
-#   # # if len(profile_objects) == 1:
-#   # #   user_profile_obj = profile_objects[0]
-
-#   # print(user_project_obj.creator_profile.user_obj.user_pk_address, request.user)
-#   # if user_project_obj.user_obj.user_pk_address == request.user:  # TODO: add option for User to Mint-NFT 
-#   #   print('True')
-
-#   # return render(request, 'project_page_new.html', {'user_project': user_project_obj})
-
-
-
-# TODO:
-  # make this authenticated 
-  # add the user-obj and redirect to project-page 
-    # from here, have option for user to mint-NFT for project  (<-- make profile last)
-      # on profile, user should see all the project's he has created along with NFT's 
-@login_required(login_url='/')
-def create_profile(request):
-  user_obj = request.user
-
-  if request.method == 'POST':
-
-    current_user_pk_address = request.POST['user_obj']
-    user_object = Web3User.objects.get(user_pk_address=current_user_pk_address)
-
-    profile_objects = CreatorProfile.objects.filter(user_obj=user_object)
-    if len(profile_objects) == 1:
-      user_profile_obj = profile_objects[0]
-      creator_name = request.POST['creator_name']
-      creator_email = request.POST['creator_email']
-      creator_personal_website = request.POST['creator_website']
-      creator_github_website = request.POST['creator_github_website']
-      creator_discord_website = request.POST['creator_discord_website']
-      creator_description = request.POST['creator_description']
-
-      user_profile_obj.creator_name = creator_name
-      user_profile_obj.creator_email = creator_email
-      user_profile_obj.creator_personal_website = creator_personal_website
-      # TODO: github validation to ensure only github-website 
-      user_profile_obj.creator_github_website = creator_github_website
-      user_profile_obj.creator_discord_website = creator_discord_website
-      user_profile_obj.creator_description = creator_description
-
-      user_profile_obj.save()
-      return redirect('user_profile')
-
-      # project_title = request.POST['project_title']
-      # project_website = request.POST['project_website']
-      # project_github_website = request.POST['project_github_website']
-      # project_discord_website = request.POST['project_discord_website']
-      # project_description = request.POST['project_description']
-
-      # user_project_obj = UserProject.objects.create(
-      #   creator_profile=user_profile_obj,
-      #   title=project_title,
-      #   description=project_description,
-      #   project_website=project_website,
-      #   github_webite=project_github_website,
-      #   discord_website=project_discord_website
-      # )
-      # user_project_obj.save()
-
-      # ## TODO: link to creator/user here & *remove all previous images for project if update*
-      # nft_image_list = request.FILES.getlist('nft_image')
-      # nft_image_obj = ProjectNftImage.objects.create(
-      #   project_obj = user_project_obj,
-      #   nft_image = nft_image_list[0]
-      # )
-      # nft_image_obj.save()
-
-      # return redirect('project_page', project_id=user_project_obj.id)
-
-    else: # TODO: fill this
-      pass
-
-
-  return render(request, 'create_page_two.html', {'user_object': user_obj})
-
 
 
 @login_required(login_url='/')
@@ -409,8 +276,10 @@ def edit_user_profile(request, profile_id):
     creator_profile_user_pk = creator_profile_obj.user_obj.user_pk_address
 
     if creator_profile_user_pk != str(user_pk_address):
+      logger.warning(f'user tried to edit profile but request.user pk-address not same as profile-id one. user: {request.user}')
       return redirect('user_token_page', profile_id=profile_id)
 
+    logger.warning(f'User has edited their creator profile. User: {request.user}')
     creator_profile_obj.creator_name = request.POST['person_name']
     creator_profile_obj.creator_email = request.POST['personal_email']
     creator_profile_obj.creator_personal_website = request.POST['project_website']
@@ -643,9 +512,10 @@ def github_callback(request):
   token_url = 'https://github.com/login/oauth/access_token'
 
   github_request_url = request.build_absolute_uri()
+  # TODO: need to make exception for local-dev
   # github_request_url = github_request_url.replace('http', 'https')
 
-  logging.warning(f'github-request-url: {github_request_url}')
+  # logging.warning(f'github-request-url: {github_request_url}')
 
   github = OAuth2Session(client_id, state=request.session['oauth_state'])
   token = github.fetch_token(
@@ -655,7 +525,7 @@ def github_callback(request):
   )
   
   user_data = github.get('https://api.github.com/user').json()
-  print(f'user-data: {user_data} / token: {token}')
+  # print(f'user-data: {user_data} / token: {token}')  
 
   web3_user = Web3User.objects.get(user_pk_address=request.user)
   web3_user.github_verified = True
@@ -746,21 +616,35 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
           
           user_pk_address = request.POST['user_obj']
           
-          # TODO: can this user_pk_address return not found or invalid value?
-          user_object = Web3User.objects.get(user_pk_address=user_pk_address)
-          user_profile_obj = CreatorProfile.objects.get(user_obj=user_object)
-
-          user_nft_obj = UserNft.objects.create(
-            creator_obj=user_profile_obj,
-            nft_name=nft_name,
-            nft_symbol=nft_symbol,
-            nft_price=nft_price,
-            nft_total_supply=nft_total_supply,
-            nft_media_file=uploaded_file
-          )
-          user_nft_obj.save()
+          user_object = None
+          try: # sanity-checking...
+            user_object = Web3User.objects.get(user_pk_address=user_pk_address)
+          except:
+            logger.warning(f'user tried creating nft but there object could not be found. User-PK: {user_pk_address}')
           
-          return redirect('user_token_page', profile_id=user_profile_obj.id)
+          if user_object is not None:
+            logger.warning(f'user has created nft. user: {request.user}')
+            user_profile_obj = CreatorProfile.objects.get(user_obj=user_object)
+
+            user_nft_obj = UserNft.objects.create(
+              creator_obj=user_profile_obj,
+              nft_name=nft_name,
+              nft_symbol=nft_symbol,
+              nft_price=nft_price,
+              nft_total_supply=nft_total_supply,
+              nft_media_file=uploaded_file
+            )
+            user_nft_obj.save()
+            
+            return redirect('user_token_page', profile_id=user_profile_obj.id)
+
+          else:
+            return render(request, 'launch_token_form.html', {
+              'nft_name': request.POST['token_name'],
+              'nft_symbol': request.POST['token_symbol'],
+              'nft_price': request.POST['token_price_field'],
+              'nft_total_supply': request.POST['nft_total_supply']
+            })
 
       else:
         form_validation_error = True
@@ -819,12 +703,11 @@ def update_token_form(request):
     upload_file_mb_size = 0
     if 'nft_image_upload' in request.FILES:
       uploaded_file = request.FILES['nft_image_upload']
-      logger.warning(f'upload-file: {uploaded_file}')
 
       content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
       upload_file_mb_size = uploaded_file.size / 1024 / 1024
 
-      logger.warning(f'Update-File Content Type: {content_type} / Upload File MB Size: {upload_file_mb_size}')
+      logger.warning(f'Upload-file: {uploaded_file} / Update-File Content Type: {content_type} / Upload File MB Size: {upload_file_mb_size}')
 
       if content_type in accepted_content_types and upload_file_mb_size <= max_file_size:
         
@@ -875,7 +758,8 @@ def update_token_form(request):
         'nft_total_supply': request.POST['nft_total_supply']
       })
     else:
-    # if form_validation_error is False:
+      logging.warning(f"user: {request.user} has updated there nft")
+
       user_nft_object = get_object_or_404(UserNft, id=user_nft)
       user_nft_object.nft_name = nft_name
       user_nft_object.nft_price = nft_price
@@ -937,6 +821,7 @@ def verify_user_profile(request):
 
 @login_required(login_url='/')
 def delete_non_minted_nft(request):
+  logging.warning(f"user: {request.user} is deleting their non-minted-nft")
   current_user_pk_address = request.user.user_pk_address
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
   creator_profile = CreatorProfile.objects.get(user_obj=user_object)
@@ -967,6 +852,8 @@ def get_minted_nft_metadata(request):
 
 @login_required(login_url='/')
 def save_nft_metadata(request):
+  logging.warning(f"user: {request.user} is saving nft metadata")
+
   current_user_pk_address = request.user.user_pk_address
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
   creator_profile = CreatorProfile.objects.get(user_obj=user_object)
@@ -989,7 +876,7 @@ def save_nft_metadata(request):
 def handle_account_change(request):
   # print(request)
   # print(request.user)
-  if request.user.is_anonymous is False:  # TODO: user was logged in; let's log out the previous user and redirect to home?
+  if request.user.is_anonymous is False:  # user was logged in; let's log out the previous user and redirect to home?
     return JsonResponse({'redirect': True})
   else:
     return JsonResponse({'redirect': False})
@@ -999,6 +886,8 @@ def handle_account_change(request):
 @login_required(login_url='/')
 @require_http_methods(["POST"])
 def nft_launch_final(request):
+  logging.warning(f"user: {request.user} has executed nft-launch-final")
+
   current_user_pk_address = request.user.user_pk_address
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
   creator_profile = CreatorProfile.objects.get(user_obj=user_object)
@@ -1029,9 +918,7 @@ def nft_launch_final(request):
  
 @login_required(login_url='/')
 def fetch_nft_main_data(request, profile_id):
-  # print('pid:', profile_id)
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-  # UserNft.objects.get()
   user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
 
   # print( 'url:', request.build_absolute_uri() )
@@ -1061,7 +948,9 @@ def save_nft_transaction_data(request):
   if request.user.is_anonymous is False:
     
     # print('post-data:', request.POST)
-  
+
+    logging.warning(f"user: {request.user} has executed a buy transaction")
+
     profile_id = request.POST['profile_id']
     creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
     user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
@@ -1094,6 +983,135 @@ def save_nft_transaction_data(request):
   else:
     return JsonResponse({'success': False})
 
+
+
+
+
+
+  
+# # TODO: authenticate request (request user is same as owner of NFT and go from there) 
+# def mint_new_nft_token(request, profile_id):
+#   user_pk_address = request.user
+#   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+
+#   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+#   if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
+#     return redirect('user_token_page', profile_id=profile_id)
+
+#   # # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
+#   # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+
+#   # user_nft_obj = None
+#   # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile_obj)
+#   # # print('user-nft-objs:', user_nft_objects)
+#   # # if len(user_nft_objects) == 1:
+#   # #   user_nft_obj = user_nft_objects[0]
+
+#   # same_user = False
+#   # if request.user.is_anonymous is False:
+#   #   current_user_pk_address = request.user.user_pk_address
+#   #   if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
+#   #     same_user = True
+
+#   # user_pk_address = request.user
+#   # user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+#   # print('user-obj:', user_obj)
+
+#   # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+#   # if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
+#   #   return redirect('user_token_page', profile_id=profile_id)
+
+
+
+# # TODO: delete
+# def project_page(request, project_id):
+#   print('project-id:', project_id)
+#   return render(request, 'project_page_new.html')
+#   # # user_project_list = UserProject.objects.filter(id=project_id)
+#   # # if len(user_project_list) > 0:
+#   # #   user_project = user_project_list[0]
+#   # user_project_obj = get_object_or_404(UserProject, id=project_id)
+#   # # nft_image = ProjectNftImage.objects.get(project_obj=user_project_obj)
+
+#   # # profile_objects = CreatorProfile.objects.filter(user_obj=user_project_obj)
+#   # # if len(profile_objects) == 1:
+#   # #   user_profile_obj = profile_objects[0]
+
+#   # print(user_project_obj.creator_profile.user_obj.user_pk_address, request.user)
+#   # if user_project_obj.user_obj.user_pk_address == request.user:  # TODO: add option for User to Mint-NFT 
+#   #   print('True')
+
+#   # return render(request, 'project_page_new.html', {'user_project': user_project_obj})
+
+
+
+# # TODO:
+#   # make this authenticated 
+#   # add the user-obj and redirect to project-page 
+#     # from here, have option for user to mint-NFT for project  (<-- make profile last)
+#       # on profile, user should see all the project's he has created along with NFT's 
+# @login_required(login_url='/')
+# def create_profile(request):
+#   user_obj = request.user
+
+#   if request.method == 'POST':
+
+#     current_user_pk_address = request.POST['user_obj']
+#     user_object = Web3User.objects.get(user_pk_address=current_user_pk_address)
+
+#     profile_objects = CreatorProfile.objects.filter(user_obj=user_object)
+#     if len(profile_objects) == 1:
+#       logger.warning(f'user has edited their creator profile. user: {request.user}')
+#       user_profile_obj = profile_objects[0]
+#       creator_name = request.POST['creator_name']
+#       creator_email = request.POST['creator_email']
+#       creator_personal_website = request.POST['creator_website']
+#       creator_github_website = request.POST['creator_github_website']
+#       creator_discord_website = request.POST['creator_discord_website']
+#       creator_description = request.POST['creator_description']
+
+#       user_profile_obj.creator_name = creator_name
+#       user_profile_obj.creator_email = creator_email
+#       user_profile_obj.creator_personal_website = creator_personal_website
+#       # TODO: github validation to ensure only github-website 
+#       user_profile_obj.creator_github_website = creator_github_website
+#       user_profile_obj.creator_discord_website = creator_discord_website
+#       user_profile_obj.creator_description = creator_description
+
+#       user_profile_obj.save()
+#       return redirect('user_profile')
+
+#       # project_title = request.POST['project_title']
+#       # project_website = request.POST['project_website']
+#       # project_github_website = request.POST['project_github_website']
+#       # project_discord_website = request.POST['project_discord_website']
+#       # project_description = request.POST['project_description']
+
+#       # user_project_obj = UserProject.objects.create(
+#       #   creator_profile=user_profile_obj,
+#       #   title=project_title,
+#       #   description=project_description,
+#       #   project_website=project_website,
+#       #   github_webite=project_github_website,
+#       #   discord_website=project_discord_website
+#       # )
+#       # user_project_obj.save()
+
+#       # ## TODO: link to creator/user here & *remove all previous images for project if update*
+#       # nft_image_list = request.FILES.getlist('nft_image')
+#       # nft_image_obj = ProjectNftImage.objects.create(
+#       #   project_obj = user_project_obj,
+#       #   nft_image = nft_image_list[0]
+#       # )
+#       # nft_image_obj.save()
+
+#       # return redirect('project_page', project_id=user_project_obj.id)
+
+#     else: # TODO: fill this
+#       pass
+
+
+#   return render(request, 'create_page_two.html', {'user_object': user_obj})
 
 
 
