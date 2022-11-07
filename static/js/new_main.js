@@ -5,11 +5,21 @@ let ethersProvider;
 let loginErrorModal;
 let loginErrorTwoModal;
 let loginErrorThreeModel;
+let loginErrorFourModel;
+
 let projectLogModal;
 let nftVerificationModal;
 let chainIdErrorModal;
 let numTokensErrorModal;
 
+
+var loginModalExists = document.getElementById("loginErrorFour");
+if (loginModalExists != null){  // on homepage
+  loginErrorModal = new bootstrap.Modal('#loginErrorOne');
+  loginErrorTwoModal = new bootstrap.Modal('#loginErrorTwo');
+  loginErrorThreeModel = new bootstrap.Modal('#loginErrorThree');
+  loginErrorFourModel = new bootstrap.Modal('#loginErrorFour');
+}
 
 
 var loginModalExists = document.getElementById("loginErrorOne");
@@ -42,6 +52,10 @@ var numTokensModalExists = document.getElementById("numTokensErrorModal");
 if (numTokensModalExists != null){
   numTokensErrorModal = new bootstrap.Modal('#numTokensErrorModal');
 }
+
+
+
+
 
 
 
@@ -102,88 +116,103 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
       // TODO: specifying 'any' due to any blockchain allowed; change to only main-net? 
       ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
 
-      // MetaMask requires requesting permission to connect users accounts
-      await ethersProvider.send("eth_requestAccounts", []);
- 
-      const signer = ethersProvider.getSigner();
-      
-      const userAccounts = await ethersProvider.listAccounts();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const network = await provider.getNetwork();
+      const chainId = network.chainId;
 
-      const user_account_pk_address = userAccounts[0];
+      if (chainId != 5){
 
-      // const userNonceJson = await getNonce(user_account_pk_address);
-      // console.log('user-nonce:', userNonceJson);
-
-      // console.log('api-host:', API_HOST)
-      // var apiURL = new URL(API_HOST + 'generate_nonce?');
-      // console.log('api-url:', apiURL);
-
-      let userNonceRes;
-      try {
-        userNonceRes = await requestNonce(user_account_pk_address);
-      } catch(error) {  // user-nonce-request with response != 200 (rare situation)
-        loginErrorThreeModel.show();
-        signupLinkClicked = false;
-      }
-
-
-      if (userNonceRes['success'] === true){
-
-        let userNonce = userNonceRes['data']['nonce'];
-
-        var message = "\nBy signing this message, you will sign the randomly generated nonce.  \n\nNonce: " + userNonce + " \n\nWallet Address: " + user_account_pk_address
+        // MetaMask requires requesting permission to connect users accounts
+        await ethersProvider.send("eth_requestAccounts", []);
+  
+        const signer = ethersProvider.getSigner();
         
-        let userSignature;
+        const userAccounts = await ethersProvider.listAccounts();
+
+        const user_account_pk_address = userAccounts[0];
+
+        // const userNonceJson = await getNonce(user_account_pk_address);
+        // console.log('user-nonce:', userNonceJson);
+
+        // console.log('api-host:', API_HOST)
+        // var apiURL = new URL(API_HOST + 'generate_nonce?');
+        // console.log('api-url:', apiURL);
+
+        let userNonceRes;
         try {
-          userSignature = await signer.signMessage(message);
-        } catch(error) {
-          console.log(error);
+          userNonceRes = await requestNonce(user_account_pk_address);
+        } catch(error) {  // user-nonce-request with response != 200 (rare situation)
+          loginErrorThreeModel.show();
           signupLinkClicked = false;
         }
 
-        if (userSignature){
 
-          const data = {
-            pk_address: user_account_pk_address,
-            nonce_signature: userSignature,
-          };
+        if (userNonceRes['success'] === true){
 
-          try{
-            let userLoginInfoRes = await completeLogin(data);
-            if (userLoginInfoRes['success'] === true){
+          let userNonce = userNonceRes['data']['nonce'];
 
-              if (redirect_profile_id !== undefined) {
-                // window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id + '?click=buy-button'
-                window.location.href = API_HOST + 'profile/' + redirect_profile_id + '?click=buy-button';
-                
+          var message = "\nBy signing this message, you will sign the randomly generated nonce.  \n\nNonce: " + userNonce + " \n\nWallet Address: " + user_account_pk_address
+          
+          let userSignature;
+          try {
+            userSignature = await signer.signMessage(message);
+          } catch(error) {
+            console.log(error);
+            signupLinkClicked = false;
+          }
+
+          if (userSignature){
+
+            const data = {
+              pk_address: user_account_pk_address,
+              nonce_signature: userSignature,
+            };
+
+            try{
+              let userLoginInfoRes = await completeLogin(data);
+              if (userLoginInfoRes['success'] === true){
+
+                if (redirect_profile_id !== undefined) {
+                  // window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id + '?click=buy-button'
+                  window.location.href = API_HOST + 'profile/' + redirect_profile_id + '?click=buy-button';
+                  
+                } else {
+                  // window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];
+                  window.location.href = API_HOST + 'profile/' + userLoginInfoRes['profile_id'];
+                }
+
               } else {
-                // window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];
-                window.location.href = API_HOST + 'profile/' + userLoginInfoRes['profile_id'];
+                loginErrorThreeModel.show();
+                signupLinkClicked = false;
               }
 
-            } else {
+            } catch(error) {  // user login request failed
+              // console.log(error);
               loginErrorThreeModel.show();
               signupLinkClicked = false;
             }
 
-          } catch(error) {  // user login request failed
-            // console.log(error);
-            loginErrorThreeModel.show();
+          } else { // signature denied.
+
+            // alert("MetaMask Signature Denied.")
             signupLinkClicked = false;
+
           }
 
-        } else { // signature denied.
+        } else {
 
-          // alert("MetaMask Signature Denied.")
+          loginErrorThreeModel.show();
           signupLinkClicked = false;
-
+          
         }
+
+
 
       } else {
 
-        loginErrorThreeModel.show();
+        loginErrorFourModel.show();
         signupLinkClicked = false;
-        
+
       }
 
 
@@ -607,7 +636,7 @@ const buyNFTMain = async () => {
 
 
 // Eth Listeners
-if (window.ethereum){
+if (window.ethereum){ // Account Change
 
   window.ethereum.on('accountsChanged', (accounts) => {
 
@@ -619,14 +648,20 @@ if (window.ethereum){
   
 }
 
+const targetChainID = '0x5'; // goerli testnet
 
-if (window.ethereum){
+if (window.ethereum){ // Chain Change
 
   window.ethereum.on('chainChanged', (chainId) => {
 
-    console.log('chain-changed:', chainId);
-    window.location.reload();
-    // window.location.href = 'http://127.0.0.1:7500/logout';
+    // console.log('current-chain-id:', chainId);
+    // console.log('target-chain-id:', targetChainID);
+    if (chainId != targetChainID){
+      window.location.reload();
+    }
+
+    // console.log('chain-changed:', chainId);
+    // // window.location.href = 'http://127.0.0.1:7500/logout';
 
   })
 
