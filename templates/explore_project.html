@@ -57,8 +57,6 @@
           <div class="card mb-3 " style="max-width: 100%;">
             
             <div class="row no-gutters">
-              
-   
   
               {% if obj.user_three_dim_upload is False %}
 
@@ -68,15 +66,20 @@
               
               {% else %}
 
-                <model-viewer 
-                  src="{{ obj.nft_obj.nft_media_file.url }}"
-                  ar ar-modes="webxr scene-viewer quick-look" 
-                  camera-controls
-                  camera-orbit="250deg 85deg 125%"
-                  shadow-intensity="1"
-                  auto-rotate
-                  rotation-per-second="250%"
-                ></model-viewer>
+                <div class="col-md-4">
+
+                  <model-viewer 
+                    style=" padding-right: 15px; height: 225px;"
+                    src="{{ obj.nft_obj.nft_media_file.url }}"
+                    ar ar-modes="webxr scene-viewer quick-look" 
+                    camera-controls
+                    camera-orbit="250deg 85deg 125%"
+                    shadow-intensity="1"
+                    auto-rotate
+                    rotation-per-second="250%"
+                  ></model-viewer>
+
+                </div>
 
               {% endif %}
 
@@ -111,10 +114,18 @@
                   <span>
                     <i class="bi bi-link"></i> <a href="">Project Website</a>
                   </span> -->
-  
+
                   <p class="card-text" style="padding-top: 8px;">
-                    {{ obj.nft_obj.creator_obj.creator_description|safe|truncatechars:150 }}
+                    {% if obj.nft_obj.creator_obj.creator_description is None or obj.nft_obj.creator_obj.creator_description == '' %}
+                      Creator has not made a description yet...
+                    {% else %}
+                      {{ obj.nft_obj.creator_obj.creator_description|safe|truncatechars:150 }}
+                    {% endif %}
                   </p>
+  
+                  <!-- <p class="card-text" style="padding-top: 8px;">
+                    {{ obj.nft_obj.creator_obj.creator_description|safe|truncatechars:150 }}
+                  </p> -->
                   <p class="card-text" >
                     <small class="text-muted">
                       Last updated: {{ obj.nft_obj.nft_updated_at }}
@@ -155,22 +166,23 @@
               
               {% else %}
 
-              <div class="col-md-4">
-                
-                <!-- padding-right: 15px; padding-top: 10px; -->
-                <!-- padding-top: 20px; padding-right: 10px;  -->
-                                <!-- ar ar-modes="webxr scene-viewer quick-look"
-                camera-controls -->
-                <model-viewer 
-                style="padding-top: 10px; padding-right: 10px; height: 200px;"
-                src="{{ obj.nft_obj.nft_media_file.url }}"
-                camera-orbit="270deg 85deg 100%"
-                shadow-intensity="1"
-                camera-controls
-                rotation-per-second="220%"
-              ></model-viewer>
+                <div class="col-md-4">
+                  
+                    <!-- padding-right: 15px; padding-top: 10px; -->
+                    <!-- padding-top: 20px; padding-right: 10px;  -->
+                                    <!-- ar ar-modes="webxr scene-viewer quick-look"
+                    camera-controls -->
+                    <!-- padding-right: 10px; -->
+                    <model-viewer 
+                    style=" padding-right: 15px; height: 225px;"
+                    src="{{ obj.nft_obj.nft_media_file.url }}"
+                    camera-orbit="270deg 85deg 100%"
+                    shadow-intensity="1"
+                    camera-controls
+                    rotation-per-second="220%"
+                  ></model-viewer>
 
-              </div>
+                </div>
 
               {% endif %}
 
@@ -186,8 +198,9 @@
                       {{ obj.nft_obj.creator_obj.creator_name }}
                     </h4>
 
-                    <span class="badge rounded-pill bg-success" >Creator has created an NFT, but it is not minted yet.</span>                    
-                      
+
+                    <span class="badge rounded-pill bg-success" >Creator has created an NFT, but it is not minted yet.</span>
+                    
                   </div>
                 
                   <a class="stretched-link" href="{% url 'user_token_page' profile_id=obj.nft_obj.creator_obj.id %}"></a>
@@ -204,9 +217,18 @@
                     <i class="bi bi-link"></i> <a href="">Project Website</a>
                   </span> -->
   
-                  <p class="card-text" style="padding-top: 8px;">
+                  <!-- <p class="card-text" style="padding-top: 8px;">
                     {{ obj.nft_obj.creator_obj.creator_description|safe|truncatechars:150 }}
+                  </p> -->
+
+                  <p class="card-text" style="padding-top: 8px;">
+                    {% if obj.nft_obj.creator_obj.creator_description is None or obj.nft_obj.creator_obj.creator_description == '' %}
+                      Creator has not made a description yet...
+                    {% else %}
+                      {{ obj.nft_obj.creator_obj.creator_description|safe|truncatechars:150 }}
+                    {% endif %}
                   </p>
+
                   <p class="card-text" >
                     <small class="text-muted">
                       Last updated: {{ obj.nft_obj.nft_updated_at }}
@@ -245,7 +267,7 @@
             <div class="col-md-4">
               
               <model-viewer 
-                style="padding-top: 10px; padding-right: 10px; height: 200px;"
+                style=" padding-right: 15px; height: 225px;"
                 src="{% static '3d_model/placeholder_new.glb' %}"
                 camera-orbit="270deg 85deg 100%"
                 shadow-intensity="1"
@@ -278,13 +300,13 @@
                 <a class="stretched-link" href="{% url 'user_token_page' profile_id=obj.id %}"></a>
 
                 <p class="card-text" style="padding-top: 8px;">
-                  {% if obj.creator_description is None %}
+                  {% if obj.nft_obj.creator_obj.creator_description is None or obj.nft_obj.creator_obj.creator_description == '' %}
                     Creator has not made a description yet...
                   {% else %}
                     {{ obj.creator_description|safe|truncatechars:150 }}
                   {% endif %}
-                  
                 </p>
+
                 <p class="card-text" >
                   <small class="text-muted">
                     Last updated: {{ obj.updated_at }}
@@ -307,124 +329,14 @@
     {% endfor %}
 
 
-
-
-
-
-      <!-- <div class="col-md-8 offset-md-2 " id="main-card-div">
-
-        <div class="card mb-3 " style="max-width: 100%;">
-
-          <div class="row no-gutters">
-    
-            <div class="col-md-4">
-              <img src="{% static 'images/image_one.png' %}" class="card-img" alt="..." width="220" height="220">
-            </div>
-    
-            <div class="col-md-8">
-              
-              <div class="card-body">
-
-                <div class="card-header-div">
-
-                  <h4 class="card-title">
-                    CreatorCoin
-                  </h4>
-                  <span class="badge rounded-pill bg-info text-dark">NFT Available</span>
-                    
-                </div>
-              
-                <a class="stretched-link" href="#"></a>
-
-                <i class="bi bi-github"></i>
-
-                <p class="card-text" style="padding-top: 8px;">
-                  This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                </p>
-                <p class="card-text" >
-                  <small class="text-muted">
-                    Last updated 3 mins ago
-                  </small>
-                </p>
-
-                
-              </div>
-
-            </div>
-    
-          </div>
-    
-        </div>
-
-      </div>
-
-
-
-      <div class="col-md-8 offset-md-2 " id="main-card-div">
-
-        <a href="">
-          
-        </a>
-
-        <div class="card mb-3 " style="max-width: 100%;">
-
-          <div class="row no-gutters">
-    
-            <div class="col-md-4">
-              <img src="{% static 'images/image_five.png' %}" class="card-img" alt="..." width="220" height="220">
-            </div>
-    
-            <div class="col-md-8">
-              
-              <div class="card-body">
-
-                <div class="card-header-div">
-
-                  <h4 class="card-title">
-                    CreatorCoin
-                  </h4>
-                  <span class="badge rounded-pill bg-info text-dark">NFT Available</span>
-                    
-                </div>
-
-                <a class="stretched-link" href="#"></a>
-
-                <i class="bi bi-github"></i>
-
-                <p class="card-text" style="padding-top: 8px;">
-                  This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                </p>
-                <p class="card-text" >
-                  <small class="text-muted">
-                    Last updated 3 mins ago
-                  </small>
-                </p>
-
-                
-              </div>
-
-            </div>
-    
-          </div>
-    
-        </div>
-
-      </div> -->
-
-
-
-    <!-- </div> -->
-
-
   </div>
   
   <br/>
   <br/>
-  
-
 
 
 {% endblock %}  
+
 
 
 
