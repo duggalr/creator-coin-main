@@ -120,7 +120,7 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
       const network = await provider.getNetwork();
       const chainId = network.chainId;
 
-      if (chainId != 5){
+      if (chainId === 5){
 
         // MetaMask requires requesting permission to connect users accounts
         await ethersProvider.send("eth_requestAccounts", []);

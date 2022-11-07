@@ -107,14 +107,19 @@ def explore_project(request):
   })
 
 
+@login_required(login_url='/')
 def my_profile(request):
-  if request.user.is_anonymous:
-    return redirect('home')
-  else:
-    user_pk_address = request.user
-    user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-    creator_profile_obj = get_object_or_404(CreatorProfile, user_obj=user_obj)
-    return redirect('user_token_page', profile_id=creator_profile_obj.id)
+  user_pk_address = request.user
+  user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+  creator_profile_obj = get_object_or_404(CreatorProfile, user_obj=user_obj)
+  return redirect('user_token_page', profile_id=creator_profile_obj.id)
+  # if request.user.is_anonymous:
+  #   return redirect('home')
+  # else:
+  #   user_pk_address = request.user
+  #   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+  #   creator_profile_obj = get_object_or_404(CreatorProfile, user_obj=user_obj)
+  #   return redirect('user_token_page', profile_id=creator_profile_obj.id)
 
 
 def user_token_page(request, profile_id):
@@ -125,8 +130,8 @@ def user_token_page(request, profile_id):
 
   if len(user_nft_objects) == 1:  # TODO: enforce to only ensure it's one
     user_nft_obj = user_nft_objects[0]
-
-  logging.warning(f'user-nft-obj: {user_nft_obj}')
+  else:
+    logging.warning(f'USER WITH CREATOR PROFILE-ID: {profile_id} HAS MORE THAN ONE NFT?!?!')
 
   same_user = False
   if request.user.is_anonymous is False:
@@ -155,11 +160,14 @@ def user_token_page(request, profile_id):
 
 
   if request.method == 'POST':  # saving project-log inputs
-
+    
     creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-  
     current_user_pk_address = request.user.user_pk_address
+
     if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
+      
+      logging.warning(f'saving project log for user: {current_user_pk_address}')
+
       log_title = request.POST['log-title']
       log_update = request.POST['log-update']
       cl = CreatorProjectLog.objects.create(
@@ -183,7 +191,8 @@ def user_token_page(request, profile_id):
           nft_transaction_obj.save()
         except: # this is likely due to transaction not being executed and thus, transaction-status will be null
           pass
-
+      else:
+        logger.warning(f'NFT transaction status not received for trans-obj: {nft_transaction_obj}')
 
   project_log_list = CreatorProjectLog.objects.filter(creator_obj=creator_profile_obj).order_by('-log_created_date')
   user_nft_collection =  UserNftCollection.objects.filter(creator_obj=creator_profile_obj).order_by('-transaction_created_date')
@@ -200,7 +209,7 @@ def user_token_page(request, profile_id):
     #   pass
     
     current_token_id = utils.get_current_token_id(user_nft_obj.nft_deployed_contract_address)
-    logging.warning(f'Current token-ID: {current_token_id}')
+    # logging.warning(f'Current token-ID: {current_token_id}')
 
     if current_token_id is not None:
       nft_total_token_supply = user_nft_obj.nft_total_supply - current_token_id
@@ -218,6 +227,13 @@ def user_token_page(request, profile_id):
             user_nft_obj.save()
           except:
             pass
+    
+        else:
+          logging.warning(f'Current nft transaction status is None from user, {request.user}')
+    
+    else:
+      logging.warning(f'Current token-id for deployed nft from user, {request.user} is None')
+      
 
   return render(request, 'user_profile_page.html', {
     'anon_user': request.user.is_anonymous,
@@ -245,46 +261,39 @@ def delete_project_log(request, project_log_id):
     project_log_obj.delete()
     return redirect('user_token_page', profile_id=project_log_obj.creator_obj.id)
 
-  # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-  
-  # CreatorProjectLog.objects.filter(id=project_log_id).delete()
-  # return redirect('user_token_page', profile_id=profile_id)
-
 
   
-# TODO: authenticate request (request user is same as owner of NFT and go from there) 
-def mint_new_nft_token(request, profile_id):
-  user_pk_address = request.user
-  user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-  # print('user-obj:', user_obj)
+# # TODO: authenticate request (request user is same as owner of NFT and go from there) 
+# def mint_new_nft_token(request, profile_id):
+#   user_pk_address = request.user
+#   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
 
-  creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-  if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
-    return redirect('user_token_page', profile_id=profile_id)
+#   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+#   if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
+#     return redirect('user_token_page', profile_id=profile_id)
 
-  # # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
-  # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+#   # # creator_profile_obj = CreatorProfile.objects.get(id=profile_id)
+#   # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
 
-  # user_nft_obj = None
-  # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile_obj)
-  # # print('user-nft-objs:', user_nft_objects)
-  # # if len(user_nft_objects) == 1:
-  # #   user_nft_obj = user_nft_objects[0]
+#   # user_nft_obj = None
+#   # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile_obj)
+#   # # print('user-nft-objs:', user_nft_objects)
+#   # # if len(user_nft_objects) == 1:
+#   # #   user_nft_obj = user_nft_objects[0]
 
-  # same_user = False
-  # if request.user.is_anonymous is False:
-  #   current_user_pk_address = request.user.user_pk_address
-  #   if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
-  #     same_user = True
+#   # same_user = False
+#   # if request.user.is_anonymous is False:
+#   #   current_user_pk_address = request.user.user_pk_address
+#   #   if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
+#   #     same_user = True
 
-  # user_pk_address = request.user
-  # user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-  # print('user-obj:', user_obj)
+#   # user_pk_address = request.user
+#   # user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
+#   # print('user-obj:', user_obj)
 
-  # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
-  # if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
-  #   return redirect('user_token_page', profile_id=profile_id)
-
+#   # creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+#   # if creator_profile_obj.user_obj.user_pk_address != user_pk_address:
+#   #   return redirect('user_token_page', profile_id=profile_id)
 
 
 
@@ -307,7 +316,6 @@ def mint_new_nft_token(request, profile_id):
 #   #   print('True')
 
 #   # return render(request, 'project_page_new.html', {'user_project': user_project_obj})
-
 
 
 
@@ -380,8 +388,7 @@ def create_profile(request):
 
 
 
-# TODO: 
-  # ensure only the user who created the profile has access to edit page
+@login_required(login_url='/')
 def edit_user_profile(request, profile_id):
   user_pk_address = request.user
   # user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
@@ -614,8 +621,7 @@ class LoginView(APIView):
  
 
  
-# TODO: fix the github auth verification and go from there
- 
+
 @login_required(login_url='/')
 def github_login(request):
   client_id = os.getenv("github_client_id")
@@ -911,9 +917,9 @@ def update_token_form(request):
 
 
 
-def deploy_new_nft(request):
-  if request.method == "POST":
-    pass
+# def deploy_new_nft(request):
+#   if request.method == "POST":
+#     pass
 
 
 @login_required(login_url='/')
@@ -929,7 +935,7 @@ def verify_user_profile(request):
   return JsonResponse({'success': False})
 
 
-
+@login_required(login_url='/')
 def delete_non_minted_nft(request):
   current_user_pk_address = request.user.user_pk_address
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
@@ -943,7 +949,7 @@ def delete_non_minted_nft(request):
   return redirect('user_token_page', profile_id=creator_profile.id)
 
 
-
+@login_required(login_url='/')
 def get_minted_nft_metadata(request):
   current_user_pk_address = request.user.user_pk_address
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
@@ -959,7 +965,7 @@ def get_minted_nft_metadata(request):
   })
 
 
-
+@login_required(login_url='/')
 def save_nft_metadata(request):
   current_user_pk_address = request.user.user_pk_address
   user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
@@ -990,6 +996,7 @@ def handle_account_change(request):
   
 
 
+@login_required(login_url='/')
 @require_http_methods(["POST"])
 def nft_launch_final(request):
   current_user_pk_address = request.user.user_pk_address
@@ -1020,13 +1027,12 @@ def nft_launch_final(request):
 
 
  
-# TODO: add profile-id to params for this url; fetch that object and go from them to implement buy (ensure handled well)
+@login_required(login_url='/')
 def fetch_nft_main_data(request, profile_id):
   # print('pid:', profile_id)
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
   # UserNft.objects.get()
   user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
-
 
   # print( 'url:', request.build_absolute_uri() )
   # current_user_pk_address = request.user.user_pk_address
@@ -1044,11 +1050,7 @@ def fetch_nft_main_data(request, profile_id):
   # f = open()
 
 
-
-# TODO: 
-  # this is not a secure way to 'save' an executed buy-transaction 
-  # rather, use etherscan api to fetch token-transactions
-    # use contract-function-call to fetch total-supply  
+@login_required(login_url='/')
 @require_http_methods(["POST"])
 def save_nft_transaction_data(request):
   """

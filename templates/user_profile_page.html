@@ -5,6 +5,8 @@
 {% block content %}
 
   {% include 'navbar.html' %}
+  
+  {% include 'error_models.html' %}
 
    
   <div class="animate__animated animate__fadeIn main-body">
@@ -81,21 +83,13 @@
                   </a> -->
 
                 </span>
-                
-
-                <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a>
-                &nbsp;
-                <a href="{% url 'update_token_form' %}">Edit Token Settings</a> -->
-                  
 
               <div style="padding-top: 3px;"></div>
 
 
             </div>
 
-            <!-- <br/><br/> -->
-            <!-- <a href="">Launch your Token!</a> -->
-            
+
             <div style="padding-top: 10px;">
 
               {% if nft_total_sold is not None %}
@@ -138,14 +132,7 @@
             
             </p>
 
-            <!-- <a href="{% url 'mint_new_nft_token' profile_id=profile_id %}">Launch your NFT</a> -->
-
-            <!-- <button class="btn btn-primary rounded-pill" id="launch-nft-button">Launch your NFT</button>
-              &nbsp;
-            <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a> -->
-
-            <!-- <a href="{% url 'update_token_form' %}">Delete NFT</a> -->
-
+            
           {% else %}
 
             <model-viewer 
@@ -203,9 +190,6 @@
                 <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
                   <strong>Delete NFT</strong>
                 </a>
-
-                <!-- <button class="btn btn-primary rounded-pill" id="launch-nft-button" style="font-size: 18px;">Launch your NFT</button>
-                &nbsp; -->
 
               {% endif %}
               

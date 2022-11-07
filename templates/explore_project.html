@@ -8,6 +8,8 @@
 
   {% include 'navbar.html' %}
 
+  {% include 'error_models.html' %}
+
   
   <div class="animate__animated animate__fadeIn container" id="explore-container-main">
 
@@ -91,7 +93,8 @@
                   <div class="card-header-div">
   
                     <h4 class="card-title">
-                      {{ obj.nft_obj.nft_name }}
+                      <!-- {{ obj.nft_obj.nft_name }} -->
+                      {{ obj.nft_obj.creator_obj.creator_name }}
                     </h4>
                     <!-- <span class="badge rounded-pill bg-info text-dark">NFT Available</span> -->
                     
