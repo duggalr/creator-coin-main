@@ -121,6 +121,8 @@ def user_token_page(request, profile_id):
   user_nft_obj = None
   user_nft_objects = UserNft.objects.filter(creator_obj=creator_profile_obj)
 
+  logging.warning(f'User NFT Objects: {user_nft_objects} / Length NFT Objects: {len(user_nft_objects)}')
+
   if len(user_nft_objects) == 1:  # TODO: enforce to only ensure it's one
     user_nft_obj = user_nft_objects[0]
   else:
@@ -132,12 +134,10 @@ def user_token_page(request, profile_id):
     if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
       same_user = True
 
-
   github_profile = None
   if creator_profile_obj.user_obj.github_verified is True:
     # user_obj = Web3User.objects.get( user_pk_address=request.user )
     github_profile = GithubProfile.objects.get(user_obj=creator_profile_obj.user_obj)
-
 
   three_dim_file_types = [
     '.glb', '.gltf', '.obj', '.ply', '.fbx' '.svg'
@@ -759,6 +759,8 @@ def update_token_form(request):
       })
     else:
       logging.warning(f"user: {request.user} has updated there nft")
+
+      logging.warning(f"request-post: {request.POST}")
 
       user_nft_object = get_object_or_404(UserNft, id=user_nft)
       user_nft_object.nft_name = nft_name
