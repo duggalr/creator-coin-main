@@ -679,6 +679,7 @@ def update_token_form(request):
   creator_profile = CreatorProfile.objects.get(user_obj=user_object)
   
   user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
+  logging.warning(f'update-token-form-creator-obj: {user_nft_obj}')
   
   max_file_size = 25
   accepted_content_types = [
@@ -696,7 +697,6 @@ def update_token_form(request):
     nft_symbol = request.POST['token_symbol']
     nft_price = request.POST['token_price_field']
     nft_total_supply = request.POST['nft_total_supply']
-
 
     form_validation_error = False
     uploaded_file = None
@@ -743,9 +743,10 @@ def update_token_form(request):
         form_validation_error = True
         form_validation_error_message = "Invalid file submitted for NFT."
       
-    else:
-      form_validation_error = True
-      form_validation_error_message = "No File submitted for NFT..."
+    else: # file saved from before
+      pass
+      # form_validation_error = True
+      # form_validation_error_message = "No File submitted for NFT..."
 
 
     if form_validation_error:
@@ -759,7 +760,6 @@ def update_token_form(request):
       })
     else:
       logging.warning(f"user: {request.user} has updated there nft")
-
       logging.warning(f"request-post: {request.POST}")
 
       user_nft_object = get_object_or_404(UserNft, id=user_nft)
@@ -791,6 +791,7 @@ def update_token_form(request):
     user_three_dim_upload = True
 
   return render(request, 'launch_token_form.html', {
+    'user_object': user_object,
     'user_nft_obj': user_nft_obj,
     'nft_name': user_nft_obj.nft_name,
     'nft_symbol': user_nft_obj.nft_symbol,
