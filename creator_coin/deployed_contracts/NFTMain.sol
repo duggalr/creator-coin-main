@@ -96,6 +96,10 @@ contract NFTMain is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, 
         (bool platformSent, bytes memory platformData) = payable(_platformAddress).call{value: _platformCost}("");  // send to platform
         require(platformSent, "Failed to send Ether");
         
+        // TODO: 
+            // currently vulnerable to re-entrancy and can mint infinite tokens
+            // look at pull-payment, re-entrancy, triple payment and go from there
+
         // pay creator
         (bool sent, bytes memory data) = payable(_deployerAddress).call{value: _remainingValue}("");  // sent to creator
         require(sent, "Failed to send Ether"); 

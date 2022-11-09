@@ -576,7 +576,6 @@ const buyNFTMain = async () => {
           ); 
     
 
-          // var numTokens = 1;
           var numTokens = parseInt( $('#num_token_to_buy').val() )
           console.log('num-tokens-to-buy:', numTokens)
           if (numTokens > 0 && numTokens <= 20){
