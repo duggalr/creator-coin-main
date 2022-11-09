@@ -499,8 +499,8 @@ function get_nft_bytecode_abi(){
     .then(json => {
       // var bytecode = json["contracts"]["NFTMain.sol"]["CreatorNFT"]["evm"]["bytecode"]["object"];
       // var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["CreatorNFT"]["metadata"] )["output"]["abi"];
-      var bytecode = json["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["evm"]["bytecode"]["object"];
-      var abi = JSON.parse( json["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["metadata"] )["output"]["abi"];
+      var bytecode = json["contracts"]["NFTMain.sol"]["NFTMain"]["evm"]["bytecode"]["object"];
+      var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["NFTMain"]["metadata"] )["output"]["abi"];
       
       resolve({'bytecode': bytecode, 'abi': abi});
 
@@ -760,8 +760,8 @@ $( "#launch-nft-button" ).click(async () => {
     fetch("https://creator-coin-main.s3.ca-central-1.amazonaws.com/static/json_files/nft_main_new_compiled_code.json")
     .then(response => response.json())
     .then(json => {
-      var bytecode = json["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["evm"]["bytecode"]["object"];
-      var abi = JSON.parse( json["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["metadata"] )["output"]["abi"];
+      var bytecode = json["contracts"]["NFTMain.sol"]["NFTMain"]["evm"]["bytecode"]["object"];
+      var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["NFTMain"]["metadata"] )["output"]["abi"];
   
       console.log('bytecode:', bytecode);
       console.log('abi:', abi);
