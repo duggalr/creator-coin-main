@@ -7,16 +7,19 @@ import "./contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "./contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "./contracts/access/Ownable.sol";
 import "./contracts/utils/Counters.sol";
+import "./contracts/utils/math/SafeMath.sol";
 
 
 
 /// @custom:security-contact creatorcoin42@gmail.com
-contract CreatorNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, Ownable {
+contract NFTMain is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, Ownable {
+    using SafeMath for uint256;
+
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
 
-    /// Main Public Key  
+    /// Main Public Key
     address private _platformAddress = 0x1CEE82EEd89Bd5Be5bf2507a92a755dcF1D8e8dc;
     uint256 private _platformFee = 3;
 
@@ -32,15 +35,16 @@ contract CreatorNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnabl
 
         require(maxNumPerSale > 0, "Max Token Per Sale must be >0.");
         require(totalSupply > 0, "Max Token Supply must be >0.");
+        require( totalSupply >= maxNumPerSale, "Total Supply must be greater or equal to max token number per sale.");
 
         _maxTokenSupply = totalSupply;
         _maxTokenPerSale = maxNumPerSale;
-        _tokenPrice = _userTokenPrice;
+        _tokenPrice = _userTokenPrice;  // will be in WEI denomination 
         _baseTokenURI = _userTokenURI;
 
         _deployerAddress = msg.sender;
 
-    } 
+    }
 
 
     function getTokenPrice() public view returns(uint256) {        
@@ -56,39 +60,47 @@ contract CreatorNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnabl
     }
 
 
-    function safeMint(uint256 _numTokens) public payable {
-      
-        uint256 tokenId = _tokenIdCounter.current();
-        require( _numTokens > 0 && _numTokens <= _maxTokenPerSale, "Amount of NFTs exceeds the amount of NFTs you can purchase at a single time.");
-        require(_maxTokenSupply >= tokenId + _numTokens, "Not enough tokens left to buy.");
-        require(msg.value == _tokenPrice * _numTokens, "Amount of ether sent not correct.");  // require msg.value to be exactly correct
+    function _runMint(uint256 _numTokens) private {
 
- 
-        // TODO: Re-entrancy attack? 
-            // Call returns a boolean value indicating success or failure.
-            // This is the current recommended method to use.
-
-        // TODO: what if malicious user has set $0 price for token? 
-
-        uint256 _platformCost = (_platformFee * msg.value) / 100;
-        uint256 _remainingValue = msg.value - _platformCost;
-
-        // (bool platformSent, bytes memory platformData) = _platformAddress.call{value: _platformCost}("");  // send to platform
-        // require(platformSent, "Failed to send Ether");
-
-        (bool sent, bytes memory data) = _deployerAddress.call{value: _remainingValue}("");  // sent to creator
-        require(sent, "Failed to send Ether");
-
-        // Loop to mint amount requested
+        // Loop to mint amount requested, after the money has been transferred
         for(uint256 i = 0; i < _numTokens; i++) {
             _safeMint(msg.sender, _tokenIdCounter.current());
             _setTokenURI(_tokenIdCounter.current(), _baseTokenURI);
             _tokenIdCounter.increment();
         }
- 
-        // _tokenIdCounter.increment();
-        // _safeMint(to, tokenId);
-        // _setTokenURI(tokenId, _baseTokenURI);
+
+    }
+
+
+    function safeMint(uint256 _numTokens) public payable {
+      
+        require( _numTokens > 0 && _numTokens <= _maxTokenPerSale, "Amount of NFTs exceeds the amount of NFTs you can purchase at a single time. Or amount requested is 0.");
+
+        (bool _addBool, uint256 _totalValue) = SafeMath.tryAdd(_tokenIdCounter.current(), _numTokens);
+        require(_addBool);
+        require(_maxTokenSupply >= _totalValue, "Not enough tokens left to buy.");
+
+        (bool _mulBool, uint256 _totalEthCost) = SafeMath.tryMul(_tokenPrice, _numTokens);
+        require(_mulBool);
+        require(msg.value == _totalEthCost, "Amount of ether sent not correct.");  // require msg.value to be exactly correct
+
+        // "3%"-Fee, given to platform; that's why divide by 100 below
+        (bool _mulBoolNew, uint256 _platformInitialCost) = SafeMath.tryMul(_platformFee, msg.value); 
+        require(_mulBoolNew);
+        (bool _divBool, uint256 _platformCost) = SafeMath.tryDiv(_platformInitialCost, 100);
+        require(_divBool);
+        (bool _subBool, uint256 _remainingValue) = SafeMath.trySub(msg.value, _platformCost);
+        require(_subBool);
+
+        // pay platform
+        (bool platformSent, bytes memory platformData) = payable(_platformAddress).call{value: _platformCost}("");  // send to platform
+        require(platformSent, "Failed to send Ether");
+        
+        // pay creator
+        (bool sent, bytes memory data) = payable(_deployerAddress).call{value: _remainingValue}("");  // sent to creator
+        require(sent, "Failed to send Ether"); 
+
+        _runMint(_numTokens);
  
     }
 
@@ -137,6 +149,7 @@ contract CreatorNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnabl
 }
 
 
+ 
 
 
-
+ 
