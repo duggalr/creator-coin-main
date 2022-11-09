@@ -31,7 +31,6 @@
 
             </div> -->
              
-
             {% if user_three_dim_upload is False %}
 
               <img src="{{ user_nft_obj.nft_media_file.url }}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5; " >
@@ -300,7 +299,7 @@
                       Cancel NFT  Sale
                     </button> -->
 
-                    <a style="padding-left: 3px;" class="tweet-share-link" href="http://twitter.com/share?text=Check out this NFT from the creator:&url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer">
+                    <a style="padding-left: 3px;" class="tweet-share-link" href="http://twitter.com/share?text=Check out this NFT from {{ creator_profile.creator_name }}:&url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer">
                       Tweet
                     </a>
 
@@ -321,7 +320,7 @@
 
                   <span class="badge rounded-pill text-bg-primary">NFT is live!</span>
 
-                  <a style="padding-left: 3px;" class="tweet-share-link" href="http://twitter.com/share?text=Check out this NFT from the creator:&url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer">
+                  <a style="padding-left: 3px;" class="tweet-share-link" href="http://twitter.com/share?text=Check out this NFT from {{ creator_profile.creator_name }}:&url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer">
                     Tweet
                   </a>
 

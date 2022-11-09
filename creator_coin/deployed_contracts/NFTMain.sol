@@ -8,11 +8,12 @@ import "./contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "./contracts/access/Ownable.sol";
 import "./contracts/utils/Counters.sol";
 import "./contracts/utils/math/SafeMath.sol";
+import "./contracts/security/ReentrancyGuard.sol";
 
 
 
 /// @custom:security-contact creatorcoin42@gmail.com
-contract NFTMain is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, Ownable {
+contract NFTMain is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, Ownable, ReentrancyGuard {
     using SafeMath for uint256;
 
     using Counters for Counters.Counter;
@@ -20,7 +21,7 @@ contract NFTMain is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, 
     Counters.Counter private _tokenIdCounter;
 
     /// Main Public Key
-    address private _platformAddress = 0x1CEE82EEd89Bd5Be5bf2507a92a755dcF1D8e8dc;
+    address private _platformAddress = 0x946516914a80a2ACcf6BA89121D398Fef5EB414B;
     uint256 private _platformFee = 3;
 
     /// Token Metadata
@@ -72,7 +73,7 @@ contract NFTMain is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, 
     }
 
 
-    function safeMint(uint256 _numTokens) public payable {
+    function safeMint(uint256 _numTokens) public payable nonReentrant {
       
         require( _numTokens > 0 && _numTokens <= _maxTokenPerSale, "Amount of NFTs exceeds the amount of NFTs you can purchase at a single time. Or amount requested is 0.");
 
@@ -96,10 +97,6 @@ contract NFTMain is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, 
         (bool platformSent, bytes memory platformData) = payable(_platformAddress).call{value: _platformCost}("");  // send to platform
         require(platformSent, "Failed to send Ether");
         
-        // TODO: 
-            // currently vulnerable to re-entrancy and can mint infinite tokens
-            // look at pull-payment, re-entrancy, triple payment and go from there
-
         // pay creator
         (bool sent, bytes memory data) = payable(_deployerAddress).call{value: _remainingValue}("");  // sent to creator
         require(sent, "Failed to send Ether"); 

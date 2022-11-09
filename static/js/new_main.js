@@ -580,7 +580,12 @@ const buyNFTMain = async () => {
           console.log('num-tokens-to-buy:', numTokens)
           if (numTokens > 0 && numTokens <= 20){
 
-            var tokPriceStr = (numTokens * tokenPrice * (10**18)).toString();            
+            // var tokPriceStr = (numTokens * tokenPrice * (10**18)).toString();
+            var totalEthAmount = numTokens * tokenPrice;
+            var tokPriceStr = "0x" + Web3.utils.toBN(Web3.utils.toWei(totalEthAmount, "ether")).toString(16)
+            // Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
+            console.log('tok-price-str:', tokPriceStr)
+            
 
             try {            
   
