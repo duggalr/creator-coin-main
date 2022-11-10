@@ -121,15 +121,14 @@ def get_current_token_id(contract_address):
     return None
   
 
+# TODO:
+  # Demo <-- Upload to YT
+  # Finalize app for V1
+  # Deploy contract on Mainnet 
+    # correct the chain-id and links on web-app to ensure it links to main-net 
+    # test 2 purchases for main-net 
+  # Release on Reddit
 
 
-# TODO: 
-  # Before Demo and V1 launch: (deploy to main-net last) 
-    # New minting and buying (with Web3 ether to wei) <-- ensure buying JS is all good/secure
-      # **review/test buy and login functionality properly
-    # Mint on production and ensure good 
-
-
- 
-
- 
+  
+  

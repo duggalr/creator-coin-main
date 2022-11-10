@@ -64,7 +64,11 @@
             <div class="ms-2 me-auto">
               <div class="fw-bold">
                 <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
-                <a href="https://goerli.etherscan.io/tx/{{ n_obj.transaction_hash }}"> {{ n_obj.purchase_amount }} NFT Purchased</a> by <a href="{% url 'user_token_page' profile_id=n_obj.purchaser_user_obj.id %}">{{ n_obj.purchaser_user_obj.creator_name }}</a>
+                {% if n_obj.purchaser_user_obj.creator_name is not None %}
+                  <a href="https://goerli.etherscan.io/tx/{{ n_obj.transaction_hash }}"> {{ n_obj.purchase_amount }} NFT Purchased</a> by <a href="{% url 'user_token_page' profile_id=n_obj.purchaser_user_obj.id %}">{{ n_obj.purchaser_user_obj.creator_name }}</a>
+                {% else %}
+                  <a href="https://goerli.etherscan.io/tx/{{ n_obj.transaction_hash }}"> {{ n_obj.purchase_amount }} NFT Purchased</a> by <a href="{% url 'user_token_page' profile_id=n_obj.purchaser_user_obj.id %}">No Name</a>
+                {% endif %}
                 | <span style="color: darkgray;">{{ n_obj.transaction_created_date  }}</span>
               </div>
 
