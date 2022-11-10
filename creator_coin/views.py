@@ -161,7 +161,7 @@ def user_token_page(request, profile_id):
 
   logging.warning(f'User NFT Objects: {user_nft_objects} / Length NFT Objects: {len(user_nft_objects)}')
 
-  if len(user_nft_objects) == 1:  # TODO: enforce to only ensure it's one
+  if len(user_nft_objects) <= 1:  # TODO: enforce to only ensure it's one
     user_nft_obj = user_nft_objects[0]
   else:
     logging.warning(f'USER WITH CREATOR PROFILE-ID: {profile_id} HAS MORE THAN ONE NFT?!?!')
