@@ -257,6 +257,16 @@ a.link{
   text-align: center;
 }
 
+.homepage-nft-title a{
+  text-decoration: none;
+  color: black;
+}
+
+.homepage-nft-title a:hover{
+  cursor: pointer;
+  color: lightblue;
+}
+
 
 .home-header{
   font-size: 36px;

@@ -192,25 +192,36 @@ def user_token_page(request, profile_id):
 
   # Join Beta Email Form
   if request.method == 'POST' and 'join_beta_email_form' in request.POST:
+
     creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
     current_user_pk_address = request.user.user_pk_address
 
     if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
-      user_email = request.POST['user_email_value']
+      user_email = request.POST['user_email']
       logging.warning(f'saving email for user: {current_user_pk_address} / user-email: {user_email}')
       
       if user_email != '':
         email_objects = UserBetaEmails.objects.filter(user_email=user_email)
-        if len(email_objects) == 0:
+        if len(email_objects) == 0: # TODO: display success message or disable button on email submission in this page
           b = UserBetaEmails.objects.create(
             creator_obj=creator_profile_obj,
             user_email=user_email
           )
           b.save()
+
+          creator_profile_obj.creator_email = user_email
+          creator_profile_obj.save()
+
           return redirect('user_token_page', profile_id=creator_profile_obj.id)
         else: 
           return redirect('user_token_page', profile_id=creator_profile_obj.id)
   
+
+  email_join_beta_form_display = False
+  user_email_emails = UserBetaEmails.objects.filter(creator_obj=creator_profile_obj)  
+  if len(user_email_emails) == 0:
+    email_join_beta_form_display = True
+
 
   # Project Log Form
   if request.method == 'POST' and 'project-log-update' in request.POST:  # saving project-log inputs
@@ -300,7 +311,8 @@ def user_token_page(request, profile_id):
     'project_log_list': project_log_list,
     'user_nft_collection': user_nft_collection,
     'nft_total_token_supply': nft_total_token_supply,
-    'nft_total_sold': nft_total_sold
+    'nft_total_sold': nft_total_sold,
+    'email_join_beta_form_display': email_join_beta_form_display
   })
 
 

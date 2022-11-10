@@ -19,44 +19,44 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <form method="post" id="join_beta_form_user_page" name="join_beta_form_user_page">{% csrf_token %}
+        {% if email_join_beta_form_display is True %}
 
-        <div class="modal-body" id="email_form_body_one">
+          <form method="post" id="join_beta_form_user_page" name="join_beta_form_user_page">{% csrf_token %}
 
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">
-              <strong>
-                Email:
-              </strong>
-            </label>
-            <input id="user_email_value" type="email" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="creator email" aria-describedby="emailHelp" required>
-          </div>
-          <p style="color: gray;">
-            Currently in beta. Thus, not allowing everyone to mint an NFT just yet. 
-            Enter your email, and I will let you know when the functionality is live.
-          </p>
+            <div class="modal-body" id="email_form_body_one">
 
-        </div>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">
+                  <strong>
+                    Email:
+                  </strong>
+                </label>
+                <input id="user_email_value" type="email" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="creator email" aria-describedby="emailHelp" required>
+              </div>
+              <p style="color: gray;">
+                Currently in beta. Thus, not allowing everyone to mint an NFT just yet. 
+                Enter your email, and I will let you know when the functionality is live.
+              </p>
 
+            </div>
 
-        <div class="modal-body" id="email_form_body_two" style="display: none;">
+            <div class="modal-footer">
+              <button name="join_beta_email_form" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            
+          </form>
 
-          <div id="success_message" style="color: limegreen;">
-            Thank you. We have got your email.
+        {% else %}
+        
+          <div class="modal-body" id="email_form_body_two">
+
+            <div id="success_message" style="color: limegreen;">
+              Thank you. We have got your email and will reach out shortly, when the feature is live!
+            </div>
+
           </div>
           
-          <div id="duplicate_message" style="color: limegreen;">
-            Your email is already registered. You will hear from me soon!
-          </div>
-
-        </div>
-
-        <div class="modal-footer">
-          <button name="join_beta_email_form" type="submit" class="btn btn-primary">Submit</button>
-        </div>
-
-      </form>
-
+        {% endif %}
 
     </div>
   </div>
@@ -302,25 +302,26 @@
               <h2 class="project-title">
                 {{ creator_profile.creator_name }}
               </h2>
-              
-              {% if creator_profile.creator_email is not None and creator_profile.creator_email != '' %}
-                <span style="font-size: 18px;">
-                  | {{ creator_profile.creator_email }}
-                </span>
-              {% endif %}
 
             {% else %}
+
               {% if same_user is True %}
                 <h2 class="project-title">
-                  Add a name/username?
+                  Add a name?
                 </h2>
               {% else %}
                 <h2 class="project-title">
                   No Name
                 </h2>
               {% endif %}
+
             {% endif %}
-            
+
+            {% if creator_profile.creator_email is not None and creator_profile.creator_email != '' %}
+              <span style="font-size: 18px;">
+                | {{ creator_profile.creator_email }}
+              </span>
+            {% endif %}
             
             <!-- TODO: for same user, just display edit here; also display purchase, they should be able to purchase there own -->
             <!-- <div style="margin-left: auto;">              
@@ -331,7 +332,6 @@
 
             <!-- <div style="margin-left: auto;">
             </div> -->
-
 
             <div style="margin-left: auto;">  
               
@@ -387,11 +387,8 @@
                 <!-- <span class="badge rounded-pill text-bg-info" style="font-size: 14px;">
                   No active token sale at the moment
                 </span> -->
-
               
               {% endif %}
-              
-              
 
             </div>
 
@@ -401,8 +398,14 @@
           <p class="project-user-pk-address">
             <i class="bi bi-key-fill"></i> {{ creator_profile.user_obj.user_pk_address }}
             <!-- <button id="post-update-button" style="margin-left: 13em;">Post Update</button> -->
+            
           </p>
-
+ 
+          <!-- TODO: add success message (disable create nft button upon submission) and go from there -->
+            <!-- <div id="success_message" style="color: limegreen;">
+              Thank you. We have got your email and will reach out shortly!
+            </div> -->
+ 
           <!-- <div>
             <p class="project-user-pk-address">
               <i class="bi bi-key-fill"></i> {{ creator_profile.user_obj.user_pk_address }}

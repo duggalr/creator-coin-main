@@ -26,10 +26,14 @@
 
             <p class="home-description"> 
               CreatorCoin serves as a medium to help individual's fund their personal 
-              side projects. Creators can easily launch a NFT of themselves on the platform.
+              side projects. Creators can easily launch a NFT token for themselves.
               Supporters can purchase the NFT, and benefit through NFT ownership. 
-              If it sounds interesting, either join as a creator, or buy CreatorCoin's own NFT!              
-              <a href="#about">See the Demo!</a>
+              Start by exploring my 
+              <a href="{% url 'user_token_page' profile_id=6 %}">profile page</a>,
+              and watching a <a href="#about">demo</a> of how the platform works.
+             
+              <!-- If it sounds interesting, either join as a creator, or buy CreatorCoin's own NFT!              
+              <a href="#about">See the Demo!</a> -->
 
               <div class="col-sm-9 col-sm-offset-9">
 
@@ -49,7 +53,7 @@
                   <div id="duplicate_message" style="color: limegreen; display: none;">
                     Your email is already registered. You will hear from me soon!
                   </div>
-
+ 
                   <!-- <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
                     We will NEVER spam you.
                   </div> -->
@@ -67,13 +71,18 @@
                 {% endif %}
 
                 <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
-                  <b>Currently in <strong>beta.</strong></b>
+
+                  <strong>Currently in limited beta. Enter your email if you are interested in minting an NFT for yourself, 
+                    and I will reach out!</strong>
+
+
+                  <!-- <b>Currently in <strong>beta.</strong></b> -->
                   <!-- <span style="font-size: 15px;">Currently in beta, on GOERLI Testnet! </span> -->
-                  <i>
+                  <!-- <i>
                     Only 
                     <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
                     Supported.
-                  </i>
+                  </i> -->
                 </div>
 
               </div>
@@ -85,7 +94,11 @@
 
           <div class="col-4">
 
-            <h2 class="homepage-nft-title">CreatorCoin's First NFT</h2>
+            <h2 class="homepage-nft-title">
+              <a href="{% url 'user_token_page' profile_id=6 %}">
+                CreatorCoin's First NFT
+              </a>
+            </h2>
 
             {% if creator_coin_nft_object is not None  %}
 
@@ -106,7 +119,7 @@
                 </div>
               </div>
               <p id="home_page_nft">
-                <a href="{% url 'user_token_page' profile_id=6 %}">View NFT</a> | Price: {{ creator_coin_nft_object.nft_price }} <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: {{ creator_coin_nft_total_supply }} left
+                <a href="{% url 'user_token_page' profile_id=6 %}">View Profile</a> | Price: {{ creator_coin_nft_object.nft_price }} <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: {{ creator_coin_nft_total_supply }} left
               </p>
 
             {% else %}
@@ -129,7 +142,7 @@
               </div>
               <p id="home_page_nft">
                 <!-- TODO: Link CreatorCoin's NFT on homepage -->
-                <a href="{% url 'user_token_page' profile_id=6 %}">View NFT</a> | Price: 0.1 <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: 978 left
+                <a href="{% url 'user_token_page' profile_id=6 %}">View Profile</a> | Price: 0.1 <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: 978 left
               </p>
 
 
@@ -188,7 +201,7 @@
     </div>
 
  
-    <section id="team" class="text-center" style="padding-top: 1em;">
+    <section id="team" class="text-center" style="padding-top: 1.5em;">
 
       <div class="container-fluid">
 
@@ -203,7 +216,7 @@
               <i class="bi bi-1-square" ></i>
             </h3>
             <p class="homepage-helper-text">
-              To become a creator on the platform, you first start by signing up, and creating a profile.              
+              To become a creator on the platform, you first start by signing up, and creating a profile.
             </p>
             
           </div>
@@ -233,7 +246,7 @@
             </h3>
             <p class="homepage-helper-text">
               <!-- Everyday, several new NFT's will be shown on the homepage. -->
-              Once your NFT is minted, people can <a href="{% url 'explore_project' %}">explore</a>
+              Once your NFT is created, people can <a href="{% url 'explore_project' %}">explore</a>
               and buy NFT's for the creator's they want to support!
             </p>
             
