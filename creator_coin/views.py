@@ -52,7 +52,8 @@ def home(request):
   
   user_nft_obj = None
   if 'RDS_DB_NAME' in os.environ:
-    user_nft_obj = UserNft.objects.get(id=6)
+    creator_profile_obj = CreatorProfile.objects.get(id=6)
+    user_nft_obj = UserNft.objects.get(creator_obj=creator_profile_obj)
   
   nft_total_token_supply = None
   nft_total_sold = None
