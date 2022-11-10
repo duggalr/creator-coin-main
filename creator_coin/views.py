@@ -49,9 +49,46 @@ def home(request):
   #       return JsonResponse({'success': True})
   #     else: 
   #       return JsonResponse({'duplicate': True})
+  
+  user_nft_obj = None
+  if 'RDS_DB_NAME' in os.environ:
+    user_nft_obj = UserNft.objects.get(id=6)
+  
+  nft_total_token_supply = None
+  nft_total_sold = None
+  if user_nft_obj is not None and user_nft_obj.nft_deployed:
+    current_token_id = utils.get_current_token_id(user_nft_obj.nft_deployed_contract_address)
+    logging.warning(f'Current Creator Coin NFT Token-ID: {current_token_id}')
+
+    if current_token_id is not None:
+      nft_total_token_supply = user_nft_obj.nft_total_supply - current_token_id
+      nft_total_sold = current_token_id
+
+      if user_nft_obj.nft_deployed_transaction_status is None:  # if 0/1, it is updated
+        transaction_dict = utils.get_transaction_status(user_nft_obj.nft_deployed_transaction_hash)
+        logging.warning(f'transaction-dict: {transaction_dict}')
+
+        if transaction_dict is not None:
+          transaction_status = transaction_dict['result']['status']
+          # print('transaction-dict:', transaction_dict)
+          try:
+            user_nft_obj.nft_deployed_transaction_status = transaction_status
+            user_nft_obj.save()
+          except:
+            pass
     
+        else:
+          logging.warning(f'Current nft transaction status is None from user, {request.user}')
+    
+    else:
+      logging.warning(f'Current token-id for deployed nft from user, {request.user} is None')
+      
+
   return render(request, 'home.html', {
-    'anon_user': request.user.is_anonymous
+    'anon_user': request.user.is_anonymous,
+    'creator_coin_nft_total_supply': nft_total_token_supply,
+    'creator_coin_nft_total_sold': nft_total_sold,
+    'creator_coin_nft_object': user_nft_obj
   })
 
 
@@ -190,7 +227,6 @@ def user_token_page(request, profile_id):
   project_log_list = CreatorProjectLog.objects.filter(creator_obj=creator_profile_obj).order_by('-log_created_date')
   user_nft_collection =  UserNftCollection.objects.filter(creator_obj=creator_profile_obj).order_by('-transaction_created_date')
 
-  # https://goerli.etherscan.io/address/0xf06ceeeb31a39ea5b22a0d0adffd2a2cd80cec0f
   nft_total_token_supply = None
   nft_total_sold = None
   if user_nft_obj is not None and user_nft_obj.nft_deployed:
