@@ -26,11 +26,7 @@ class UserManager(BaseUserManager):
 
     return user
  
-# psql 
 
-# TODO: **get databases running for local/prod** 
-  # delete local tables and all migration files (including init) <-- test in pgadmin and ensure it's deleted
-    # re-run migrate in prod and go from there
  
 class Web3User(AbstractBaseUser):
   user_pk_address = models.CharField(max_length=100, unique=True)
@@ -123,6 +119,7 @@ class UserBetaEmails(models.Model):
   """
   Emails saved from the homepage
   """
+  creator_obj = models.OneToOneField(CreatorProfile, on_delete=models.CASCADE, blank=True, null=True)
   user_email = models.EmailField()
 
 

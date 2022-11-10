@@ -33,22 +33,20 @@ from . import utils
 
 
 
-
-
 def home(request):
-  ## TODO: don't need user_email for homepage at the moment..
-  # if request.method == "POST":
-  #   user_email = request.POST['user_email']
-  #   if user_email != '':
-  #     email_objects = UserBetaEmails.objects.filter(user_email=user_email)
-  #     if len(email_objects) == 0:
-  #       b = UserBetaEmails.objects.create(
-  #         user_email=user_email
-  #       )
-  #       b.save()
-  #       return JsonResponse({'success': True})
-  #     else: 
-  #       return JsonResponse({'duplicate': True})
+
+  if request.method == "POST":  # get the user email
+    user_email = request.POST['user_email']
+    if user_email != '':
+      email_objects = UserBetaEmails.objects.filter(user_email=user_email)
+      if len(email_objects) == 0:
+        b = UserBetaEmails.objects.create(
+          user_email=user_email
+        )
+        b.save()
+        return JsonResponse({'success': True})
+      else: 
+        return JsonResponse({'duplicate': True})
   
   user_nft_obj = None
   if 'RDS_DB_NAME' in os.environ:
@@ -161,10 +159,12 @@ def user_token_page(request, profile_id):
 
   logging.warning(f'User NFT Objects: {user_nft_objects} / Length NFT Objects: {len(user_nft_objects)}')
 
-  if len(user_nft_objects) <= 1:  # TODO: enforce to only ensure it's one
+  if len(user_nft_objects) == 1:  # TODO: enforce to only ensure it's one
     user_nft_obj = user_nft_objects[0]
   else:
-    logging.warning(f'USER WITH CREATOR PROFILE-ID: {profile_id} HAS MORE THAN ONE NFT?!?!')
+    if len(user_nft_objects) > 1:
+      logging.warning(f'USER WITH CREATOR PROFILE-ID: {profile_id} HAS MORE THAN ONE NFT?!?!')
+
 
   same_user = False
   if request.user.is_anonymous is False:
@@ -190,7 +190,30 @@ def user_token_page(request, profile_id):
       user_three_dim_upload = True
 
 
-  if request.method == 'POST':  # saving project-log inputs
+  # Join Beta Email Form
+  if request.method == 'POST' and 'join_beta_email_form' in request.POST:
+    creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
+    current_user_pk_address = request.user.user_pk_address
+
+    if current_user_pk_address == creator_profile_obj.user_obj.user_pk_address:
+      user_email = request.POST['user_email_value']
+      logging.warning(f'saving email for user: {current_user_pk_address} / user-email: {user_email}')
+      
+      if user_email != '':
+        email_objects = UserBetaEmails.objects.filter(user_email=user_email)
+        if len(email_objects) == 0:
+          b = UserBetaEmails.objects.create(
+            creator_obj=creator_profile_obj,
+            user_email=user_email
+          )
+          b.save()
+          return redirect('user_token_page', profile_id=creator_profile_obj.id)
+        else: 
+          return redirect('user_token_page', profile_id=creator_profile_obj.id)
+  
+
+  # Project Log Form
+  if request.method == 'POST' and 'project-log-update' in request.POST:  # saving project-log inputs
     
     creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
     current_user_pk_address = request.user.user_pk_address

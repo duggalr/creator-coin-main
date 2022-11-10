@@ -33,21 +33,11 @@
 
               <div class="col-sm-9 col-sm-offset-9">
 
-                <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
-                  <!-- <b>Currently in <strong>beta.</strong></b> -->
-                  <span style="font-size: 15px;">Currently in beta, on GOERLI Testnet! </span>
-                  <i>
-                    Only 
-                    <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
-                    Supported.
-                  </i>
-                </div>
-
-                <!-- {% if anon_user is True %}
+                {% if anon_user is True %}
 
                   <form method="post" id="join_beta_form">{% csrf_token %}
                     <div class="input-group input-group-lg" style="padding-top: 10px;">
-                      <input id="user_email_value" type="text" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="creator email" aria-describedby="emailHelp" required>
+                      <input id="user_email_value" type="email" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="creator email" aria-describedby="emailHelp" required>
                       <button type="submit" id="join_beta_button" class="btn btn-dark" style="color: white;">Join as a Creator!</button>
                     </div>
                   </form>
@@ -57,25 +47,34 @@
                   </div>
                   
                   <div id="duplicate_message" style="color: limegreen; display: none;">
-                    Your email is already registered. 
-                    If you haven't received an email from us, send an email to creatorcoin42@gmail.com
+                    Your email is already registered. You will hear from me soon!
                   </div>
 
-                  <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
+                  <!-- <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
                     We will NEVER spam you.
-                  </div>
+                  </div> -->
 
                 {% else %}
 
-                <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
+                <!-- <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
                   <i>
                     Only 
                     <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
                     Supported.
                   </i>                  
-                </div>
+                </div> -->
 
-                {% endif %} -->
+                {% endif %}
+
+                <div style="padding-top: 1em; font-weight: 700; font-size: 14px; color: #808080;">
+                  <b>Currently in <strong>beta.</strong></b>
+                  <!-- <span style="font-size: 15px;">Currently in beta, on GOERLI Testnet! </span> -->
+                  <i>
+                    Only 
+                    <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>
+                    Supported.
+                  </i>
+                </div>
 
               </div>
 
@@ -176,7 +175,7 @@
           <div class="col-md-12 text-right" style="color: black;">
 
             <div class="embed-responsive embed-responsive-21by9" >
-              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/UBEnxe-oZ20" width="800" height="460" allowfullscreen></iframe>
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/iYg_-q4DqJU?rel=0" width="800" height="460" allowfullscreen></iframe>
             </div>
           
           </div>
@@ -188,9 +187,6 @@
 
     </div>
 
- 
-<!-- TODO: Add the icons rather than numbers and go from there; ensure padding top/down and left/right is perfect -->
-    <!-- **proceed a bit faster from here; UI looks okay, and would look ideal with gradients so good to move on -->
  
     <section id="team" class="text-center" style="padding-top: 1em;">
 

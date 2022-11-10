@@ -14,20 +14,21 @@ urlpatterns = [
   path('explore/', views.explore_project, name='explore_project'),
 
   path('my-profile', views.my_profile, name='my_profile'),
-  # path('create-profile/', views.create_profile, name='create_profile'),  
   path('profile/<int:profile_id>/', views.user_token_page, name='user_token_page'),  
   path('edit-user-profile/<int:profile_id>/', views.edit_user_profile, name='edit_user_profile'),
-  path('create-nft/', views.create_token_form, name='create_token_form'),
-  path('update-nft/', views.update_token_form, name='update_token_form'), 
-  path('delete-nft/', views.delete_non_minted_nft, name='delete_non_minted_nft'),
+  ## TODO: Disabled for now
+  # path('create-nft/', views.create_token_form, name='create_token_form'),
+  # path('update-nft/', views.update_token_form, name='update_token_form'), 
+  # path('delete-nft/', views.delete_non_minted_nft, name='delete_non_minted_nft'),
 
   path('delete-project-log/<int:project_log_id>/', views.delete_project_log, name='delete_project_log'),
 
   # ajax-calls
   path('fetch-nft-main-data/<int:profile_id>/', views.fetch_nft_main_data, name='fetch_nft_main_data'),
   path('get-nft-metadata/', views.get_minted_nft_metadata, name='get_minted_nft_metadata'),
-  path('save-nft-metadata/', views.save_nft_metadata, name='save_nft_metadata'),
-  path('nft-launch-final/', views.nft_launch_final, name='nft_launch_final'),
+  ## TODO: Disabled for now
+  # path('save-nft-metadata/', views.save_nft_metadata, name='save_nft_metadata'),
+  # path('nft-launch-final/', views.nft_launch_final, name='nft_launch_final'),
   path('handle-account-change/', views.handle_account_change, name='handle_account_change'),
   path('save-nft-transaction-data/', views.save_nft_transaction_data, name='save_nft_transaction_data'),
 

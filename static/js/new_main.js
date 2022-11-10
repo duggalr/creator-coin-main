@@ -12,6 +12,8 @@ let nftVerificationModal;
 let chainIdErrorModal;
 let numTokensErrorModal;
 
+let createUserNFTBetaModal;
+
 
 var loginModalExists = document.getElementById("loginErrorFour");
 if (loginModalExists != null){  // on homepage
@@ -53,11 +55,12 @@ if (numTokensModalExists != null){
   numTokensErrorModal = new bootstrap.Modal('#numTokensErrorModal');
 }
 
+// TODO:
+var userNFTModalExists =  document.getElementById("user_beta_email_modal");
 
-
-
-
-
+if (userNFTModalExists != null){
+  createUserNFTBetaModal = new bootstrap.Modal('#user_beta_email_modal');
+}
 
 
 
@@ -820,6 +823,8 @@ $( "#post-update-button" ).click(async () => {
   
 
 // // Homepage DOM
+
+// Homepage Join Email Beta Form
 $('#join_beta_form').submit(function(e){
 
   e.preventDefault();
@@ -857,6 +862,45 @@ $('#join_beta_form').submit(function(e){
 
 
 
+// $('#join_beta_profile_form').submit(function(e){
+
+//   e.preventDefault();
+
+//   var user_email = $('#user_email_value').val();
+//   $.ajax({
+//     type: 'POST',
+//     url: "",
+//     data: {
+//       'user_email': user_email,
+//       csrfmiddlewaretoken: csrfToken
+//     },
+//     success: function (response) {
+//       // console.log('res:', response);
+      
+//       if (response['success'] === true){
+
+//         // success_message
+//         $('#join_beta_form').hide();
+//         $('#success_message').show();
+
+//       } else if (response['duplicate'] === true){
+
+//         $('#join_beta_form').hide();
+//         $('#duplicate_message').show();
+
+//       }
+
+//     }
+
+//   })
+
+
+// })
+
+
+
+
+
 $('#num_token_to_buy').on('input',function(e){
    
   var numTokenToBuy = $('#num_token_to_buy').val();
@@ -867,7 +911,13 @@ $('#num_token_to_buy').on('input',function(e){
 
 
 
+
+
+$('#create_user_nft_beta').on('click', function(){
   
+  createUserNFTBetaModal.show();
+
+})
 
 
 
