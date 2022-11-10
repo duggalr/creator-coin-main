@@ -311,7 +311,7 @@ function saveNFTLaunchedData(contractData, contractAddress){
         'nft_contract_address': contractAddress
       },
       success: function (response) {
-        console.log('res:', response);
+        // console.log('res:', response);
         
         if (response['success'] === true){
           // window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
@@ -335,8 +335,8 @@ const mainTestThree = async (bytecode, abi) => {
   const network = await provider.getNetwork();
   const chainId = network.chainId;
   
-  console.log('network:', network);
-  console.log('chain-id:', chainId);
+  // console.log('network:', network);
+  // console.log('chain-id:', chainId);
 
   if (chainId != 5){  // Chain-ID check; display error modal
 
@@ -346,7 +346,7 @@ const mainTestThree = async (bytecode, abi) => {
   } else {
 
     const accounts = await provider.listAccounts();
-    console.log('network-accounts:', accounts);
+    // console.log('network-accounts:', accounts);
   
     // console.log('ets-provider:', ethersProvider)
   
@@ -366,7 +366,7 @@ const mainTestThree = async (bytecode, abi) => {
       // console.log('user-nonce-res:', userNonceRes)
     } catch(error){  // user-nonce-request with response != 200 (rare situation)
       // loginErrorThreeModel.show();
-      console.log('error:', error)
+      // console.log('error:', error)
       launchNFTClicked = false;
     }
   
@@ -374,7 +374,7 @@ const mainTestThree = async (bytecode, abi) => {
   
     document.getElementById("overlay").style.display = "none";;
   
-    console.log('nft-save-resp:', nftSaveResp);
+    // console.log('nft-save-resp:', nftSaveResp);
   
     if (nftSaveResp['success'] === true){  // deploy the token
   
@@ -399,12 +399,12 @@ const mainTestThree = async (bytecode, abi) => {
           nftMetaData['nft_ipfs_url']
         )
 
-        console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
+        // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
                 
         saveNFTLaunchedData(collectiblesContract.deployTransaction, collectiblesContract.address);
 
       } catch(error) {
-        console.log('error:', error);
+        // console.log('error:', error);
         launchNFTClicked = false;
       }
       
@@ -469,14 +469,14 @@ function saveTransactionData(result, tokensBought){
         // 'buyer_pk_address': buyer_pk_address
       },
       success: function (response) {
-        console.log('res:', response);
+        // console.log('res:', response);
 
         if (response['success'] === true){
           // window.location.href = 'http://127.0.0.1:7500/profile/' + response['redirect_profile_id']
           window.location.href = API_HOST + 'profile/' + response['redirect_profile_id'];
 
         } else { // TODO: display error message in modal
-          console.log('you must be logged in...')
+          // console.log('you must be logged in...')
         }
 
       }
@@ -517,7 +517,7 @@ function get_nft_bytecode_abi(){
 
 const buyNFTMain = async () => {
   
-  console.log('anon-user:', anonUser)
+  // console.log('anon-user:', anonUser)
 
   if (anonUser === 'True'){ // Determine if user is logged in or not
     
@@ -529,8 +529,8 @@ const buyNFTMain = async () => {
     const network = await provider.getNetwork();
     const chainId = network.chainId;
     
-    console.log('network:', network);
-    console.log('chain-id:', chainId);
+    // console.log('network:', network);
+    // console.log('chain-id:', chainId);
 
 
     if (chainId != 5){  // display error modal
@@ -545,7 +545,7 @@ const buyNFTMain = async () => {
       try{
         bytecodeDict = await get_nft_bytecode_abi();
       } catch(error){
-        console.log(error)
+        // console.log(error)
       }
       
       if (typeof bytecodeDict !== undefined){
@@ -556,7 +556,7 @@ const buyNFTMain = async () => {
         try{
           contractData = await get_nft_contract_address(creatorProfileID);
         } catch(error) {
-          console.log(error)
+          // console.log(error)
         }
     
         if (typeof contractData !== undefined){
@@ -566,9 +566,9 @@ const buyNFTMain = async () => {
           var tokenPrice = contractData['nft_token_price'];
           // var tokenSupply = contractData['nft_token_supply'];
     
-          console.log('main-contract-addr:', mainContractAddress, contractABI, contractData)
+          // console.log('main-contract-addr:', mainContractAddress, contractABI, contractData)
     
-          console.log('accounts:', accounts[0])
+          // console.log('accounts:', accounts[0])
           var existingContract = new ethers.Contract(
             mainContractAddress,
             contractABI,
@@ -577,21 +577,20 @@ const buyNFTMain = async () => {
     
 
           var numTokens = parseInt( $('#num_token_to_buy').val() )
-          console.log('num-tokens-to-buy:', numTokens)
+          // console.log('num-tokens-to-buy:', numTokens)
           if (numTokens > 0 && numTokens <= 20){
 
             // var tokPriceStr = (numTokens * tokenPrice * (10**18)).toString();
             var totalEthAmount = numTokens * tokenPrice;
-            var tokPriceStr = "0x" + Web3.utils.toBN(Web3.utils.toWei(totalEthAmount, "ether")).toString(16)
+            var tokPriceStr = "0x" + Web3.utils.toBN(Web3.utils.toWei(String(totalEthAmount), "ether")).toString(16)
             // Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
             console.log('tok-price-str:', tokPriceStr)
             
-
-            try {            
+            try {
   
               let result = await existingContract.safeMint(numTokens, {'value': tokPriceStr});
               // // result = await existingContract.wait();
-              console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
+              // console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
               
               saveTransactionData(result, numTokens);
       
@@ -644,7 +643,7 @@ if (window.ethereum){ // Account Change
 
   window.ethereum.on('accountsChanged', (accounts) => {
 
-    console.log('account-changed:', accounts);
+    // console.log('account-changed:', accounts);
     handleAccountChange();
     // window.location.href = 'http://127.0.0.1:7500/logout';
   
@@ -705,7 +704,7 @@ function verifyProfileDetails(){
     $.ajax({
       url: apiURL,
       success: function (response) {
-        console.log('res:', response);
+        // console.log('res:', response);
         
         if (response['success'] === false){
 
@@ -767,8 +766,8 @@ $( "#launch-nft-button" ).click(async () => {
       var bytecode = json["contracts"]["NFTMain.sol"]["NFTMain"]["evm"]["bytecode"]["object"];
       var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["NFTMain"]["metadata"] )["output"]["abi"];
   
-      console.log('bytecode:', bytecode);
-      console.log('abi:', abi);
+      // console.log('bytecode:', bytecode);
+      // console.log('abi:', abi);
   
       mainTestThree(bytecode, abi);
   
@@ -834,7 +833,7 @@ $('#join_beta_form').submit(function(e){
       csrfmiddlewaretoken: homepageCSRFTok
     },
     success: function (response) {
-      console.log('res:', response);
+      // console.log('res:', response);
       
       if (response['success'] === true){
 
@@ -859,8 +858,7 @@ $('#join_beta_form').submit(function(e){
 
 
 $('#num_token_to_buy').on('input',function(e){
-  
-  console.log('asdkja')
+   
   var numTokenToBuy = $('#num_token_to_buy').val();
 
   $('#buy_total_cost').text( ' ' + (numTokenToBuy * nftMainPrice).toFixed(2) ) ;

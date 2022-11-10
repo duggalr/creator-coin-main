@@ -123,6 +123,12 @@ def get_current_token_id(contract_address):
 
 
 
+# TODO: 
+  # Before Demo and V1 launch: (deploy to main-net last) 
+    # New minting and buying (with Web3 ether to wei) <-- ensure buying JS is all good/secure
+      # **review/test buy and login functionality properly
+    # Mint on production and ensure good 
+
 
  
 

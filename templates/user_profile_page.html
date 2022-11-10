@@ -647,10 +647,9 @@
     var url_string = window.location.href;
     var url = new URL(url_string);
     var c = url.searchParams.get("click");
-    console.log('click-param:', c);
+    // console.log('click-param:', c);
 
     if (c == 'buy-button'){
-      console.log('aslkdj')
       window.onload = function() {
         $("#buy-nft-buttton").click()
         // setTimeout(
