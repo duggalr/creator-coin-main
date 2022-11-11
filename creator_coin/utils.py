@@ -93,8 +93,8 @@ def get_ether_price():
 
 
 
-def get_transaction_status(tx_hash):
-  transaction_url = f'https://api-goerli.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash={tx_hash}&apikey={os.getenv("etherscan_api_key")}'
+def get_transaction_status(tx_hash):  
+  transaction_url = f'https://api.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash={tx_hash}&apikey={os.getenv("etherscan_api_key")}'
   res = requests.get(transaction_url)
   if res.status_code == 200:
     return res.json()
@@ -111,7 +111,7 @@ def get_current_token_id(contract_address):
   # bytecode = compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["evm"]["bytecode"]["object"]
   abi = json.loads(compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["metadata"])["output"]["abi"]
 
-  w3 = Web3(Web3.HTTPProvider(f"https://goerli.infura.io/v3/{os.getenv('goerli_api_key')}"))
+  w3 = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{os.getenv('goerli_api_key')}"))
 
   CreatorContract = w3.eth.contract(address=Web3.toChecksumAddress(contract_address), abi=abi)
   try:
