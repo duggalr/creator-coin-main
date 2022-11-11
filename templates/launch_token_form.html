@@ -304,20 +304,20 @@
       $('#token_price_div').text('');
 
       var field_val = $('#token_price_field').val();
-      console.log('val', field_val);
+      // console.log('val', field_val);
       
       // Thanks: https://stackoverflow.com/questions/21494747/price-field-validation-using-javascript-either-jquery
       var validatePrice = function(price) {
         return /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(price);
       };
 
-      console.log('valid:', validatePrice(field_val) )
+      // console.log('valid:', validatePrice(field_val) )
       var valid_input = validatePrice(field_val);
       if (valid_input === true){
 
         // var usd_conversion_rate = 1301.91
         var usd_price = current_ether_usd_conversion_rate * parseFloat(field_val)
-        console.log('usd-price:', usd_price, parseFloat(field_val))
+        // console.log('usd-price:', usd_price, parseFloat(field_val))
 
         var rounded_usd_price = Number((usd_price).toFixed(3));
 
@@ -337,7 +337,7 @@
 
 
   document.querySelector('#nft_image_upload').addEventListener('change', function(e) {
-    console.log('files:', this.files, this.files.length)
+    // console.log('files:', this.files, this.files.length)
     
     $('#container_image_element').remove()
     document.getElementById('image_upload_error_message').style.display = 'none';
@@ -372,7 +372,7 @@
           // TODO: add model-viewer or image and go from there
           const three_dim_object_file_types = ['glb', 'gltf', 'svg']
 
-          console.log('file-ext:', fileExt, 'file-name:', fileName);
+          // console.log('file-ext:', fileExt, 'file-name:', fileName);
           if (three_dim_object_file_types.includes(fileExt)){
 
             var parent_div = document.getElementById('image_container')

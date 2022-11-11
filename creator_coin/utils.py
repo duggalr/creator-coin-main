@@ -82,14 +82,14 @@ def store_file_in_ipfs(obj):
 
 
 
-# TODO: hardcoding value for now and manually updating, this is too slow...
-def get_ether_price():
-  transaction_url = f'https://api.etherscan.io/api?module=stats&action=ethprice&apikey={os.getenv("etherscan_api_key")}'
-  res = requests.get(transaction_url)
-  if res.status_code == 200:
-    return res.json()
-  else:
-    return None
+
+# def get_ether_price():
+#   transaction_url = f'https://api.etherscan.io/api?module=stats&action=ethprice&apikey={os.getenv("etherscan_api_key")}'
+#   res = requests.get(transaction_url)
+#   if res.status_code == 200:
+#     return res.json()
+#   else:
+#     return None
 
 
 
