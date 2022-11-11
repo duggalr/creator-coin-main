@@ -1,4 +1,3 @@
-// const API_HOST = 'http://127.0.0.1:7500/'
 const API_HOST = location.protocol + '//' + location.host + '/';
 
 let ethersProvider;
@@ -55,9 +54,8 @@ if (numTokensModalExists != null){
   numTokensErrorModal = new bootstrap.Modal('#numTokensErrorModal');
 }
 
-// TODO:
-var userNFTModalExists =  document.getElementById("user_beta_email_modal");
 
+var userNFTModalExists =  document.getElementById("user_beta_email_modal");
 if (userNFTModalExists != null){
   createUserNFTBetaModal = new bootstrap.Modal('#user_beta_email_modal');
 }
@@ -70,14 +68,11 @@ function requestNonce(user_account_pk_address){
 
     var apiURL = new URL(API_HOST + 'generate_nonce?');
     apiURL.searchParams.append('web3_address', user_account_pk_address);
-    // const user_nonce_res = await axios.get(apiURL.href)
     
     fetch(apiURL)
     .then(response => response.json())
     .then(json => {
-
       resolve(json)
-  
     })
     
   })
@@ -116,16 +111,13 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
 
     if (walletUnlocked === true) {
 
-      // TODO: specifying 'any' due to any blockchain allowed; change to only main-net? 
       ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const network = await provider.getNetwork();
       const chainId = network.chainId;
 
-      // console.log('current-chain-id:', 1)
-
-      if (chainId === 1){
+      if (chainId === 1){ // ethereum mainnet
 
         // MetaMask requires requesting permission to connect users accounts
         await ethersProvider.send("eth_requestAccounts", []);
@@ -135,13 +127,6 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
         const userAccounts = await ethersProvider.listAccounts();
 
         const user_account_pk_address = userAccounts[0];
-
-        // const userNonceJson = await getNonce(user_account_pk_address);
-        // console.log('user-nonce:', userNonceJson);
-
-        // console.log('api-host:', API_HOST)
-        // var apiURL = new URL(API_HOST + 'generate_nonce?');
-        // console.log('api-url:', apiURL);
 
         let userNonceRes;
         try {
@@ -178,11 +163,9 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
               if (userLoginInfoRes['success'] === true){
 
                 if (redirect_profile_id !== undefined) {
-                  // window.location.href = 'http://127.0.0.1:7500/profile/' + redirect_profile_id + '?click=buy-button'
                   window.location.href = API_HOST + 'profile/' + redirect_profile_id + '?click=buy-button';
                   
                 } else {
-                  // window.location.href = 'http://127.0.0.1:7500/profile/' + userLoginInfoRes['profile_id'];
                   window.location.href = API_HOST + 'profile/' + userLoginInfoRes['profile_id'];
                 }
 
@@ -192,14 +175,12 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
               }
 
             } catch(error) {  // user login request failed
-              // console.log(error);
               loginErrorThreeModel.show();
               signupLinkClicked = false;
             }
 
           } else { // signature denied.
 
-            // alert("MetaMask Signature Denied.")
             signupLinkClicked = false;
 
           }
@@ -210,7 +191,6 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
           signupLinkClicked = false;
           
         }
-
 
 
       } else {
@@ -250,9 +230,7 @@ function handleAccountChange(){
     .then(json => {
 
       if (json['redirect'] === true){
-        // window.location.href = 'http://127.0.0.1:7500/logout'
         window.location.href = API_HOST + 'logout';
-
       }
 
     })
@@ -260,9 +238,6 @@ function handleAccountChange(){
   })
 
 }
-
-
-
 
 
 function getNFTData(){
@@ -273,9 +248,7 @@ function getNFTData(){
     fetch(API_HOST + "get-nft-metadata/")
     .then(response => response.json())
     .then(json => {
-      // console.log('js:', json)
       resolve(json);
-      
     })
 
   })
@@ -290,7 +263,6 @@ function saveNFTData() {
     fetch(API_HOST + "save-nft-metadata/")
     .then(response => response.json())
     .then(json => {
-      // console.log('js:', json)
       resolve(json);
     })
 
@@ -316,10 +288,8 @@ function saveNFTLaunchedData(contractData, contractAddress){
         'nft_contract_address': contractAddress
       },
       success: function (response) {
-        // console.log('res:', response);
         
         if (response['success'] === true){
-          // window.location.href = 'http://127.0.0.1:7500/profile/' + creatorProfileID
           window.location.href = API_HOST + 'profile/' + creatorProfileID;
         }
 
@@ -340,9 +310,6 @@ const mainTestThree = async (bytecode, abi) => {
   const network = await provider.getNetwork();
   const chainId = network.chainId;
   
-  // console.log('network:', network);
-  // console.log('chain-id:', chainId);
-
   if (chainId != 1){  // Chain-ID check; display error modal
 
     launchNFTClicked = false;
@@ -351,9 +318,6 @@ const mainTestThree = async (bytecode, abi) => {
   } else {
 
     const accounts = await provider.listAccounts();
-    // console.log('network-accounts:', accounts);
-  
-    // console.log('ets-provider:', ethersProvider)
   
     let collectiblesFactory = new ethers.ContractFactory(
       abi,
@@ -367,19 +331,11 @@ const mainTestThree = async (bytecode, abi) => {
     let nftSaveResp;
     try {
       nftSaveResp = await saveNFTData();
-      // userNonceRes = await requestNonce(user_account_pk_address);
-      // console.log('user-nonce-res:', userNonceRes)
     } catch(error){  // user-nonce-request with response != 200 (rare situation)
-      // loginErrorThreeModel.show();
-      // console.log('error:', error)
       launchNFTClicked = false;
     }
   
-    // const nftSaveResp = await saveNFTData();
-  
     document.getElementById("overlay").style.display = "none";;
-  
-    // console.log('nft-save-resp:', nftSaveResp);
   
     if (nftSaveResp['success'] === true){  // deploy the token
   
@@ -391,7 +347,6 @@ const mainTestThree = async (bytecode, abi) => {
         launchNFTClicked = false;
       }
   
-
       try {
 
         // Load a metamask signature
@@ -404,37 +359,21 @@ const mainTestThree = async (bytecode, abi) => {
           nftMetaData['nft_ipfs_url']
         )
 
-        // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
-                
         saveNFTLaunchedData(collectiblesContract.deployTransaction, collectiblesContract.address);
 
       } catch(error) {
-        // console.log('error:', error);
         launchNFTClicked = false;
       }
-      
-      // let transaction_hash = collectiblesContract.deployTransaction['hash'];
-      // let deployed_contract_address = collectiblesContract.address;
-      
-      // // 0x68Ea1a2504a4287900E51Db51658F21704F09720
-      // let transHash = await collectiblesContract.getDeployTransaction();
-      // console.log('trans-hash:', transHash);
-      // console.log('ts-new:', collectiblesContract.deployTransaction, collectiblesContract.address)
-    
-      // if user signs above, send request to verify the launched-nft
-        // refresh page with views fetching associated etherscan data and buy-button being shown
-  
+
     } else { // TODO: need to display error explaining what happened
   
       launchNFTClicked = false;
 
     }
 
-
   }
 
 }
-
 
 
 function get_nft_contract_address(creatorProfileID){
@@ -442,7 +381,6 @@ function get_nft_contract_address(creatorProfileID){
   return new Promise(function(resolve, reject){
     
     // fetch metadata (ajax-request)
-    
     fetch(API_HOST + "fetch-nft-main-data/" + creatorProfileID)
     .then(response => response.json())
     .then(json => {
@@ -459,8 +397,6 @@ function get_nft_contract_address(creatorProfileID){
 
 function saveTransactionData(result, tokensBought){
 
-  // console.log('creator-profile-id:', creatorProfileID)
-
   return new Promise(function(resolve, reject){
 
     $.ajax({
@@ -471,13 +407,10 @@ function saveTransactionData(result, tokensBought){
         'profile_id': creatorProfileID,
         'nft_transaction_hash': result['hash'],
         'number_of_tokens_bought': tokensBought,
-        // 'buyer_pk_address': buyer_pk_address
       },
       success: function (response) {
-        // console.log('res:', response);
 
         if (response['success'] === true){
-          // window.location.href = 'http://127.0.0.1:7500/profile/' + response['redirect_profile_id']
           window.location.href = API_HOST + 'profile/' + response['redirect_profile_id'];
 
         } else { // TODO: display error message in modal
@@ -498,12 +431,9 @@ function get_nft_bytecode_abi(){
 
   return new Promise(function(resolve, reject){
 
-    // fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
     fetch("https://creator-coin-main.s3.ca-central-1.amazonaws.com/static/json_files/nft_main_new_compiled_code.json")
     .then(response => response.json())
     .then(json => {
-      // var bytecode = json["contracts"]["NFTMain.sol"]["CreatorNFT"]["evm"]["bytecode"]["object"];
-      // var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["CreatorNFT"]["metadata"] )["output"]["abi"];
       var bytecode = json["contracts"]["NFTMain.sol"]["NFTMain"]["evm"]["bytecode"]["object"];
       var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["NFTMain"]["metadata"] )["output"]["abi"];
       
@@ -521,8 +451,6 @@ function get_nft_bytecode_abi(){
 
 
 const buyNFTMain = async () => {
-  
-  // console.log('anon-user:', anonUser)
 
   if (anonUser === 'True'){ // Determine if user is logged in or not
     
@@ -533,10 +461,6 @@ const buyNFTMain = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const network = await provider.getNetwork();
     const chainId = network.chainId;
-    
-    // console.log('network:', network);
-    // console.log('chain-id:', chainId);
-
 
     if (chainId != 1){  // display error modal
 
@@ -566,14 +490,9 @@ const buyNFTMain = async () => {
     
         if (typeof contractData !== undefined){
     
-          // console.log('ct-data:', contractData);
           var mainContractAddress = contractData['nft_contract_address'];
           var tokenPrice = contractData['nft_token_price'];
-          // var tokenSupply = contractData['nft_token_supply'];
-    
-          // console.log('main-contract-addr:', mainContractAddress, contractABI, contractData)
-    
-          // console.log('accounts:', accounts[0])
+          
           var existingContract = new ethers.Contract(
             mainContractAddress,
             contractABI,
@@ -582,21 +501,14 @@ const buyNFTMain = async () => {
     
 
           var numTokens = parseInt( $('#num_token_to_buy').val() )
-          // console.log('num-tokens-to-buy:', numTokens)
           if (numTokens > 0 && numTokens <= 20){
 
-            // var tokPriceStr = (numTokens * tokenPrice * (10**18)).toString();
             var totalEthAmount = numTokens * tokenPrice;
             var tokPriceStr = "0x" + Web3.utils.toBN(Web3.utils.toWei(String(totalEthAmount), "ether")).toString(16)
-            // Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
-            // console.log('tok-price-str:', tokPriceStr)
             
             try {
   
-              let result = await existingContract.safeMint(numTokens, {'value': tokPriceStr});
-              // // result = await existingContract.wait();
-              // console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
-              
+              let result = await existingContract.safeMint(numTokens, {'value': tokPriceStr});             
               saveTransactionData(result, numTokens);
       
             } catch(error){
@@ -622,23 +534,7 @@ const buyNFTMain = async () => {
 
   }
 
-
-
-  
-  // var tokPrice = await existingContract.getTokenPrice();
-  // console.log('tok-price:', tokPrice);
-  // console.log('tok-number:', ethers.utils.formatEther( tokPrice ) )
-    
-  // // var numTokens = 1;
-  // var tokPriceStr = (tokPrice * (10**18)).toString();
-  // let result = await existingContract.safeMint(numTokens, {'value': tokPriceStr});
-  // // result = await existingContract.wait();
-  // console.log('result:', result)  // get transaction-hash/link from block-explorer and put on page
-
-
 }
-
-
 
 
 
@@ -648,9 +544,7 @@ if (window.ethereum){ // Account Change
 
   window.ethereum.on('accountsChanged', (accounts) => {
 
-    // console.log('account-changed:', accounts);
     handleAccountChange();
-    // window.location.href = 'http://127.0.0.1:7500/logout';
   
   });
   
@@ -662,30 +556,19 @@ if (window.ethereum){ // Chain Change
 
   window.ethereum.on('chainChanged', (chainId) => {
 
-    // console.log('current-chain-id:', chainId);
-    // console.log('target-chain-id:', targetChainID);
     if (chainId != targetChainID){
       window.location.reload();
     }
-
-    // console.log('chain-changed:', chainId);
-    // // window.location.href = 'http://127.0.0.1:7500/logout';
 
   })
 
 };
 
 
- 
-
-
-
 // DOM Listeners
 
 var signupLinkClicked;
 $('#main-signup-login-button').on('click', function(){
-
-  // console.log('signup-button:', signupLinkClicked)
 
   if (signupLinkClicked){ // prevent multiple clicks
     return false;
@@ -703,22 +586,18 @@ function verifyProfileDetails(){
   return new Promise(function(resolve, reject){
 
     var apiURL = new URL(API_HOST + 'verify_user_profile');
-    // console.log('api-url:', apiURL)
 
     // Verify profile details
     $.ajax({
       url: apiURL,
       success: function (response) {
-        // console.log('res:', response);
         
         if (response['success'] === false){
 
-          // console.log('nft-verf-modal:', nftVerificationModal);
           nftVerificationModal.show();
 
         } else if (response['success'] === true){
 
-          // window.location.href = 'http://127.0.0.1:7500/create-nft'
           window.location.href = API_HOST + 'create-nft/';
 
         }
@@ -726,7 +605,6 @@ function verifyProfileDetails(){
       }
 
     })
-
 
   })
 
@@ -747,12 +625,10 @@ $( "#user_create_nft" ).click(function() {
   if (userCreateNFTClicked){
     return false;
   } else {
-    // userCreateNFTClicked = true;
     handleCreateNFTClick();
   }
 
 });
-
 
 
 var launchNFTClicked;
@@ -770,10 +646,7 @@ $( "#launch-nft-button" ).click(async () => {
     .then(json => {
       var bytecode = json["contracts"]["NFTMain.sol"]["NFTMain"]["evm"]["bytecode"]["object"];
       var abi = JSON.parse( json["contracts"]["NFTMain.sol"]["NFTMain"]["metadata"] )["output"]["abi"];
-  
-      // console.log('bytecode:', bytecode);
-      // console.log('abi:', abi);
-  
+
       mainTestThree(bytecode, abi);
   
     })
@@ -781,7 +654,6 @@ $( "#launch-nft-button" ).click(async () => {
   }
   
 });
-
 
 
 
@@ -798,31 +670,18 @@ $( "#buy-nft-buttton" ).click(async () => {
     buyNFTMain()
 
   }
-
 })
-
 
 
 $( "#delete-nft-button" ).click(async () => {
-
   alert("Implement Delete Button")
-
 })
-
 
 
 $( "#post-update-button" ).click(async () => {
-
   projectLogModal.show();
-
 })
 
-
-// $("#project-log-update-button").click(async () => {
-
-// })
-
-  
 
 // // Homepage DOM
 
@@ -840,12 +699,10 @@ $('#join_beta_form').submit(function(e){
       csrfmiddlewaretoken: homepageCSRFTok
     },
     success: function (response) {
-      // console.log('res:', response);
       
       if (response['success'] === true){
 
         // success_message
-        
         $('#join_beta_form').hide();
         $('#success_message').show();
 
@@ -864,45 +721,6 @@ $('#join_beta_form').submit(function(e){
 
 
 
-// $('#join_beta_profile_form').submit(function(e){
-
-//   e.preventDefault();
-
-//   var user_email = $('#user_email_value').val();
-//   $.ajax({
-//     type: 'POST',
-//     url: "",
-//     data: {
-//       'user_email': user_email,
-//       csrfmiddlewaretoken: csrfToken
-//     },
-//     success: function (response) {
-//       // console.log('res:', response);
-      
-//       if (response['success'] === true){
-
-//         // success_message
-//         $('#join_beta_form').hide();
-//         $('#success_message').show();
-
-//       } else if (response['duplicate'] === true){
-
-//         $('#join_beta_form').hide();
-//         $('#duplicate_message').show();
-
-//       }
-
-//     }
-
-//   })
-
-
-// })
-
-
-
-
-
 $('#num_token_to_buy').on('input',function(e){
    
   var numTokenToBuy = $('#num_token_to_buy').val();
@@ -910,9 +728,6 @@ $('#num_token_to_buy').on('input',function(e){
   $('#buy_total_cost').text( ' ' + (numTokenToBuy * nftMainPrice).toFixed(2) ) ;
 
 });
-
-
-
 
 
 $('#create_user_nft_beta').on('click', function(){
