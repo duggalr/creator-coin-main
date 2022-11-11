@@ -235,14 +235,13 @@
 
               {% else %}
 
-                <i class="bi bi-pen-fill"></i>
+                <!-- <i class="bi bi-pen-fill"></i>
                 <a href="{% url 'update_token_form' %}">Edit NFT Metadata</a>
-                <!-- &nbsp; -->
                 |
                 <i class="bi bi-trash-fill" style="color: red;"></i> 
                 <a href="{% url 'delete_non_minted_nft' %}" onclick="return confirm('Are you SURE you want to delete your NFT? (you can create another one...)');">
                   <strong>Delete NFT</strong>
-                </a>
+                </a> -->
 
               {% endif %}
               
@@ -290,7 +289,6 @@
 
           {% endif %}
 
-
         </div>
         
 
@@ -322,8 +320,7 @@
                 | {{ creator_profile.creator_email }}
               </span>
             {% endif %}
-            
-            <!-- TODO: for same user, just display edit here; also display purchase, they should be able to purchase there own -->
+                        
             <!-- <div style="margin-left: auto;">              
               <button type="button" id="project-fund-button" class="btn btn-outline-info rounded-pill">Purchase</button>
               &nbsp;
