@@ -123,7 +123,7 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
       const network = await provider.getNetwork();
       const chainId = network.chainId;
 
-      console.log('current-chain-id:', 1)
+      // console.log('current-chain-id:', 1)
 
       if (chainId === 1){
 
@@ -589,7 +589,7 @@ const buyNFTMain = async () => {
             var totalEthAmount = numTokens * tokenPrice;
             var tokPriceStr = "0x" + Web3.utils.toBN(Web3.utils.toWei(String(totalEthAmount), "ether")).toString(16)
             // Number(Web3.utils.toWei(nftMetaData['nft_price'], "ether")).toString(),
-            console.log('tok-price-str:', tokPriceStr)
+            // console.log('tok-price-str:', tokPriceStr)
             
             try {
   

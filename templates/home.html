@@ -94,11 +94,24 @@
 
           <div class="col-4">
 
-            <h2 class="homepage-nft-title">
-              <a href="{% url 'user_token_page' profile_id=6 %}">
-                CreatorCoin's First NFT
-              </a>
-            </h2>
+            {% if creator_coin_nft_object is not None  %}
+
+              <h2 class="homepage-nft-title">
+                <a href="{% url 'user_token_page' profile_id=creator_coin_nft_object.id %}">
+                  CreatorCoin's First NFT
+                </a>
+              </h2>
+            
+            {% else %}
+
+              <h2 class="homepage-nft-title">
+                <a href="">
+                  CreatorCoin's First NFT
+                </a>
+              </h2>
+
+            {% endif %}
+
 
             {% if creator_coin_nft_object is not None  %}
 
@@ -119,7 +132,7 @@
                 </div>
               </div>
               <p id="home_page_nft">
-                <a href="{% url 'user_token_page' profile_id=6 %}">View Profile</a> | Price: {{ creator_coin_nft_object.nft_price }} <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: {{ creator_coin_nft_total_supply }} left
+                <a href="{% url 'user_token_page' profile_id=creator_coin_nft_object.id %}">View Profile</a> | Price: {{ creator_coin_nft_object.nft_price }} <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: {{ creator_coin_nft_total_supply }} left
               </p>
 
             {% else %}
