@@ -1,0 +1,710 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  {% include 'navbar.html' %}
+  
+  {% include 'error_models.html' %}
+
+
+<!-- Beta User Email Model -->
+<div class="modal" tabindex="-1" id="user_beta_email_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Enter your email and I will reach out!</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+        {% if email_join_beta_form_display is True %}
+
+          <form method="post" id="join_beta_form_user_page" name="join_beta_form_user_page">{% csrf_token %}
+
+            <div class="modal-body" id="email_form_body_one">
+
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">
+                  <strong>
+                    Email:
+                  </strong>
+                </label>
+                <input id="user_email_value" type="email" class="form-control" name="user_email" placeholder="your trustworthy email..." aria-label="creator email" aria-describedby="emailHelp" required>
+              </div>
+              <p style="color: gray;">
+                Currently in beta. Thus, not allowing everyone to mint an NFT just yet. 
+                Enter your email, and I will let you know when the functionality is live.
+              </p>
+
+            </div>
+
+            <div class="modal-footer">
+              <button name="join_beta_email_form" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            
+          </form>
+
+        {% else %}
+        
+          <div class="modal-body" id="email_form_body_two">
+
+            <div id="success_message" style="color: limegreen;">
+              Thank you. We have got your email and will reach out shortly, when the feature is live!
+            </div>
+
+          </div>
+          
+        {% endif %}
+
+    </div>
+  </div>
+</div>
+
+   
+  <div class="animate__animated animate__fadeIn main-body">
+
+    <div class="container">
+
+      <div class="row"> 
+
+        <div class="col-4">
+          
+          {% if user_nft_obj is not None %}
+             
+            <!-- <div>
+
+              <h4 style="display: inline;" style="padding-top: 10px; font-weight: 900;">
+                {{ user_nft_obj.nft_name }}
+              </h4>
+              | 
+              <span style="font-weight: 900;">
+                Updated: {{ user_nft_obj.nft_updated_at|date:"Y-m-d" }}
+              </span>
+
+            </div> -->
+             
+            {% if user_three_dim_upload is False %}
+
+              <img src="{{ user_nft_obj.nft_media_file.url }}" width="280px" style="border-radius: 5%; box-shadow: 5px 5px #F5F5F5; " >
+
+            {% else %}
+
+              <model-viewer 
+                src="{{ user_nft_obj.nft_media_file.url }}"
+                ar ar-modes="webxr scene-viewer quick-look" 
+                camera-controls
+                camera-orbit="250deg 85deg 125%"
+                shadow-intensity="1"
+                auto-rotate
+                rotation-per-second="250%"
+                style="width: 340px; height: 340px;" 
+                ></model-viewer>
+
+            {% endif %}
+
+            
+
+            <div style="padding-top: 14px;">
+
+              <p style="display: inline; font-weight: 900; font-size: 22px; ">
+
+                {% if user_nft_obj.nft_deployed is False %}
+
+                  <a id="user_nft_name_link" href="" style="color: black;">
+                    {{ user_nft_obj.nft_name }}  
+                  </a>
+
+                {% else %}
+
+                  <a id="user_nft_name_link" href="https://etherscan.io/token/{{ user_nft_obj.nft_deployed_contract_address }}" target="_blank" rel="noopener noreferrer">
+                    {{ user_nft_obj.nft_name }}  
+                  </a>
+
+                {% endif %}
+
+              </p>              
+
+                <span style="font-size: 19px;">
+                  | <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
+                </span>
+
+              <div style="padding-top: 3px;"></div>
+
+
+            </div>
+
+
+            <div style="padding-top: 10px;">
+
+              {% if nft_total_sold is not None %}
+
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: {{ nft_total_sold }}%;" aria-valuenow="{{ nft_total_sold }}" aria-valuemin="0" aria-valuemax="100">
+                    {{ nft_total_sold }}
+                  </div>
+                </div>
+              
+              {% else %}
+
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: 0%;" aria-valuenow="{{ nft_total_sold }}" aria-valuemin="0" aria-valuemax="100">
+                    {{ nft_total_sold }}
+                  </div>
+                </div>
+
+              {% endif %}
+
+            </div> 
+
+            <p style="font-size: 18px;">
+
+              <!-- <strong>Price:</strong> {{ user_nft_obj.nft_price }} ETH
+              | -->
+
+              {% if user_nft_obj.nft_deployed is False %}
+                <strong style="color: gray;">Total Sold: 0</strong>
+              {% else %}
+                <strong>Total Sold:</strong> {{ nft_total_sold }}
+              {% endif %}
+
+              |
+              {% if nft_total_token_supply is None %}
+                <strong>Total Remaining:</strong> {{ user_nft_obj.nft_total_supply }}
+              {% else %}
+                <strong>Total Remaining:</strong> {{ nft_total_token_supply }} 
+              {% endif %}
+            
+            </p>
+
+            
+          {% else %}
+
+            <model-viewer 
+            src="{% static '3d_model/placeholder_new.glb' %}"  
+            ar ar-modes="webxr scene-viewer quick-look" 
+            camera-orbit="250deg 85deg 125%"
+            camera-controls
+            shadow-intensity="1"
+            auto-rotate
+            rotation-per-second="400%"
+            style="width: 350px; height: 350px;"
+            ></model-viewer>
+
+            
+          {% endif %}
+    
+
+
+          {% if same_user is True %}
+
+             {% if user_nft_obj is not None %}
+
+              {% if user_nft_obj.nft_deployed is True %}
+
+                <div class="row g-1 align-items-center">
+                  
+                  <div class="col-auto">
+                    <label for="num_token_to_buy" class="col-form-label">
+                      <strong>
+                        Number of NFTs to buy (<=20):
+                      </strong>
+                    </label>
+                  </div>
+
+                  <div class="col-auto" style="width: 4em;">
+                    <input type="number" id="num_token_to_buy" max="20" min="1" value="1" class="form-control">
+                  </div>
+
+
+                  <div class="col-auto">
+                    <button id="buy-nft-buttton" type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
+                    <span style="color: gray; font-weight: 900;">Total Cost:<span id="buy_total_cost" > {{ user_nft_obj.nft_price }}</span> ETH</span>
+                  </div>
+                
+                </div>  
+                
+
+              {% else %}
+
+              {% endif %}
+                 
+            {% else %}
+
+              <span class="badge rounded-pill text-bg-secondary" style="font-size: 15px;">
+                No active NFT sale. Maybe you should launch one?
+              </span>
+
+            {% endif %}
+
+          {% else %}
+            
+            {% if user_nft_obj is not None and user_nft_obj.nft_deployed is True %}
+              
+              <div class="row g-1 align-items-center">
+                
+                <div class="col-auto">
+                  <label for="num_token_to_buy" class="col-form-label">
+                    <strong>
+                      Number of NFTs to buy (<=20):
+                    </strong>
+                  </label>
+                </div>
+
+                <div class="col-auto" style="width: 4em;">
+                  <input type="number" id="num_token_to_buy" max="20" min="1" value="1" class="form-control">
+                </div>
+
+                <div class="col-auto">
+                  <button id="buy-nft-buttton" type="button" class="btn btn-primary " style="font-size: 19px;">Buy NFT</button>
+                  <span style="color: gray; font-weight: 900;">Total Cost:<span id="buy_total_cost" > {{ user_nft_obj.nft_price }}</span> ETH</span>
+                </div>
+
+              </div>
+              
+            {% else %}
+
+              <span class="badge rounded-pill text-bg-secondary" style="font-size: 15px;">
+                The creator has not made their NFT live at the moment.
+              </span>
+
+            {% endif %}
+
+          {% endif %}
+
+        </div>
+        
+
+        <div class="col-8" id="project-text-main">
+
+          <div class="project-header">
+
+            {% if creator_profile.creator_name is not None and creator_profile.creator_name != '' %}
+              <h2 class="project-title">
+                {{ creator_profile.creator_name }}
+              </h2>
+
+            {% else %}
+
+              {% if same_user is True %}
+                <h2 class="project-title">
+                  Add a name?
+                </h2>
+              {% else %}
+                <h2 class="project-title">
+                  No Name
+                </h2>
+              {% endif %}
+
+            {% endif %}
+
+            {% if creator_profile.creator_email is not None and creator_profile.creator_email != '' %}
+              <span style="font-size: 16px;">
+                | {{ creator_profile.creator_email }}
+              </span>
+            {% endif %}
+                        
+            <!-- <div style="margin-left: auto;">              
+              <button type="button" id="project-fund-button" class="btn btn-outline-info rounded-pill">Purchase</button>
+              &nbsp;
+              <a href='#'>Edit Page</a>
+            </div> -->
+
+            <!-- <div style="margin-left: auto;">
+            </div> -->
+
+            <div style="margin-left: auto;">  
+              
+              {% if same_user is True %}
+
+                <a href="{% url 'edit_user_profile' profile_id=profile_id %}" class="btn btn-outline-dark rounded-pill" role="button" style="font-size: 16.5px;"> 
+                  Edit Your Profile
+                </a>
+                
+                {% if user_nft_obj is not None %}
+
+                  {% if user_nft_obj.nft_deployed is False %}
+                    
+                    <!-- <button class="btn btn-info btn-lg rounded-pill" id="launch-nft-button" style="font-size: 18px; color: white;">Mint your NFT</button> -->
+
+                  {% else %}
+
+                    <!-- <button id="delete-nft-button" type="button" class="btn btn-outline-danger rounded-pill" style="font-size: 16px;">
+                      Cancel NFT  Sale
+                    </button> -->
+
+                    <a style="padding-left: 3px;" class="tweet-share-link" href="http://twitter.com/share?text=Check out this NFT from {{ creator_profile.creator_name }}:&url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer">
+                      Tweet
+                    </a>
+
+                  {% endif %}
+
+                {% else %}
+
+                  <!-- <button id="user_create_nft" class="btn btn-secondary rounded-pill" style="font-size: 17px;" disabled>
+                    Create a NFT
+                  </button> -->
+
+                  <button id="create_user_nft_beta" class="btn btn-outline-info rounded-pill" style="font-size: 17px;">
+                    Create a NFT
+                  </button>
+
+                {% endif %}                
+
+
+              {% else %}
+
+                {% if user_nft_obj.nft_deployed is True %}
+
+                  <span class="badge rounded-pill text-bg-primary">NFT is live!</span>
+
+                  <a style="padding-left: 3px;" class="tweet-share-link" href="http://twitter.com/share?text=Check out this NFT from {{ creator_profile.creator_name }}:&url={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer">
+                    Tweet
+                  </a>
+
+                {% endif %}
+
+                <!-- <span class="badge rounded-pill text-bg-info" style="font-size: 14px;">
+                  No active token sale at the moment
+                </span> -->
+              
+              {% endif %}
+
+            </div>
+
+          </div>
+          
+          
+          <p class="project-user-pk-address">
+            <i class="bi bi-key-fill"></i> {{ creator_profile.user_obj.user_pk_address }}
+            <!-- <button id="post-update-button" style="margin-left: 13em;">Post Update</button> -->
+            
+          </p>
+ 
+          <!-- TODO: add success message (disable create nft button upon submission) and go from there -->
+            <!-- <div id="success_message" style="color: limegreen;">
+              Thank you. We have got your email and will reach out shortly!
+            </div> -->
+ 
+          <!-- <div>
+            <p class="project-user-pk-address">
+              <i class="bi bi-key-fill"></i> {{ creator_profile.user_obj.user_pk_address }}
+            </p>
+            <button style="text-align: right;">Post Update</button>
+          </div> -->
+
+
+
+          <div class="project-subheading-information">
+            
+            {% if github_profile is not None %}
+                
+              <span>
+                <i class="bi bi-github"></i> <a href="{{ github_profile.github_profile_url }}" target="_blank" rel="noopener noreferrer">Github</a>
+                <i style="color: skyblue;" class="bi bi-check-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top" title="Github Verified by User."></i>
+              </span>
+
+            {% else %}
+
+
+              {% if same_user is True %}
+
+                <span>
+                  <i class="bi bi-github"></i> 
+                  <a href="{% url 'github_login' %}" >
+                    add your github (required)
+                  </a>
+                </span>
+              
+              {% else %}
+
+                <span>
+                  <i class="bi bi-github"></i>
+                  The creator did not link his github.
+                </span>
+
+              {% endif %}
+
+
+            {% endif %}
+
+
+            {% if creator_profile.creator_personal_website|length > 0 and creator_profile.creator_personal_website is not None %}
+
+              <span style="padding-left: 12px;">
+                <i class="bi bi-link"></i> <a href="{{ creator_profile.creator_personal_website }}" target="_blank" rel="noopener noreferrer">
+                  Personal Website
+                </a>
+              </span>
+
+            {% else %}
+
+              {% if same_user is True %}
+                
+                <span style="padding-left: 12px;">
+                  <i class="bi bi-link"></i> <a href="{% url 'edit_user_profile' profile_id=profile_id %}">
+                    add your personal website
+                  </a>
+                </span>
+
+              {% endif %}
+
+            {% endif %}
+
+
+            {% if creator_profile.creator_discord_website|length > 0 and creator_profile.creator_discord_website is not None %}
+
+              <span style="padding-left: 12px;">
+                <i class="bi bi-discord"></i> 
+                <a href="{{ creator_profile.creator_discord_website }}" target="_blank" rel="noopener noreferrer">
+                  Discord
+                </a>
+              </span>  
+
+            {% else %}
+
+              {% if same_user is True %}
+ 
+                <span style="padding-left: 12px;">
+                  <i class="bi bi-discord"></i> 
+                  <a href="{% url 'edit_user_profile' profile_id=profile_id %}">
+                    add your discord
+                  </a>
+                </span> 
+
+              {% endif %}
+
+            {% endif %}
+
+            
+          </div>
+
+          
+          <div class="project-desc">  
+
+            <p style="font-size: 17px;">
+
+              {% if creator_profile.creator_description is not None and creator_profile.creator_description != '' %}
+                {{ creator_profile.creator_description }}
+              {% else %}
+
+                {% if same_user is True %}
+                  <b>Add a brief description for the project(s) you are currently working on.</b>
+                  You can always provide further details and updates in the project log, below.
+                  <br/>
+                  
+                {% else %}
+                  <b>The creator did not seem to create a description.</b>
+                {% endif %}
+
+              {% endif %}
+                
+            </p>
+
+          </div>
+
+          
+        </div>
+
+
+      </div>
+
+
+      <br/>
+
+      {% include 'user_profile_navbar.html' %}
+
+
+
+    </div>
+
+  </div>
+
+
+
+
+  <!-- Number of Tokens to Buy Modal Error -->
+  <div class="modal" tabindex="-1" id="numTokensErrorModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"> &#129488; Huh? </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            The total number of tokens you can buy in one sale is 20 or less!
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Chain-ID Modal Error -->
+  <div class="modal" tabindex="-1" id="chainIDErrorModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"> &#129488; It seems like you are on the wrong chain... </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            You must be on the Ethereum Mainnet! Please switch chain's to the ETH mainnet and try again...
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Nft Verification Modal: when user doesn't complete all their profile information -->
+  <div class="modal" tabindex="-1" id="nftVerificationModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"> &#129488; Couple steps remaining </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Before creating a NFT, you must <b>complete</b> the following 2 steps:
+            <ul>
+              <li>Add your name by going to <a href="{% url 'edit_user_profile' profile_id=profile_id %}">edit profile.</a> Add a nice description while your at it!</li>
+              <li>
+                <b>
+                  Add and verify your github.
+                </b>
+              </li> 
+            </ul>
+            &#127882; <b>I know your excited</b>, and based on historical data, the above steps should only take you ~30 seconds to complete. 
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+
+  <!-- <div id="overlay">
+    <div class="w-100 d-flex justify-content-center align-items-center">
+      <div id="spinning_border" class="spinner-border" role="status" style="display: none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div> -->
+
+  <div id="overlay" style="display: none;">
+    <div id="overlay-text">
+      <div id="spinning_border" class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <!-- <strong>Loading...</strong> -->
+      &nbsp; Your NFT is getting ready for takeoff... &#128640;
+    </div>
+  </div>
+
+
+
+  <!-- Project Log Modal -->
+  <div class="modal" tabindex="-1" id="projectLogModal" style="font-family: 'Hubballi', cursive;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">&#9999; <strong>Post an Update</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+
+        <form method="post">{% csrf_token %}
+          
+          <div class="modal-body">
+          
+            <div class="mb-3">
+              <label for="log-title" class="form-label">
+                <strong>
+                  Log Title:
+                </strong>
+              </label>
+              <input type="text" class="form-control" id="log-title" name="log-title" placeholder="got to have a title..." required>
+            </div>
+
+            <div class="mb-3">
+              <label for="log-update" class="form-label">
+                <strong>
+                  Log Update:
+                </strong>
+              </label>
+              <textarea class="form-control" id="log-update" name="log-update" rows="5" placeholder="share an update..." required></textarea>
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button name="project-log-update" id="project-log-update-button" type="submit" class="btn btn-info" style="color: white;">Submit</button>
+          </div>
+
+      </form>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  
+  
+  <br/>
+
+ 
+  <script>
+
+    const anonUser = '{{ anon_user }}';
+    const csrfToken = '{{ csrf_token }}';
+    const mainContractAddress = '{{ user_nft_obj.nft_deployed_contract_address }}'
+    const creatorProfileID = '{{ creator_profile.id }}'
+    const nftMainPrice = '{{ user_nft_obj.nft_price }}'
+
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var c = url.searchParams.get("click");
+
+    if (c == 'buy-button'){
+      window.onload = function() {
+        $("#buy-nft-buttton").click()
+
+      }
+    }
+
+    
+
+  </script>
+
+
+{% endblock %}  
+
+
+
+
+
+
+
