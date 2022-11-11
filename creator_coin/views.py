@@ -298,7 +298,7 @@ def user_token_page(request, profile_id):
       logging.warning(f'Current token-id for deployed nft from user, {request.user} is None')
       
 
-  return render(request, 'user_profile_page.html', {
+  return render(request, 'user_profile_page_beta.html', {
     'anon_user': request.user.is_anonymous,
     'creator_profile': creator_profile_obj,
     'same_user': same_user,
