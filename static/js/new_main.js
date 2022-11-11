@@ -123,7 +123,7 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
       const network = await provider.getNetwork();
       const chainId = network.chainId;
 
-      if (chainId === 5){
+      if (chainId === 1){
 
         // MetaMask requires requesting permission to connect users accounts
         await ethersProvider.send("eth_requestAccounts", []);
@@ -341,7 +341,7 @@ const mainTestThree = async (bytecode, abi) => {
   // console.log('network:', network);
   // console.log('chain-id:', chainId);
 
-  if (chainId != 5){  // Chain-ID check; display error modal
+  if (chainId != 1){  // Chain-ID check; display error modal
 
     launchNFTClicked = false;
     chainIdErrorModal.show();
@@ -536,7 +536,7 @@ const buyNFTMain = async () => {
     // console.log('chain-id:', chainId);
 
 
-    if (chainId != 5){  // display error modal
+    if (chainId != 1){  // display error modal
 
       chainIdErrorModal.show();
 
@@ -654,7 +654,7 @@ if (window.ethereum){ // Account Change
   
 }
 
-const targetChainID = '0x5'; // goerli testnet
+const targetChainID = '0x1'; // goerli testnet
 
 if (window.ethereum){ // Chain Change
 

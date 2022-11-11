@@ -56,8 +56,6 @@
 
       <ul class="list-group list-group-flush">
         
-        <!-- TODO: add default if no transaction history; else, show all the transaction-history linking to etherscan -->
-
         {% for n_obj in nft_transaction_history %}
 
           <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -65,9 +63,9 @@
               <div class="fw-bold">
                 <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
                 {% if n_obj.purchaser_user_obj.creator_name is not None %}
-                  <a href="https://goerli.etherscan.io/tx/{{ n_obj.transaction_hash }}"> {{ n_obj.purchase_amount }} NFT Purchased</a> by <a href="{% url 'user_token_page' profile_id=n_obj.purchaser_user_obj.id %}">{{ n_obj.purchaser_user_obj.creator_name }}</a>
+                  <a href="https://etherscan.io/tx/{{ n_obj.transaction_hash }}"> {{ n_obj.purchase_amount }} NFT Purchased</a> by <a href="{% url 'user_token_page' profile_id=n_obj.purchaser_user_obj.id %}">{{ n_obj.purchaser_user_obj.creator_name }}</a>
                 {% else %}
-                  <a href="https://goerli.etherscan.io/tx/{{ n_obj.transaction_hash }}"> {{ n_obj.purchase_amount }} NFT Purchased</a> by <a href="{% url 'user_token_page' profile_id=n_obj.purchaser_user_obj.id %}">No Name</a>
+                  <a href="https://etherscan.io/tx/{{ n_obj.transaction_hash }}"> {{ n_obj.purchase_amount }} NFT Purchased</a> by <a href="{% url 'user_token_page' profile_id=n_obj.purchaser_user_obj.id %}">No Name</a>
                 {% endif %}
                 | <span style="color: darkgray;">{{ n_obj.transaction_created_date  }}</span>
               </div>
@@ -119,12 +117,12 @@
             <div class="ms-2 me-auto">
               <div class="fw-bold">
                 <!-- https://etherscan.io/tx/0x6f135f738ed69b6683766020b7a04fd846deba2c5d27f9dffe4a88badd5f3d99 -->
-                <a href="https://goerli.etherscan.io/address/{{ user_nft_obj.nft_deployed_contract_address }}">Deployed Contract</a>
+                <a href="https://etherscan.io/address/{{ user_nft_obj.nft_deployed_contract_address }}">Deployed Contract</a>
                 | <span style="color: darkgray;">{{ user_nft_obj.nft_deployed_date  }}</span>
               </div>
               
               <span style="color: gray;">
-                <a href="https://goerli.etherscan.io/tx/{{ user_nft_obj.nft_deployed_transaction_hash }}">
+                <a href="https://etherscan.io/tx/{{ user_nft_obj.nft_deployed_transaction_hash }}">
                   <i class="bi bi-hash"></i>{{ user_nft_obj.nft_deployed_transaction_hash }}
                 </a>
               </span>
@@ -279,7 +277,7 @@
             <div class="fw-bold">
               <a href="{% url 'user_token_page' profile_id=nft_obj.nft_transaction_history_obj.nft_obj.creator_obj.id %}">{{ nft_obj.nft_transaction_history_obj.purchase_amount }} NFT Bought</a>
               |
-              <a href="https://goerli.etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">Etherscan Transaction</a>
+              <a href="https://etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">Etherscan Transaction</a>
               | 
               <span style="color: darkgray;">{{ nft_obj.nft_transaction_history_obj.transaction_created_date  }}</span>
               <!-- <a href="https://etherscan.io/tx/{{ nft_obj.nft_transaction_history_obj.transaction_hash }}">NFT Purchased</a>
