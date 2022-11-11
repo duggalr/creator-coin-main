@@ -29,7 +29,11 @@
               side projects. Creators can easily launch a NFT token for themselves.
               Supporters can purchase the NFT, and benefit through NFT ownership. 
               Start by exploring my 
-              <a href="{% url 'user_token_page' profile_id=6 %}">profile page</a>,
+              {% if creator_coin_nft_object is not None  %}
+              <a href="{% url 'user_token_page' profile_id=creator_coin_nft_object.id %}">profile page</a>,
+              {% else %}
+              <a href="">profile page</a>,
+              {% endif %}
               or watching a <a href="#about">demo</a> of how the platform works.
              
               <!-- If it sounds interesting, either join as a creator, or buy CreatorCoin's own NFT!              
@@ -127,8 +131,8 @@
               ></model-viewer>
             
               <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: {{ nft_total_sold }}%;" aria-valuenow="{{ nft_total_sold }}" aria-valuemin="0" aria-valuemax="100">
-                  {{ nft_total_sold }}
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-label="Example with label" style="width: {{ creator_coin_nft_total_sold }}%;" aria-valuenow="{{ creator_coin_nft_total_sold }}" aria-valuemin="0" aria-valuemax="100">
+                  {{ creator_coin_nft_total_sold }}
                 </div>
               </div>
               <p id="home_page_nft">

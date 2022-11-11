@@ -318,7 +318,7 @@
             {% endif %}
 
             {% if creator_profile.creator_email is not None and creator_profile.creator_email != '' %}
-              <span style="font-size: 18px;">
+              <span style="font-size: 16px;">
                 | {{ creator_profile.creator_email }}
               </span>
             {% endif %}
@@ -361,13 +361,13 @@
 
                 {% else %}
 
-                  <button id="user_create_nft" class="btn btn-secondary rounded-pill" style="font-size: 17px;">
-                    Create a NFT
-                  </button>
-
-                  <!-- <button id="create_user_nft_beta" class="btn btn-outline-info rounded-pill" style="font-size: 17px;">
+                  <!-- <button id="user_create_nft" class="btn btn-secondary rounded-pill" style="font-size: 17px;" disabled>
                     Create a NFT
                   </button> -->
+
+                  <button id="create_user_nft_beta" class="btn btn-outline-info rounded-pill" style="font-size: 17px;">
+                    Create a NFT
+                  </button>
 
                 {% endif %}                
 
