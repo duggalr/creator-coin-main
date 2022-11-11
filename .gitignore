@@ -59,12 +59,13 @@ creator_coin_new/.env
 creator_coin/contracts
 creator_coin/contract_utils.py
 templates/old_templates
+creator_coin/mainnet_deploy.py
 
 todo.txt
-
-
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+
