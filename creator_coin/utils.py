@@ -70,20 +70,20 @@ def get_transaction_status(tx_hash):
     return None
 
 
-def get_current_token_id(contract_address):
-  f = open("nft_main_new_compiled_code.json")
+# def get_current_token_id(contract_address):
+#   f = open("nft_main_new_compiled_code.json")
 
-  compiled_sol = json.load(f)
+#   compiled_sol = json.load(f)
   
-  abi = json.loads(compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["metadata"])["output"]["abi"]
+#   abi = json.loads(compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["metadata"])["output"]["abi"]
 
-  w3 = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{os.getenv('goerli_api_key')}"))
+#   w3 = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{os.getenv('goerli_api_key')}"))
 
-  CreatorContract = w3.eth.contract(address=Web3.toChecksumAddress(contract_address), abi=abi)
-  try:
-    current_token_id = CreatorContract.functions.getCurrentTokenID().call()
-    return current_token_id
-  except:
-    return None
+#   CreatorContract = w3.eth.contract(address=Web3.toChecksumAddress(contract_address), abi=abi)
+#   try:
+#     current_token_id = CreatorContract.functions.getCurrentTokenID().call()
+#     return current_token_id
+#   except:
+#     return None
   
 
