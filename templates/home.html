@@ -100,7 +100,7 @@
               </a>
             </h2>
 
-            <!-- {% if creator_coin_nft_object is not None  %}
+            {% if creator_coin_nft_object is not None  %}
 
               <model-viewer 
               src="{% static '3d_model/new_three.glb' %}"  
@@ -122,7 +122,7 @@
                 <a href="{% url 'user_token_page' profile_id=6 %}">View Profile</a> | Price: {{ creator_coin_nft_object.nft_price }} <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: {{ creator_coin_nft_total_supply }} left
               </p>
 
-            {% else %} -->
+            {% else %}
 
               <model-viewer 
               src="{% static '3d_model/new_three.glb' %}"  
@@ -145,7 +145,7 @@
                 <a href="{% url 'user_token_page' profile_id=6 %}">View Profile</a> | Price: 0.1 <img src="{% static 'images/eth-diamond-black.png' %}"  alt="..." width="8" height="12"> | Supply: 978 left
               </p>
 
-            <!-- {% endif %} -->
+            {% endif %}
 
 
           </div>

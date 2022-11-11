@@ -49,9 +49,9 @@ def home(request):
         return JsonResponse({'duplicate': True})
   
   user_nft_obj = None
-  if 'RDS_DB_NAME' in os.environ:
-    creator_profile_obj = CreatorProfile.objects.get(id=6)
-    user_nft_obj = UserNft.objects.get(creator_obj=creator_profile_obj)
+  # if 'RDS_DB_NAME' in os.environ:
+  #   creator_profile_obj = CreatorProfile.objects.get(id=6)
+  #   user_nft_obj = UserNft.objects.get(creator_obj=creator_profile_obj)
   
   nft_total_token_supply = None
   nft_total_sold = None
