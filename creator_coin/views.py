@@ -609,9 +609,6 @@ def create_token_form(request): # TODO: ensure proper file-validation is done on
       upload_file_mb_size = uploaded_file.size / 1024 / 1024
       content_type = magic.from_buffer(uploaded_file.read(), mime=True) # verifies the uploaded file
 
-      print('content-type:', content_type)
-      print('file-upload-size:', upload_file_mb_size)
-
       if content_type in accepted_content_types and upload_file_mb_size <= max_file_size and form_validation_error is False:
         nft_name = request.POST['token_name']
         nft_symbol = request.POST['token_symbol']
@@ -718,7 +715,7 @@ def update_token_form(request):
     'image/svg+xml', 'image/webp', 'model/gltf-binary', 'application/octet-stream'
   ]
  
-  if request.method == 'POST': # TODO: do we need to do any user-auth-verification here?
+  if request.method == 'POST': 
     user_nft = request.POST['user_nft_obj']
     nft_name = request.POST['token_name']
     nft_price = request.POST['token_price_field']

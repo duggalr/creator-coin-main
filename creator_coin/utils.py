@@ -41,7 +41,7 @@ def store_file_in_ipfs(obj):
   with nft_storage.ApiClient(configuration) as api_client:
     api_instance = nft_storage_api.NFTStorageAPI(api_client)
 
-    print('nft-url:', obj.nft_media_file.url, obj.nft_media_file)
+    # print('nft-url:', obj.nft_media_file.url, obj.nft_media_file)
     contents = io.BytesIO( urlopen(obj.nft_media_file.url).read() )
 
     # example passing only required values which don't have defaults set
