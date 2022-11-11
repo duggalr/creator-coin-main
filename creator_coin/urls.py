@@ -4,8 +4,6 @@ from django.views.generic import RedirectView
 from . import views
 
 
-
-
 urlpatterns = [
   path('', views.home, name='home'),
   path('manifesto/', views.about_page, name='about_page'),
@@ -44,9 +42,4 @@ urlpatterns = [
   path('verify_user_profile/', views.verify_user_profile, name='verify_user_profile'),
 
 ]
-
-
-
-
-
 

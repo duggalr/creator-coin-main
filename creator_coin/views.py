@@ -32,7 +32,6 @@ from . import utils
 
 
 
-
 def home(request):
 
   if request.method == "POST":  # get the user email
@@ -360,49 +359,11 @@ def edit_user_profile(request, profile_id):
     creator_profile_obj.save()
 
     return redirect('user_token_page', profile_id=profile_id)
-
-    # nft_image_file = request.FILES.getlist('nft_image')
-    # if len(nft_image_file) > 0:  # update nft-image for project
-    #   user_project_obj.title = request.POST['project_title']
-    #   user_project_obj.description = request.POST['project_description']
-    #   user_project_obj.project_website = request.POST['project_website']
-    #   user_project_obj.github_webite = request.POST['project_github_website']
-    #   user_project_obj.discord_website = request.POST['project_discord_website']
-    #   user_project_obj.save()
       
   else:
     return render(request, 'create_user_profile.html', {'creator_profile': creator_profile_obj})
 
-  # # user_project_obj = UserProject.objects.get_object_or_404(id=project_id)
-  # user_project_obj = get_object_or_404(UserProject, id=project_id)
-  # nft_image = ProjectNftImage.objects.get(project_obj=user_project_obj)
 
-  # if request.method == "POST":
-  #   print(request.POST)
-  #   nft_image_file = request.FILES.getlist('nft_image')
-  #   if len(nft_image_file) > 0:  # update nft-image for project
-  #     user_project_obj.title = request.POST['project_title']
-  #     user_project_obj.description = request.POST['project_description']
-  #     user_project_obj.project_website = request.POST['project_website']
-  #     user_project_obj.github_webite = request.POST['project_github_website']
-  #     user_project_obj.discord_website = request.POST['project_discord_website']
-  #     user_project_obj.save()
-      
-  #     # ProjectNftImage.objects.
-
-  # return render(request, 'create_project.html', {'user_project': user_project_obj, 'nft_image': nft_image})
-
-
-
-# # TODO: ensure only the person who is 'owner' of the profile can see stuff; not everyone
-# @login_required(login_url='/')
-# def user_profile(request):
-#   user_pk_address = request.user
-#   user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-#   print('user-obj:', user_obj)
-#   creator_profile = get_object_or_404(CreatorProfile, user_obj=user_obj)  
-#   return render(request, 'user_profile.html', {'creator_profile': creator_profile})
- 
 
 
 @login_required(login_url='/')
@@ -413,7 +374,6 @@ def logout_view(request):
 
 
 ## API   
-
 # Much of the web3 login is based from (credits go to author):
   # https://github.com/ManaanAnsari/MetaMask-Login-Python/blob/8f15caa1a374660629fe199ef55cb8458cde86d1/backend/user_management/views.py
 
@@ -586,7 +546,6 @@ def github_callback(request):
   github_request_url = request.build_absolute_uri()
   # TODO: need to make exception for local-dev
   # github_request_url = github_request_url.replace('http', 'https')
-
   # logging.warning(f'github-request-url: {github_request_url}')
 
   github = OAuth2Session(client_id, state=request.session['oauth_state'])
@@ -817,8 +776,6 @@ def update_token_form(request):
       
     else: # file saved from before
       pass
-      # form_validation_error = True
-      # form_validation_error_message = "No File submitted for NFT..."
 
 
     if form_validation_error:
@@ -843,15 +800,6 @@ def update_token_form(request):
       user_nft_object.save()
 
       return redirect('user_token_page', profile_id=creator_profile.id)
-
-    # else:
-    #   return render(request, 'launch_token_form.html', {
-    #     'form_validation_error': form_validation_error,
-    #     'nft_name': request.POST['token_name'],
-    #     'nft_price': request.POST['token_price_field'],
-    #     'nft_total_supply': request.POST['nft_total_supply']
-    #   })
-
 
   three_dim_file_types = [
     '.glb', '.gltf', '.obj', '.ply', '.fbx' '.svg'
@@ -949,8 +897,6 @@ def save_nft_metadata(request):
 
 # handle-eth-account-change
 def handle_account_change(request):
-  # print(request)
-  # print(request.user)
   if request.user.is_anonymous is False:  # user was logged in; let's log out the previous user and redirect to home?
     return JsonResponse({'redirect': True})
   else:
@@ -977,8 +923,6 @@ def nft_launch_final(request):
   nft_deployed_chain_id = request.POST['nft_deployed_chain_id']
   nft_contract_address = request.POST['nft_contract_address']
 
-  # print('nft-launch-post:', request.POST)
-
   user_nft_obj.nft_deployed = True
   user_nft_obj.nft_deployed_transaction_hash = nft_transaction_hash
   user_nft_obj.nft_deployed_contract_data = nft_deployed_data
@@ -990,26 +934,15 @@ def nft_launch_final(request):
   return JsonResponse({'success': True})
 
 
- 
 @login_required(login_url='/')
 def fetch_nft_main_data(request, profile_id):
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
   user_nft_obj = get_object_or_404(UserNft, creator_obj=creator_profile_obj)
-
-  # print( 'url:', request.build_absolute_uri() )
-  # current_user_pk_address = request.user.user_pk_address
-  # user_object = get_object_or_404(Web3User, user_pk_address=current_user_pk_address)
-  # creator_profile = CreatorProfile.objects.get(user_obj=user_object)
-  # user_nft_obj = UserNft.objects.get(creator_obj=creator_profile)
-
-  # nft_contract_address = user_nft_obj.nft_deployed_contract_address
   return JsonResponse({
     'nft_contract_address': user_nft_obj.nft_deployed_contract_address,
     'nft_token_price': user_nft_obj.nft_price
   })
 
-  # fetch("http://127.0.0.1:7500/static/json_files/nft_main_compiled_code.json")
-  # f = open()
 
 
 @login_required(login_url='/')

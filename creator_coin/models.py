@@ -7,7 +7,6 @@ from django.utils import timezone
 
 
 
-
 class UserManager(BaseUserManager):
 
   def create_user(self, pk_address):
@@ -121,14 +120,5 @@ class UserBetaEmails(models.Model):
   """
   creator_obj = models.OneToOneField(CreatorProfile, on_delete=models.CASCADE, blank=True, null=True)
   user_email = models.EmailField()
-
-
-
-
-
-
-
-
- 
 
 
