@@ -74,7 +74,7 @@ def get_current_token_id(contract_address):
   f = open("nft_main_new_compiled_code.json")
   compiled_sol = json.load(f)
   
-  abi = json.loads(compiled_sol["contracts"]["NFTMainNew.sol"]["NFTMainNew"]["metadata"])["output"]["abi"]
+  abi = json.loads(compiled_sol["contracts"]["NFTMain.sol"]["NFTMain"]["metadata"])["output"]["abi"]
 
   w3 = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{os.getenv('goerli_api_key')}"))
 
