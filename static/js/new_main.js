@@ -123,6 +123,8 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
       const network = await provider.getNetwork();
       const chainId = network.chainId;
 
+      console.log('current-chain-id:', 1)
+
       if (chainId === 1){
 
         // MetaMask requires requesting permission to connect users accounts
