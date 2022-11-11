@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# print('final-fp:', os.path.join(BASE_DIR, '.env') )
 env_dir = os.path.dirname(os.path.abspath(__file__))
 load_dotenv( os.path.join(env_dir, '.env') )
 
@@ -51,16 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    # 'rest_framework.authtoken',
     'creator_coin',
 
     'storages',
-
-    # # all-auth
-    # "allauth",
-    # "allauth.account",
-    # "allauth.socialaccount",
-    # "allauth.socialaccount.providers.github"
 ]
 
 MIDDLEWARE = [
@@ -191,19 +183,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # for auto-created primary keys
 DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
 
-
-# AUTHENTICATION_BACKENDS = (
-#     "allauth.account.auth_backends.AuthenticationBackend",
-# )
-# SITE_ID = 2
-# ACCOUNT_EMAIL_VERIFICATION = "none"
-# # LOGIN_REDIRECT_URL = "home"
-# # ACCOUNT_LOGOUT_ON_GET = True
-# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-# ACCOUNT_USERNAME_REQUIRED = False
-# ACCOUNT_USERNAME_EMAIL = False
-
-
 if 'RDS_DB_NAME' in os.environ:
     AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
     AWS_S3_REGION_NAME = os.environ['AWS_S3_REGION_NAME']
@@ -226,33 +205,6 @@ STATICFILES_STORAGE = 'custom_storages.StaticStorage'
 
 MEDIAFILES_LOCATION = 'media'
 DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
-
-
-# LOGGING = {
-#     'version': 1,
-#     # The version number of our log
-#     'disable_existing_loggers': False,
-#     # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
-#     # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
-#     'handlers': {
-#         'file': {
-#             'level': 'WARNING',
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, 'warning.log'),
-#         },
-#     },
-#     # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
-#     'loggers': {
-#         # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
-#         '': {
-#             'handlers': ['file'], #notice how file variable is called in handler which has been defined above
-#             'level': 'WARNING',
-#             'propagate': True,
-#         },
-#     },
-# }
-
-
 
 if 'RDS_DB_NAME' in os.environ:
 
@@ -313,7 +265,6 @@ else:
             },
         },
     }
-
 
 
 

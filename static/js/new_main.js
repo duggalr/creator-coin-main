@@ -737,8 +737,3 @@ $('#create_user_nft_beta').on('click', function(){
 })
 
 
-
-
-
-
-
