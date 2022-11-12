@@ -254,13 +254,23 @@ else:
                 'filename': os.path.join(BASE_DIR, 'warning.log'),
                 "formatter": "verbose",
             },
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(BASE_DIR, 'debug.log'),
+            },
         },
         # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
         'loggers': {
             # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
-            '': {
+            'django-warning': {
                 'handlers': ['file'], #notice how file variable is called in handler which has been defined above
                 'level': 'WARNING',
+                'propagate': True,
+            },
+            'django-debug': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
                 'propagate': True,
             },
         },
@@ -275,7 +285,7 @@ if 'RDS_DB_NAME' in os.environ:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_SSL_REDIRECT = True
     X_FRAME_OPTIONS = 'DENY'
-    SECURE_HSTS_SECONDS = 120  # set low, but when site is ready for deployment, set to at least 15768000 (6 months)
+    SECURE_HSTS_SECONDS = 604800  # set low, but when site is ready for deployment, set to at least 15768000 (6 months)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 

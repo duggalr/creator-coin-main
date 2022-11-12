@@ -56,7 +56,7 @@ def home(request):
   nft_total_sold = None
   if user_nft_obj is not None and user_nft_obj.nft_deployed:
     current_token_id = utils.get_current_token_id(user_nft_obj.nft_deployed_contract_address)
-    logging.warning(f'Current Creator Coin NFT Token-ID: {current_token_id}')
+    # logging.warning(f'Current Creator Coin NFT Token-ID: {current_token_id}')
 
     if current_token_id is not None:
       nft_total_token_supply = user_nft_obj.nft_total_supply - current_token_id
@@ -156,7 +156,7 @@ def user_token_page(request, profile_id):
   user_nft_obj = None
   user_nft_objects = UserNft.objects.filter(creator_obj=creator_profile_obj)
 
-  logging.warning(f'User NFT Objects: {user_nft_objects} / Length NFT Objects: {len(user_nft_objects)}')
+  # logging.warning(f'User NFT Objects: {user_nft_objects} / Length NFT Objects: {len(user_nft_objects)}')
 
   if len(user_nft_objects) == 1:  # TODO: enforce to only ensure it's one
     user_nft_obj = user_nft_objects[0]
@@ -183,7 +183,6 @@ def user_token_page(request, profile_id):
   if user_nft_obj is not None:
     # three_dim_model = False
     # main_utils.check_if_three_dim_model(user_nft_obj.nft_media_file)
-  
     fn, file_extension = os.path.splitext(user_nft_obj.nft_media_file.url)
     if file_extension in three_dim_file_types:
       user_three_dim_upload = True
@@ -215,6 +214,9 @@ def user_token_page(request, profile_id):
         else: 
           return redirect('user_token_page', profile_id=creator_profile_obj.id)
   
+    else:
+      logging.warning(f'{request.user.user_pk_address} tried submitting join-beta-email-form POST request for different user where different user is {creator_profile_obj.user_obj.user_pk_address} ')
+
 
   email_join_beta_form_display = False
   user_email_emails = UserBetaEmails.objects.filter(creator_obj=creator_profile_obj)  
@@ -242,6 +244,9 @@ def user_token_page(request, profile_id):
       cl.save()
 
       return redirect('user_token_page', profile_id=profile_id)
+
+    else:
+      logging.warning(f'{request.user.user_pk_address} tried submitting project-log-update POST request for different user where different user is {creator_profile_obj.user_obj.user_pk_address} ')
 
 
   nft_transaction_history = UserNftTransactionHistory.objects.filter(nft_obj=user_nft_obj).order_by('-transaction_created_date')
@@ -280,7 +285,7 @@ def user_token_page(request, profile_id):
 
       if user_nft_obj.nft_deployed_transaction_status is None:  # if 0/1, it is updated
         transaction_dict = utils.get_transaction_status(user_nft_obj.nft_deployed_transaction_hash)
-        logging.warning(f'transaction-dict: {transaction_dict}')
+        # logging.warning(f'transaction-dict: {transaction_dict}')
 
         if transaction_dict is not None:
           transaction_status = transaction_dict['result']['status']
@@ -315,6 +320,7 @@ def user_token_page(request, profile_id):
   })
 
 
+
 @login_required(login_url='/')
 def delete_project_log(request, project_log_id):
   user_pk_address = request.user
@@ -324,6 +330,9 @@ def delete_project_log(request, project_log_id):
   if user_obj == project_log_obj.creator_obj.user_obj:
     project_log_obj.delete()
     return redirect('user_token_page', profile_id=project_log_obj.creator_obj.id)
+  else:
+    logging.warning(f'{user_pk_address} tried submitting delete project-log-request for user: {project_log_obj.creator_obj.user_obj.user_pk_address}')
+
 
 
 @login_required(login_url='/')
@@ -334,35 +343,33 @@ def edit_user_profile(request, profile_id):
   creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
   creator_profile_user_pk = creator_profile_obj.user_obj.user_pk_address
 
-  # print('ue:', type(creator_profile_user_pk), type(user_pk_address) )
   if creator_profile_user_pk != str(user_pk_address):
     return redirect('user_token_page', profile_id=profile_id)
 
   if request.method == "POST":
 
     user_pk_address = request.user
-    # user_obj = get_object_or_404(Web3User, user_pk_address=user_pk_address)
-
     creator_profile_obj = get_object_or_404(CreatorProfile, id=profile_id)
     creator_profile_user_pk = creator_profile_obj.user_obj.user_pk_address
 
     if creator_profile_user_pk != str(user_pk_address):
       logger.warning(f'user tried to edit profile but request.user pk-address not same as profile-id one. user: {request.user}')
-      return redirect('user_token_page', profile_id=profile_id)
+      return redirect('user_token_page', profile_id=profile_id)      
 
-    logger.warning(f'User has edited their creator profile. User: {request.user}')
+    # logger.warning(f'User has edited their creator profile. User: {request.user}')
+    
+    cleaned_text = utils.bleach_text(request.POST['project_description'])
     creator_profile_obj.creator_name = request.POST['person_name']
     creator_profile_obj.creator_email = request.POST['personal_email']
     creator_profile_obj.creator_personal_website = request.POST['project_website']
     creator_profile_obj.creator_discord_website = request.POST['project_discord_website']
-    creator_profile_obj.creator_description = request.POST['project_description']
+    creator_profile_obj.creator_description = cleaned_text
     creator_profile_obj.save()
 
     return redirect('user_token_page', profile_id=profile_id)
       
   else:
     return render(request, 'create_user_profile.html', {'creator_profile': creator_profile_obj})
-
 
 
 

@@ -6,6 +6,7 @@ from web3 import Web3
 
 import io
 from urllib.request import urlopen
+import bleach
 
 import nft_storage
 from nft_storage.api import nft_storage_api
@@ -85,4 +86,10 @@ def get_current_token_id(contract_address):
   except:
     return None
   
+
+def bleach_text(text):
+  return bleach.clean(text)
+
+
+
 
