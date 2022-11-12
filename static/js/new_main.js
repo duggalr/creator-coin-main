@@ -172,16 +172,19 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
               } else {
                 loginErrorThreeModel.show();
                 signupLinkClicked = false;
+                userBuyNFTClicked = false;
               }
 
             } catch(error) {  // user login request failed
               loginErrorThreeModel.show();
               signupLinkClicked = false;
+              userBuyNFTClicked = false;
             }
 
           } else { // signature denied.
 
             signupLinkClicked = false;
+            userBuyNFTClicked = false;
 
           }
 
@@ -189,6 +192,7 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
 
           loginErrorThreeModel.show();
           signupLinkClicked = false;
+          userBuyNFTClicked = false;
           
         }
 
@@ -197,6 +201,7 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
 
         loginErrorFourModel.show();
         signupLinkClicked = false;
+        userBuyNFTClicked = false;
 
       }
 
@@ -205,6 +210,7 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
 
       loginErrorTwoModal.show();
       signupLinkClicked = false;
+      userBuyNFTClicked = false;
 
     }
 
@@ -213,6 +219,7 @@ const handleSignupButtonClick = async (redirect_profile_id) => {
 
     loginErrorModal.show();
     signupLinkClicked = false;
+    userBuyNFTClicked = false;
 
   }
 
