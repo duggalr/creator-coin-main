@@ -60,6 +60,7 @@ creator_coin/contracts
 creator_coin/contract_utils.py
 templates/old_templates
 creator_coin/mainnet_deploy.py
+creator_coin/views.py
 
 todo.txt
 
