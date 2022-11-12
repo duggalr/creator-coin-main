@@ -100,7 +100,6 @@ def explore_project(request):
   three_dim_file_types = [
     '.glb', '.gltf', '.obj', '.ply', '.fbx' '.svg'
   ]
-
   deployed_creator_profile_objects = []
   deployed_nfts = UserNft.objects.filter(nft_deployed=True).order_by('-nft_updated_at')
   deployed_nft_list = []
@@ -139,6 +138,7 @@ def explore_project(request):
     'non_deployed_nft_objects': non_deployed_nft_list,
     'all_other_profiles': final_profile_rv
   })
+
 
 
 @login_required(login_url='/')

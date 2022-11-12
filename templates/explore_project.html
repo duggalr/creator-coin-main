@@ -303,7 +303,7 @@
                 <a class="stretched-link" href="{% url 'user_token_page' profile_id=obj.id %}"></a>
 
                 <p class="card-text" style="padding-top: 8px;">
-                  {% if obj.nft_obj.creator_obj.creator_description is None or obj.nft_obj.creator_obj.creator_description == '' %}
+                  {% if obj.creator_description is None or obj.creator_description == '' %}
                     Creator has not made a description yet...
                   {% else %}
                     {{ obj.creator_description|safe|truncatechars:150 }}
