@@ -176,9 +176,13 @@ def user_token_page(request, profile_id):
       same_user = True
 
   github_profile = None
+  user_github_commit_history = None
   if creator_profile_obj.user_obj.github_verified is True:
     # user_obj = Web3User.objects.get( user_pk_address=request.user )
     github_profile = GithubProfile.objects.get(user_obj=creator_profile_obj.user_obj)
+    gh_username = github_profile.github_username
+    user_github_commit_history = utils.get_user_recent_commits(gh_username)
+
 
   three_dim_file_types = [
     '.glb', '.gltf', '.obj', '.ply', '.fbx' '.svg'
@@ -320,7 +324,8 @@ def user_token_page(request, profile_id):
     'user_nft_collection': user_nft_collection,
     'nft_total_token_supply': nft_total_token_supply,
     'nft_total_sold': nft_total_sold,
-    'email_join_beta_form_display': email_join_beta_form_display
+    'email_join_beta_form_display': email_join_beta_form_display,
+    'user_github_commit_history': user_github_commit_history
   })
 
 

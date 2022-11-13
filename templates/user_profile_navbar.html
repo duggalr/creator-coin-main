@@ -41,8 +41,8 @@
   </li>
 
   <li class="nav-item" role="presentation">
-    <button class="nav-link disabled" id="open-tasks-tab" data-bs-toggle="tab" data-bs-target="#open-tasks" type="button" role="tab" aria-controls="open-tasks" aria-selected="false" >
-      <i class="bi bi-code-slash"></i> Github Repo Commits (soon...)
+    <button class="nav-link" id="github-repo-commit-tab" data-bs-toggle="tab" data-bs-target="#github-repo-commit" type="button" role="tab" aria-controls="github-repo-commit-tab" aria-selected="false" >
+      <i class="bi bi-code-slash"></i> Latest Github Commits ({{ user_github_commit_history|length }})
     </button>
   </li>
   
@@ -325,8 +325,31 @@
   </div>
 
 
-  <div class="tab-pane fade" id="open-tasks" role="open-tasks" aria-labelledby="open-tasks-tab">
-    ...
+  <div class="tab-pane fade" id="github-repo-commit" role="github-repo-commit" aria-labelledby="github-repo-commit">
+    
+    <ul class="list-group list-group-flush">
+
+      {% for di in user_github_commit_history %}
+
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">
+              <i class="bi bi-github"></i>
+              <a href="{{ di.commit_url }}">{{ di.commit_message }}</a>
+              <!-- by {{ di.commit_author }} -->
+            </div>
+            <span style="color: gray;">
+              {{ di.commit_date }}
+            </span>
+          </div>
+
+        </li>
+
+      {% endfor %}
+
+    </ul>
+
   </div>
   
 
@@ -334,14 +357,5 @@
 
 <br/>
 <br/>
-<br/>
-
-
-<script>
-
-
-
-</script>
-
-
+<!-- <br/> -->
 

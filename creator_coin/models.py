@@ -107,7 +107,7 @@ class UserNftCollection(models.Model):
 
 
 class GithubProfile(models.Model):
-  user_obj = models.ForeignKey(Web3User, on_delete=models.CASCADE)
+  user_obj = models.OneToOneField(Web3User, on_delete=models.CASCADE)
   github_username = models.CharField(max_length=2000)
   github_profile_url = models.URLField() 
   github_avatar_url = models.URLField()

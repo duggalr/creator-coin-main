@@ -91,5 +91,30 @@ def bleach_text(text):
   return bleach.clean(text)
 
 
-
+def get_user_recent_commits(username):
+  github_personal_token = os.getenv("github_personal_token")
+  num_per_page_limit = 10
+  url = f'https://api.github.com/search/commits?q=author:{username}&sort=author-date&order=desc&page=1&per_page={num_per_page_limit}'
+  headers = {"Authorization": "Bearer %s" % github_personal_token }
+  res = requests.get(url, headers=headers)
+  data = res.json()['items']
+  
+  rv = []
+  for di in data:
+    commit_dict = di['commit']
+    author_dict = commit_dict['author']
+    commit_message = commit_dict['message']
+    author_name = author_dict['name']
+    github_url = di['html_url']
+    commit_date = author_dict['date']
+    commit_date_clean = commit_date.split('T')[0]
+    # print(github_url, commit_date_clean)
+    rv.append({
+      'commit_url': github_url,
+      'commit_date': commit_date_clean,
+      'commit_author': author_name,
+      'commit_message': commit_message
+    })
+    
+  return rv
 
