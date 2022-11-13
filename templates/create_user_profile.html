@@ -147,14 +147,15 @@
               <label for="project_description" class="col-sm-2 col-form-label control-label">
                 <strong>
                   Description:
-                </strong>
+                </strong>                
               </label>
 
               <div class="col-sm-7">
+                <a href="https://www.markdownguide.org/cheat-sheet/" style="float: right;" target="_blank" rel="noopener noreferrer">Markdown Supported</a>
                 {% if creator_profile.creator_description is not None %}
-                  <textarea class="form-control" placeholder="Give us a little detail on what your working on... (No markdown supported, maybe you can help add it?)" id="project_description" name="project_description" rows="20">{{ creator_profile.creator_description }}</textarea>
+                  <textarea class="form-control" placeholder="Give us a little detail on what your working on..." id="project_description" name="project_description" rows="20">{{ creator_profile.creator_description }}</textarea>
                 {% else %}
-                  <textarea class="form-control" placeholder="Give us a little detail on what your working on... (No markdown supported, maybe you can help add it?)" id="project_description" name="project_description" rows="20"></textarea>
+                  <textarea class="form-control" placeholder="Give us a little detail on what your working on..." id="project_description" name="project_description" rows="20"></textarea>
                 {% endif %}
                 
               </div>
@@ -164,7 +165,6 @@
             <input type="hidden" id="user_obj" name="user_obj" value="{{ user_object }}">
             
             <!-- <br/> -->
-
             <!-- <button class="ui button" type="submit">Submit</button> -->
             <!-- <div style="text-align: center; margin-right: 6em;"> -->
             <div style="margin-left: 21em; padding-top: 0.5em;">

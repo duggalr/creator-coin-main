@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% load markdown_extras %}
+
 
 {% block content %}
 
@@ -421,7 +423,7 @@
 
               <span style="padding-left: 12px;">
                 <i class="bi bi-link"></i> <a href="{{ creator_profile.creator_personal_website }}" target="_blank" rel="noopener noreferrer">
-                  Personal Website
+                  Website
                 </a>
               </span>
 
@@ -473,7 +475,7 @@
             <p style="font-size: 17px;" id="para_project_description">
 
               {% if creator_profile.creator_description is not None and creator_profile.creator_description != '' %}
-                {{ creator_profile.creator_description }}
+                {{ creator_profile.creator_description | markdown | safe }}
               {% else %}
 
                 {% if same_user is True %}
@@ -627,11 +629,12 @@
             </div>
 
             <div class="mb-3">
-              <label for="log-update" class="form-label">
+              <label for="log-update" class="form-label">                
                 <strong>
                   Log Update:
                 </strong>
               </label>
+              <a href="https://www.markdownguide.org/cheat-sheet/" style="float: right;" target="_blank" rel="noopener noreferrer">Markdown Supported</a>
               <textarea class="form-control" id="log-update" name="log-update" rows="5" placeholder="share an update..." required></textarea>
             </div>
 
@@ -673,22 +676,22 @@
       }
     }
 
-    var current_same_user = '{{ same_user }}';
-    // TODO: sanitization in place
-    var creatorDesc = DOMPurify.sanitize(`{{ creator_profile.creator_description }}`);
-    // console.log('current-creator-desc:', creatorDesc, current_same_user)
-    if (creatorDesc != '' && creatorDesc.trim().length > 0){
-      // console.log("marked-desc:", marked.parse(creatorDesc) )
-      document.getElementById('para_project_description').innerHTML = marked.parse(creatorDesc);
-    } else {
+    // var current_same_user = '{{ same_user }}';
+    // // TODO: sanitization in place
+    // var creatorDesc = DOMPurify.sanitize(`{{ creator_profile.creator_description }}`);
+    // // console.log('current-creator-desc:', creatorDesc, current_same_user)
+    // if (creatorDesc != '' && creatorDesc.trim().length > 0){
+    //   // console.log("marked-desc:", marked.parse(creatorDesc) )
+    //   document.getElementById('para_project_description').innerHTML = marked.parse(creatorDesc);
+    // } else {
       
-      if (current_same_user === 'True'){
-        document.getElementById('para_project_description').innerHTML = "Add a brief description for the project(s) you are currently working on. You can always provide further details and updates in the project log, below."
-      } else {
-        document.getElementById('para_project_description').innerHTML = "The creator did not seem to create a description."
-      }
+    //   if (current_same_user === 'True'){
+    //     document.getElementById('para_project_description').innerHTML = "Add a brief description for the project(s) you are currently working on. You can always provide further details and updates in the project log, below."
+    //   } else {
+    //     document.getElementById('para_project_description').innerHTML = "The creator did not seem to create a description."
+    //   }
 
-    }
+    // }
 
   </script>
 
