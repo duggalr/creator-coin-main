@@ -21,8 +21,8 @@ contract NFTMain is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, 
     Counters.Counter private _tokenIdCounter;
 
     /// Main Public Key
-    address private _platformAddress = 0x4F25F664e5A0fbc4f8f6b5ea2e98c9b9263A84Fa;
-    uint256 private _platformFee = 3;
+    address private immutable _platformAddress = 0x4F25F664e5A0fbc4f8f6b5ea2e98c9b9263A84Fa;
+    uint256 private immutable _platformFee = 3;
 
     /// Token Metadata
     uint256 private _maxTokenSupply;
